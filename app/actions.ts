@@ -17,7 +17,7 @@ export type LeadActionState = {
   };
 };
 
-const phonePattern = /^[+()\-\s0-9]{10,24}$/;
+const phonePattern = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
 
 export async function submitLead(
   _previousState: LeadActionState,
@@ -28,7 +28,7 @@ export async function submitLead(
   const message = String(formData.get("message") ?? "").trim();
   const source = String(formData.get("source") ?? "booking").trim();
 
-  if (name.length < 2) {
+  if (name.length < 1) {
     return {
       status: "error",
       message: "Укажите имя, чтобы администратор понял, к кому обращаться.",

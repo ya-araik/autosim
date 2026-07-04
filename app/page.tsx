@@ -15,7 +15,6 @@ import {
   features,
   galleryImages,
   modes,
-  reviews,
   siteUrl
 } from "@/lib/site";
 
@@ -247,21 +246,11 @@ export default function HomePage() {
           <div>
             <p className="section-label">Отзывы</p>
             <h2>Что говорят наши пилоты</h2>
-            <div className="review-list">
-              {reviews.map((review) => (
-                <a
-                  className="review-card"
-                  href={review.source === "Яндекс Карты" ? business.mapUrl : business.twoGisUrl}
-                  key={review.source}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <strong>{review.rating}</strong>
-                  <span>★★★★★</span>
-                  <h3>{review.source}</h3>
-                  <p>{review.text}</p>
-                </a>
-              ))}
+            <div className="reviews-widget">
+              <iframe loading="lazy" src={business.reviewsWidgetUrl} title="Отзывы АвтоСим на Яндекс Картах" />
+              <a href={business.mapUrl} rel="noopener noreferrer" target="_blank">
+                АвтоСим на карте Оренбурга - Яндекс Карты
+              </a>
             </div>
           </div>
         </div>
@@ -299,7 +288,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="section contacts-band">
+      <section className="section contacts-band" id="contacts">
         <div className="container contacts-grid">
           <div>
             <p className="section-label">Контакты</p>
@@ -317,6 +306,7 @@ export default function HomePage() {
           </div>
           <div className="map-frame">
             <iframe
+              allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               src={business.mapWidgetUrl}

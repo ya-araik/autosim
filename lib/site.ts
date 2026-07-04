@@ -1,4 +1,8 @@
-export const siteUrl = "https://auto-sim.ru";
+function normalizeSiteUrl(url?: string) {
+  return (url || "https://auto-sim.ru").replace(/\/+$/, "");
+}
+
+export const siteUrl = normalizeSiteUrl(process.env.NEXT_PUBLIC_SITE_URL);
 
 export const business = {
   name: "АвтоСим",
@@ -10,9 +14,10 @@ export const business = {
   streetAddress: "ул. Рыбаковская, 59",
   openingHours: "Ежедневно с 14:00 до 02:00",
   mapUrl:
-    "https://yandex.ru/maps/?ll=55.104252%2C51.775331&mode=whatshere&whatshere%5Bpoint%5D=55.104252%2C51.775331&whatshere%5Bzoom%5D=17&z=17",
+    "https://yandex.ru/maps/org/avtosim/86043181546/",
   mapWidgetUrl:
-    "https://yandex.ru/map-widget/v1/?ll=55.104252%2C51.775331&pt=55.104252%2C51.775331%2Cpm2rdm&z=17",
+    "https://yandex.ru/map-widget/v1/?from=mapframe&ll=55.104656%2C51.775216&mode=search&oid=86043181546&ol=biz&pt=55.104252%2C51.775331&source=mapframe&utm_source=mapframe&z=20.47",
+  reviewsWidgetUrl: "https://yandex.ru/maps-reviews-widget/86043181546?comments",
   twoGisUrl:
     "https://2gis.ru/orenburg/search/%D0%A0%D1%8B%D0%B1%D0%B0%D0%BA%D0%BE%D0%B2%D1%81%D0%BA%D0%B0%D1%8F%2059?m=55.104252%2C51.775331%2F17",
   latitude: 51.775331418433325,

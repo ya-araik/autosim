@@ -5,7 +5,7 @@ import { business, externalLinks, navItems } from "@/lib/site";
 
 export function Footer() {
   return (
-    <footer className="footer" id="contacts">
+    <footer className="footer" id="footer">
       <div className="container footer-grid">
         <div>
           <Link className="brand footer-brand" href="/">

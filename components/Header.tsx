@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { type MouseEvent, useState } from "react";
 
 import { LeadButton } from "@/components/LeadButton";
 import { business, navItems } from "@/lib/site";
@@ -12,11 +12,49 @@ export function Header() {
   const pathname = usePathname();
 
   const closeMenu = () => setIsOpen(false);
+  const scrollToPageTarget = (targetId: string) => {
+    const target = document.getElementById(targetId);
+
+    if (!target) return;
+
+    const headerHeight = document.querySelector<HTMLElement>(".site-header")?.offsetHeight ?? 0;
+    const targetTop = target.getBoundingClientRect().top + window.scrollY;
+    const offset = headerHeight + 18;
+
+    window.scrollTo({
+      top: Math.max(0, targetTop - offset),
+      behavior: "smooth"
+    });
+  };
+
+  const scrollHomeTop = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (pathname !== "/") return;
+
+    event.preventDefault();
+    event.currentTarget.blur();
+    closeMenu();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  };
+  const scrollHomeHash = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (pathname !== "/" || !href.startsWith("/#")) return;
+
+    event.preventDefault();
+    event.currentTarget.blur();
+    closeMenu();
+    scrollToPageTarget(href.slice(2));
+  };
+  const handleMobileNavClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
+    closeMenu();
+    scrollHomeHash(event, href);
+  };
 
   return (
     <header className="site-header">
       <div className="container header-inner">
-        <Link aria-label="АвтоСим - на главную" className="brand" href="/">
+        <Link aria-label="АвтоСим - на главную" className="brand" href="/" onClick={scrollHomeTop}>
           Авто<span>Сим</span>
         </Link>
         <nav aria-label="Основная навигация" className="desktop-nav">
@@ -25,6 +63,7 @@ export function Header() {
               aria-current={pathname === item.href ? "page" : undefined}
               href={item.href}
               key={item.href}
+              onClick={(event) => scrollHomeHash(event, item.href)}
             >
               {item.label}
             </Link>
@@ -58,7 +97,7 @@ export function Header() {
       <div className={`mobile-menu ${isOpen ? "is-open" : ""}`} inert={!isOpen}>
         <div className="mobile-menu__panel">
           <div className="mobile-menu__head">
-            <Link className="brand" href="/" onClick={closeMenu}>
+            <Link className="brand" href="/" onClick={scrollHomeTop}>
               Авто<span>Сим</span>
             </Link>
             <button
@@ -87,7 +126,7 @@ export function Header() {
                 className="mobile-menu__link"
                 href={item.href}
                 key={item.href}
-                onClick={closeMenu}
+                onClick={(event) => handleMobileNavClick(event, item.href)}
               >
                 {item.label}
               </Link>

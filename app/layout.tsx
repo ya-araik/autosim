@@ -8,8 +8,11 @@ import { Header } from "@/components/Header";
 import { JsonLd } from "@/components/JsonLd";
 import { LeadModal } from "@/components/LeadModal";
 import { LeadProvider } from "@/components/LeadProvider";
+import { ScrollMotion } from "@/components/ScrollMotion";
 import { localBusinessJsonLd, websiteJsonLd } from "@/lib/seo";
 import { absoluteUrl, business, siteUrl } from "@/lib/site";
+
+const ogImageUrl = absoluteUrl("/assets/og/autosim-og.jpg?v=20260630-2");
 
 const cinematografica = localFont({
   src: [
@@ -59,7 +62,7 @@ export const metadata: Metadata = {
       "Гонки, VR, автосимуляторы, дни рождения и корпоративы в Оренбурге.",
     images: [
       {
-        url: absoluteUrl("/assets/og/autosim-og.jpg"),
+        url: ogImageUrl,
         width: 1200,
         height: 630,
         alt: "Клуб автосимуляторов АвтоСим в Оренбурге"
@@ -71,7 +74,7 @@ export const metadata: Metadata = {
     title: "АвтоСим - клуб автосимуляторов в Оренбурге",
     description:
       "Профессиональные автосимуляторы, VR и гоночные заезды в Оренбурге.",
-    images: [absoluteUrl("/assets/og/autosim-og.jpg")]
+    images: [ogImageUrl]
   }
 };
 
@@ -86,6 +89,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           {children}
           <Footer />
           <LeadModal />
+          <ScrollMotion />
         </LeadProvider>
       </body>
     </html>
