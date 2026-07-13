@@ -2,16 +2,36 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { type MouseEvent, useState } from "react";
+import { type MouseEvent, useEffect, useRef, useState } from "react";
 
 import { LeadButton } from "@/components/LeadButton";
 import { business, navItems } from "@/lib/site";
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pathname = usePathname();
 
-  const closeMenu = () => setIsOpen(false);
+  useEffect(() => {
+    return () => {
+      if (closeTimer.current) clearTimeout(closeTimer.current);
+    };
+  }, []);
+
+  const openMenu = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setIsMenuVisible(true);
+    setIsClosing(false);
+    requestAnimationFrame(() => setIsOpen(true));
+  };
+
+  const closeMenu = () => {
+    setIsClosing(true);
+    setIsOpen(false);
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+  };
   const scrollToPageTarget = (targetId: string) => {
     const target = document.getElementById(targetId);
 
@@ -86,7 +106,7 @@ export function Header() {
             aria-expanded={isOpen}
             aria-label="Открыть меню"
             className="menu-toggle"
-            onClick={() => setIsOpen(true)}
+            onClick={openMenu}
             type="button"
           >
             <span />
@@ -94,7 +114,10 @@ export function Header() {
           </button>
         </div>
       </div>
-      <div className={`mobile-menu ${isOpen ? "is-open" : ""}`} inert={!isOpen}>
+      <div
+        className={`mobile-menu ${isMenuVisible || isClosing ? "is-visible" : ""} ${isOpen ? "is-open" : ""} ${isClosing ? "is-closing" : ""}`}
+        inert={!isOpen}
+      >
         <div className="mobile-menu__panel">
           <div className="mobile-menu__head">
             <Link className="brand" href="/" onClick={scrollHomeTop}>

@@ -8,6 +8,7 @@ const sourceLabels: Record<string, string> = {
   prices: "Страница цен",
   "prices:Standart": "Тариф Standart",
   "prices:Pro": "Тариф Pro",
+  "prices:VIP": "Тариф VIP",
   "prices:VR-очки": "Тариф VR-очки",
   "mode:ring": "Режим: кольцевые гонки",
   "mode:drift": "Режим: дрифт",

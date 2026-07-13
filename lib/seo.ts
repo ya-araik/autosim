@@ -3,13 +3,20 @@ import { business, externalLinks, faqItems, pricePlans, siteUrl } from "@/lib/si
 export function localBusinessJsonLd() {
   return {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
+    "@type": ["LocalBusiness", "SportsActivityLocation", "EntertainmentBusiness"],
     "@id": `${siteUrl}/#business`,
     name: business.name,
+    alternateName: "Автосимуляторы АвтоСим",
     legalName: business.legalName,
+    description:
+      "Клуб автосимуляторов в Оренбурге: профессиональные автосимуляторы, VR, гонки с друзьями, дни рождения и корпоративы.",
     url: siteUrl,
+    image: `${siteUrl}/assets/og/autosim-og.jpg`,
+    logo: `${siteUrl}/favicon.png`,
     telephone: business.phone,
     priceRange: "350-5800 RUB",
+    currenciesAccepted: "RUB",
+    paymentAccepted: "Cash, Credit Card, SBP",
     address: {
       "@type": "PostalAddress",
       addressLocality: business.city,
@@ -21,6 +28,19 @@ export function localBusinessJsonLd() {
       latitude: business.latitude,
       longitude: business.longitude
     },
+    hasMap: business.mapUrl,
+    areaServed: {
+      "@type": "City",
+      name: business.city
+    },
+    contactPoint: {
+      "@type": "ContactPoint",
+      telephone: business.phone,
+      contactType: "reservations",
+      areaServed: "RU",
+      availableLanguage: ["ru"]
+    },
+    openingHours: "Mo-Su 14:00-02:00",
     openingHoursSpecification: [
       {
         "@type": "OpeningHoursSpecification",

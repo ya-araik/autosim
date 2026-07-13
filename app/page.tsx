@@ -50,7 +50,7 @@ export default function HomePage() {
           <h1>Первый клуб автосимуляторов в Оренбурге</h1>
           <p>
             Погрузись в атмосферу кольцевых гонок, дрифта, ралли, VR,
-            дальнобойщиков и заездов по бездорожью.
+            грузоперевозок и заездов по бездорожью.
           </p>
           <div className="button-row">
             <LeadButton
@@ -116,7 +116,8 @@ export default function HomePage() {
               alt="Кокпит автосимулятора АвтоСим"
               fill
               sizes="(max-width: 900px) 100vw, 50vw"
-              src="/assets/optimized/sim_rig.webp"
+              src="/assets/optimized/sim-rig-cockpit-vignette.webp"
+              unoptimized
             />
           </div>
         </div>
@@ -194,10 +195,10 @@ export default function HomePage() {
         <div className="container split-grid split-grid--reverse">
           <div className="media-frame media-frame--tall">
             <Image
-              alt="Гости клуба АвтоСим на мероприятии"
+              alt="Руль и оборудование автосимулятора АвтоСим"
               fill
               sizes="(max-width: 900px) 100vw, 48vw"
-              src="/assets/photos/1.png"
+              src="/assets/optimized/events-wheel.webp"
             />
           </div>
           <div>
