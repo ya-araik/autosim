@@ -165,10 +165,13 @@ async function handleCallback(update: TelegramUpdate) {
   if (!result.ok) {
     const owner = result.lead?.assignedTo ? ` Сейчас у ${formatTelegramUser(result.lead.assignedTo)}.` : "";
 
-    await safelyAnswerCallbackQuery(callback.id, `${result.reason}${owner}`, true);
-
     if (result.lead) {
-      await editLeadTelegramMessage(result.lead);
+      await Promise.all([
+        safelyAnswerCallbackQuery(callback.id, `${result.reason}${owner}`, true),
+        editLeadTelegramMessage(result.lead)
+      ]);
+    } else {
+      await safelyAnswerCallbackQuery(callback.id, `${result.reason}${owner}`, true);
     }
     return;
   }
@@ -182,8 +185,10 @@ async function handleCallback(update: TelegramUpdate) {
           ? "Ответьте на сообщение заявки комментарием."
           : "Заявка возвращена в новые.";
 
-  await safelyAnswerCallbackQuery(callback.id, successText);
-  await editLeadTelegramMessage(result.lead);
+  await Promise.all([
+    safelyAnswerCallbackQuery(callback.id, successText),
+    editLeadTelegramMessage(result.lead)
+  ]);
 }
 
 async function handleChatMember(update: TelegramUpdate) {

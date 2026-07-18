@@ -109,7 +109,11 @@ export function toTelegramUserRef(user: TelegramUser) {
   };
 }
 
-async function telegramRequest<T>(method: string, body: Record<string, unknown>) {
+async function telegramRequest<T>(
+  method: string,
+  body: Record<string, unknown>,
+  timeoutMs = 10_000
+) {
   const response = await undiciFetch(`https://api.telegram.org/bot${getBotToken()}/${method}`, {
     method: "POST",
     headers: {
@@ -117,7 +121,8 @@ async function telegramRequest<T>(method: string, body: Record<string, unknown>)
     },
     body: JSON.stringify(body),
     cache: "no-store",
-    dispatcher: getTelegramProxyAgent()
+    dispatcher: getTelegramProxyAgent(),
+    signal: AbortSignal.timeout(timeoutMs)
   });
 
   const data = (await response.json()) as TelegramApiResponse<T>;
@@ -279,7 +284,7 @@ export async function answerCallbackQuery(callbackQueryId: string, text: string,
     callback_query_id: callbackQueryId,
     text,
     show_alert: showAlert
-  });
+  }, 3_000);
 }
 
 export async function leaveChat(chatId: number) {
