@@ -1,10 +1,7 @@
 import { NextResponse } from "next/server";
 
-import {
-  runCompletionCommentTimeoutCheck,
-  startCompletionCommentTimeoutWorker
-} from "@/lib/completion-timeout-worker";
-import { runLeadReminderCheck, startLeadReminderWorker } from "@/lib/lead-reminder-worker";
+import { startCompletionCommentTimeoutWorker } from "@/lib/completion-timeout-worker";
+import { startLeadReminderWorker } from "@/lib/lead-reminder-worker";
 import {
   completeLeadFromReply,
   completeLead,
@@ -168,11 +165,11 @@ async function handleCallback(update: TelegramUpdate) {
   if (!result.ok) {
     const owner = result.lead?.assignedTo ? ` Сейчас у ${formatTelegramUser(result.lead.assignedTo)}.` : "";
 
+    await safelyAnswerCallbackQuery(callback.id, `${result.reason}${owner}`, true);
+
     if (result.lead) {
       await editLeadTelegramMessage(result.lead);
     }
-
-    await safelyAnswerCallbackQuery(callback.id, `${result.reason}${owner}`, true);
     return;
   }
 
@@ -208,8 +205,6 @@ export async function POST(request: Request) {
     }
 
     const update = (await request.json()) as TelegramUpdate;
-    await runCompletionCommentTimeoutCheck();
-    await runLeadReminderCheck();
 
     if (update.callback_query) {
       await handleCallback(update);

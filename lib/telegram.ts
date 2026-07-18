@@ -257,13 +257,21 @@ export async function sendLeadToTelegram(lead: WithId<LeadDocument>) {
 export async function editLeadTelegramMessage(lead: WithId<LeadDocument>) {
   if (!lead.telegramChatId || !lead.telegramMessageId) return;
 
-  await telegramRequest<TelegramMessage>("editMessageText", {
-    chat_id: lead.telegramChatId,
-    message_id: lead.telegramMessageId,
-    text: formatLeadMessage(lead),
-    parse_mode: "HTML",
-    reply_markup: leadKeyboard(lead)
-  });
+  try {
+    await telegramRequest<TelegramMessage>("editMessageText", {
+      chat_id: lead.telegramChatId,
+      message_id: lead.telegramMessageId,
+      text: formatLeadMessage(lead),
+      parse_mode: "HTML",
+      reply_markup: leadKeyboard(lead)
+    });
+  } catch (error) {
+    if (error instanceof Error && error.message.includes("message is not modified")) {
+      return;
+    }
+
+    throw error;
+  }
 }
 
 export async function answerCallbackQuery(callbackQueryId: string, text: string, showAlert = false) {
