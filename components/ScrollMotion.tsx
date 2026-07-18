@@ -6,6 +6,7 @@ const motionSelector = [
   ".section-head",
   ".split-grid > *",
   ".feature-card",
+  ".vr-actions",
   ".mode-card",
   ".gallery-item",
   ".price-card",

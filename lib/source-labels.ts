@@ -1,6 +1,7 @@
 const sourceLabels: Record<string, string> = {
   booking: "Главная страница",
   "home:about": "Первый заезд",
+  "home:vr": "Совместный VR-заезд для компании",
   contacts: "Контакты",
   events: "Мероприятие в АвтоСим",
   "events:details": "Подбор формата мероприятия",

@@ -21,7 +21,7 @@ import {
 export const metadata: Metadata = {
   title: "Клуб автосимуляторов в Оренбурге",
   description:
-    "АвтоСим - первый клуб автосимуляторов в Оренбурге: гонки, дрифт, ралли, VR, игры с друзьями, дни рождения и корпоративы.",
+    "АвтоСим - первый клуб автосимуляторов в Оренбурге: гонки, дрифт, ралли, совместные VR-заезды с друзьями, дни рождения и корпоративы.",
   alternates: {
     canonical: "/"
   }
@@ -154,9 +154,75 @@ export default function HomePage() {
                 >
                   Выбрать
                 </LeadButton>
+                {mode.slug === "vr" ? (
+                  <Link className="mode-card__details" href="#vr">
+                    Подробнее о VR
+                  </Link>
+                ) : null}
               </div>
             </article>
           ))}
+        </div>
+      </section>
+
+      <section className="section section-accent vr-section" id="vr">
+        <div className="container section-head section-head--wide">
+          <p className="section-label">VR для компании</p>
+          <h2>Совместные заезды в VR</h2>
+          <p>
+            Собери компанию до 7 человек: одна сетевая гонка, каждый в своем
+            кокпите. В клубе пять VR-шлемов: остальные участники едут на
+            мониторах, но старт и заезд у всех общие. А вокруг тех, кто в VR,
+            вместо монитора - настоящая трасса.
+          </p>
+        </div>
+        <div className="container feature-grid vr-grid">
+          <article className="feature-card vr-card">
+            <span>01</span>
+            <h3>Одна гонка на всех</h3>
+            <p>
+              До 7 человек в одном сетевом заезде: общий старт, борьба за
+              позиции, а соперники - твои друзья в соседних кокпитах.
+            </p>
+          </article>
+          <article className="feature-card vr-card">
+            <span>02</span>
+            <h3>Обзор на 360°</h3>
+            <p>
+              Поворот головы работает как в реальной машине: зеркала, апекс,
+              соперник в слепой зоне. Монитор такого ощущения не дает.
+            </p>
+          </article>
+          <article className="feature-card vr-card">
+            <span>03</span>
+            <h3>Пять шлемов для VR</h3>
+            <p>
+              Очки добавляются к Standart, Pro или VIP - от 300 ₽ за 30 минут.
+              Можно подключить одно или сразу пять мест, заезд останется общим.
+            </p>
+          </article>
+          <article className="feature-card vr-card">
+            <span>04</span>
+            <h3>Подходит новичкам</h3>
+            <p>
+              Администратор настроит очки и посадку, поможет выбрать спокойный
+              режим. Снять очки и продолжить на мониторе можно в любой момент.
+            </p>
+          </article>
+        </div>
+        <div className="container vr-actions">
+          <LeadButton
+            modalTitle="VR-заезд для компании"
+            modalContext="Совместный заезд в VR"
+            modalDescription="Расскажите, когда хотите приехать и сколько будет участников. Одновременно в VR могут ехать до пяти человек, а общий сетевой заезд рассчитан на компанию до семи."
+            messagePlaceholder="Например: нас 6 человек, хотим общий заезд в субботу после 19:00, пять мест в VR"
+            source="home:vr"
+          >
+            Забронировать VR-заезд для компании
+          </LeadButton>
+          <a className="btn btn-secondary" href={business.phoneHref}>
+            Позвонить
+          </a>
         </div>
       </section>
 
