@@ -45,6 +45,20 @@ function commandName(text?: string) {
   return text?.trim().split(/\s+/)[0]?.split("@")[0].toLowerCase();
 }
 
+async function safelyAnswerCallbackQuery(
+  callbackQueryId: string,
+  text: string,
+  showAlert = false
+) {
+  try {
+    await answerCallbackQuery(callbackQueryId, text, showAlert);
+  } catch (error) {
+    // Telegram expires callback query IDs quickly. The lead action itself must
+    // still be acknowledged so Telegram does not retry an already applied update.
+    console.warn("Cannot answer Telegram callback query", error);
+  }
+}
+
 async function handleUnknownChat(chatId: number, text?: string) {
   if (commandName(text) === "/chat_id") {
     await sendChatMessage(chatId, `ID этого чата: ${chatId}`);
@@ -130,7 +144,7 @@ async function handleCallback(update: TelegramUpdate) {
   const chatId = callback.message.chat.id;
 
   if (!isAllowedChat(chatId)) {
-    await answerCallbackQuery(callback.id, "Этот чат не авторизован.", true);
+    await safelyAnswerCallbackQuery(callback.id, "Этот чат не авторизован.", true);
     return;
   }
 
@@ -138,7 +152,7 @@ async function handleCallback(update: TelegramUpdate) {
   const user = toTelegramUserRef(callback.from);
 
   if (!leadId || !["take", "done", "release", "comment"].includes(action)) {
-    await answerCallbackQuery(callback.id, "Неизвестное действие.", true);
+    await safelyAnswerCallbackQuery(callback.id, "Неизвестное действие.", true);
     return;
   }
 
@@ -153,11 +167,14 @@ async function handleCallback(update: TelegramUpdate) {
 
   if (!result.ok) {
     const owner = result.lead?.assignedTo ? ` Сейчас у ${formatTelegramUser(result.lead.assignedTo)}.` : "";
-    await answerCallbackQuery(callback.id, `${result.reason}${owner}`, true);
+
+    if (result.lead) {
+      await editLeadTelegramMessage(result.lead);
+    }
+
+    await safelyAnswerCallbackQuery(callback.id, `${result.reason}${owner}`, true);
     return;
   }
-
-  await editLeadTelegramMessage(result.lead);
 
   const successText =
     action === "take"
@@ -168,7 +185,8 @@ async function handleCallback(update: TelegramUpdate) {
           ? "Ответьте на сообщение заявки комментарием."
           : "Заявка возвращена в новые.";
 
-  await answerCallbackQuery(callback.id, successText);
+  await safelyAnswerCallbackQuery(callback.id, successText);
+  await editLeadTelegramMessage(result.lead);
 }
 
 async function handleChatMember(update: TelegramUpdate) {
