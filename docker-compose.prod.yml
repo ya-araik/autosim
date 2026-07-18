@@ -6,6 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
+        NODE_IMAGE: mirror.gcr.io/library/node:22-alpine
         NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-https://auto-sim.ru}
     restart: unless-stopped
     environment:
@@ -30,7 +31,7 @@ services:
       start_period: 20s
 
   nginx:
-    image: nginx:1.30-alpine
+    image: mirror.gcr.io/library/nginx:1.30-alpine
     restart: unless-stopped
     command:
       - /bin/sh
@@ -59,7 +60,7 @@ services:
       start_period: 10s
 
   certbot:
-    image: certbot/certbot:v5.7.0
+    image: mirror.gcr.io/certbot/certbot:v5.7.0
     restart: unless-stopped
     entrypoint: /bin/sh
     command:
@@ -78,7 +79,7 @@ services:
         condition: service_healthy
 
   certbot-init:
-    image: certbot/certbot:v5.7.0
+    image: mirror.gcr.io/certbot/certbot:v5.7.0
     profiles: ["init"]
     ports:
       - "80:80"
@@ -103,7 +104,7 @@ services:
       - www.auto-sim.ru
 
   telegram-webhook:
-    image: node:22-alpine
+    image: mirror.gcr.io/library/node:22-alpine
     restart: "no"
     working_dir: /app
     environment:
@@ -119,7 +120,7 @@ services:
         condition: service_healthy
 
   mongo:
-    image: mongo:7
+    image: mirror.gcr.io/library/mongo:7
     restart: unless-stopped
     volumes:
       - ./volume/mongo:/data/db
