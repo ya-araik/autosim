@@ -28,9 +28,16 @@ export function Header() {
   };
 
   const closeMenu = () => {
+    if (!isMenuVisible) return;
+
     setIsClosing(true);
     setIsOpen(false);
     if (closeTimer.current) clearTimeout(closeTimer.current);
+    closeTimer.current = setTimeout(() => {
+      setIsMenuVisible(false);
+      setIsClosing(false);
+      closeTimer.current = null;
+    }, 260);
   };
   const scrollToPageTarget = (targetId: string) => {
     const target = document.getElementById(targetId);
