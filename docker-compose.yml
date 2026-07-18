@@ -1,5 +1,6 @@
 services:
   autosim:
+    image: autosim-app:latest
     build:
       context: .
       dockerfile: Dockerfile
@@ -30,20 +31,17 @@ services:
       retries: 3
       start_period: 20s
 
-  telegram-webhook:
-    image: node:22-alpine
-    container_name: autosim-telegram-webhook
+  telegram-poller:
+    image: autosim-app:latest
+    container_name: autosim-telegram-poller
     working_dir: /app
-    restart: "no"
+    restart: unless-stopped
     environment:
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:?TELEGRAM_BOT_TOKEN is required}
       TELEGRAM_WEBHOOK_SECRET: ${TELEGRAM_WEBHOOK_SECRET:?TELEGRAM_WEBHOOK_SECRET is required}
-      TELEGRAM_WEBHOOK_URL: ${TELEGRAM_WEBHOOK_URL:-https://learning-gibbon-previously.ngrok-free.app/api/telegram/webhook}
-    volumes:
-      - ./scripts:/app/scripts:ro
-      - ./package.json:/app/package.json:ro
-      - ./.env:/app/.env:ro
-    command: sh -c "node scripts/set-telegram-webhook.mjs $$TELEGRAM_WEBHOOK_URL"
+      TELEGRAM_INTERNAL_WEBHOOK_URL: http://autosim:3000/api/telegram/webhook
+      TELEGRAM_PROXY_URL: ${TELEGRAM_PROXY_URL:-}
+    command: ["node", "scripts/telegram-poller.mjs"]
     depends_on:
       autosim:
         condition: service_healthy

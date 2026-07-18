@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "node .next/standalone/server.js",
     "lint": "next lint",
+    "telegram:poll": "node scripts/telegram-poller.mjs",
     "telegram:set-webhook": "node scripts/set-telegram-webhook.mjs"
   },
   "dependencies": {

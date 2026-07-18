@@ -107,20 +107,20 @@ services:
       - -d
       - www.auto-sim.ru
 
-  telegram-webhook:
+  telegram-poller:
     image: autosim-app:latest
-    restart: "no"
+    restart: unless-stopped
     working_dir: /app
     environment:
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:?TELEGRAM_BOT_TOKEN is required}
       TELEGRAM_WEBHOOK_SECRET: ${TELEGRAM_WEBHOOK_SECRET:?TELEGRAM_WEBHOOK_SECRET is required}
-      TELEGRAM_WEBHOOK_URL: ${TELEGRAM_WEBHOOK_URL:-https://auto-sim.ru/api/telegram/webhook}
       TELEGRAM_PROXY_URL: http://hysteria:8080
-    command: ["node", "scripts/set-telegram-webhook.mjs", "${TELEGRAM_WEBHOOK_URL:-https://auto-sim.ru/api/telegram/webhook}"]
+      TELEGRAM_INTERNAL_WEBHOOK_URL: http://autosim:3000/api/telegram/webhook
+    command: ["node", "scripts/telegram-poller.mjs"]
     depends_on:
       hysteria:
         condition: service_started
-      nginx:
+      autosim:
         condition: service_healthy
 
   hysteria:
