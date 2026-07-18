@@ -2,6 +2,7 @@ name: autosim-prod
 
 services:
   autosim:
+    image: autosim-app:latest
     build:
       context: .
       dockerfile: Dockerfile
@@ -20,7 +21,10 @@ services:
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:?TELEGRAM_BOT_TOKEN is required}
       TELEGRAM_ADMIN_CHAT_ID: ${TELEGRAM_ADMIN_CHAT_ID:?TELEGRAM_ADMIN_CHAT_ID is required}
       TELEGRAM_WEBHOOK_SECRET: ${TELEGRAM_WEBHOOK_SECRET:?TELEGRAM_WEBHOOK_SECRET is required}
+      TELEGRAM_PROXY_URL: http://hysteria:8080
     depends_on:
+      hysteria:
+        condition: service_started
       mongo:
         condition: service_healthy
     healthcheck:
@@ -104,20 +108,27 @@ services:
       - www.auto-sim.ru
 
   telegram-webhook:
-    image: mirror.gcr.io/library/node:22-alpine
+    image: autosim-app:latest
     restart: "no"
     working_dir: /app
     environment:
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:?TELEGRAM_BOT_TOKEN is required}
       TELEGRAM_WEBHOOK_SECRET: ${TELEGRAM_WEBHOOK_SECRET:?TELEGRAM_WEBHOOK_SECRET is required}
       TELEGRAM_WEBHOOK_URL: ${TELEGRAM_WEBHOOK_URL:-https://auto-sim.ru/api/telegram/webhook}
-    volumes:
-      - ./scripts:/app/scripts:ro
-      - ./package.json:/app/package.json:ro
-    command: sh -c "node scripts/set-telegram-webhook.mjs $$TELEGRAM_WEBHOOK_URL"
+      TELEGRAM_PROXY_URL: http://hysteria:8080
+    command: ["node", "scripts/set-telegram-webhook.mjs", "${TELEGRAM_WEBHOOK_URL:-https://auto-sim.ru/api/telegram/webhook}"]
     depends_on:
+      hysteria:
+        condition: service_started
       nginx:
         condition: service_healthy
+
+  hysteria:
+    image: tobyxdd/hysteria:latest
+    command: ["client", "-c", "/etc/hysteria/client.yaml"]
+    restart: unless-stopped
+    volumes:
+      - ./hysteria-client.yaml:/etc/hysteria/client.yaml:ro
 
   mongo:
     image: mirror.gcr.io/library/mongo:7

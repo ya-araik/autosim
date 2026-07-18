@@ -1,4 +1,5 @@
 import type { WithId } from "mongodb";
+import { fetch as undiciFetch, ProxyAgent } from "undici";
 
 import {
   findFailedTelegramLeads,
@@ -62,6 +63,17 @@ export type TelegramInlineKeyboard = {
   inline_keyboard: Array<Array<TelegramInlineKeyboardButton>>;
 };
 
+let telegramProxyAgent: ProxyAgent | undefined;
+
+function getTelegramProxyAgent() {
+  const proxyUrl = process.env.TELEGRAM_PROXY_URL?.trim();
+
+  if (!proxyUrl) return undefined;
+
+  telegramProxyAgent ??= new ProxyAgent(proxyUrl);
+  return telegramProxyAgent;
+}
+
 function getBotToken() {
   const token = process.env.TELEGRAM_BOT_TOKEN;
 
@@ -98,13 +110,14 @@ export function toTelegramUserRef(user: TelegramUser) {
 }
 
 async function telegramRequest<T>(method: string, body: Record<string, unknown>) {
-  const response = await fetch(`https://api.telegram.org/bot${getBotToken()}/${method}`, {
+  const response = await undiciFetch(`https://api.telegram.org/bot${getBotToken()}/${method}`, {
     method: "POST",
     headers: {
       "content-type": "application/json"
     },
     body: JSON.stringify(body),
-    cache: "no-store"
+    cache: "no-store",
+    dispatcher: getTelegramProxyAgent()
   });
 
   const data = (await response.json()) as TelegramApiResponse<T>;

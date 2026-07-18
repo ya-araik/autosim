@@ -1,0 +1,14 @@
+server: vpn.example.com:443
+auth: "PASTE_HYSTERIA_AUTH_HERE"
+
+tls:
+  sni: vpn.example.com
+
+obfs:
+  type: salamander
+  salamander:
+    password: "PASTE_HYSTERIA_OBFS_PASSWORD_HERE"
+
+# The proxy is available only inside the Docker network.
+http:
+  listen: ":8080"

@@ -1,5 +1,6 @@
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { fetch as undiciFetch, ProxyAgent } from "undici";
 
 function loadDotEnv(path = resolve(process.cwd(), ".env")) {
   if (!existsSync(path)) return;
@@ -36,6 +37,7 @@ loadDotEnv();
 const webhookUrl = process.argv[2];
 const token = process.env.TELEGRAM_BOT_TOKEN;
 const secretToken = process.env.TELEGRAM_WEBHOOK_SECRET;
+const proxyUrl = process.env.TELEGRAM_PROXY_URL?.trim();
 
 if (!webhookUrl) {
   console.error("Usage: npm run telegram:set-webhook -- https://auto-sim.ru/api/telegram/webhook");
@@ -52,7 +54,7 @@ if (!secretToken) {
   process.exit(1);
 }
 
-const response = await fetch(`https://api.telegram.org/bot${token}/setWebhook`, {
+const response = await undiciFetch(`https://api.telegram.org/bot${token}/setWebhook`, {
   method: "POST",
   headers: {
     "content-type": "application/json"
@@ -61,7 +63,8 @@ const response = await fetch(`https://api.telegram.org/bot${token}/setWebhook`, 
     url: webhookUrl,
     secret_token: secretToken,
     allowed_updates: ["message", "callback_query", "my_chat_member"]
-  })
+  }),
+  dispatcher: proxyUrl ? new ProxyAgent(proxyUrl) : undefined
 });
 
 const data = await response.json();
