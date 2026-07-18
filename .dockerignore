@@ -1,5 +1,6 @@
 .next
 node_modules
+/volume/
 .env*
 !.env.example
 hysteria-client.yaml
