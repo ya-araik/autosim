@@ -59,7 +59,7 @@ export default function HomePage() {
               messagePlaceholder="Например: хочу забронировать заезд на двоих сегодня после 20:00"
               source="booking"
             >
-              Забронировать заезд
+              Забронировать симулятор
             </LeadButton>
             <a className="btn btn-secondary" href={business.phoneHref}>
               Позвонить

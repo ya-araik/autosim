@@ -149,7 +149,7 @@ export const pricePlans: PricePlan[] = [
   },
   {
     title: "VIP",
-    subtitle: "MOZA R9, телевизор 65″, шифтер Simmagic",
+    subtitle: "MOZA R9, телевизор 65″, шифтер Simagic",
     items: [
       { label: "30 минут", value: "500 ₽" },
       { label: "1 час", value: "800 ₽" },

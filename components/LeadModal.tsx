@@ -74,6 +74,53 @@ function commitPhoneValue(input: HTMLInputElement, value: string, update: (value
 }
 
 export function LeadModal() {
+  const { isOpen } = useLead();
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const scrollY = window.scrollY;
+    const body = document.body;
+    const root = document.documentElement;
+    const previousScrollBehavior = root.style.scrollBehavior;
+    const previousStyles = {
+      position: body.style.position,
+      top: body.style.top,
+      left: body.style.left,
+      right: body.style.right,
+      width: body.style.width,
+      overflow: body.style.overflow,
+      paddingRight: body.style.paddingRight
+    };
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+
+    body.classList.add("modal-lock");
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.left = "0";
+    body.style.right = "0";
+    body.style.width = "100%";
+    body.style.overflow = "hidden";
+
+    if (scrollbarWidth > 0) {
+      body.style.paddingRight = `${scrollbarWidth}px`;
+    }
+
+    return () => {
+      body.classList.remove("modal-lock");
+      Object.assign(body.style, previousStyles);
+      root.style.scrollBehavior = "auto";
+      window.scrollTo(0, scrollY);
+      root.style.scrollBehavior = previousScrollBehavior;
+    };
+  }, [isOpen]);
+
+  if (!isOpen) return null;
+
+  return <LeadModalSession />;
+}
+
+function LeadModalSession() {
   const { isOpen, source, title, description, contextLabel, placeholder, closeLead } = useLead();
   const [state, formAction, pending] = useActionState(submitLead, initialState);
   const [isClosing, setIsClosing] = useState(false);
@@ -81,6 +128,9 @@ export function LeadModal() {
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const dialogRef = useRef<HTMLDivElement>(null);
+  const backdropRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const formMessageRef = useRef<HTMLParagraphElement>(null);
   const phoneInputRef = useRef<HTMLInputElement>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isFormValid = name.trim().length >= 1 && phonePattern.test(phone);
@@ -95,10 +145,34 @@ export function LeadModal() {
   }, [closeLead, isClosing]);
 
   useEffect(() => {
-    document.body.classList.toggle("modal-lock", isOpen);
+    const viewport = window.visualViewport;
 
-    return () => document.body.classList.remove("modal-lock");
-  }, [isOpen]);
+    const updateViewport = () => {
+      const backdrop = backdropRef.current;
+
+      if (!backdrop) return;
+
+      backdrop.style.setProperty(
+        "--modal-viewport-height",
+        `${viewport?.height ?? window.innerHeight}px`
+      );
+      backdrop.style.setProperty(
+        "--modal-viewport-offset",
+        `${viewport?.offsetTop ?? 0}px`
+      );
+    };
+
+    updateViewport();
+    window.addEventListener("resize", updateViewport);
+    viewport?.addEventListener("resize", updateViewport);
+    viewport?.addEventListener("scroll", updateViewport);
+
+    return () => {
+      window.removeEventListener("resize", updateViewport);
+      viewport?.removeEventListener("resize", updateViewport);
+      viewport?.removeEventListener("scroll", updateViewport);
+    };
+  }, []);
 
   useEffect(() => {
     if (isOpen) setIsClosing(false);
@@ -111,6 +185,17 @@ export function LeadModal() {
     setPhone(formatPhone(state.fields.phone ?? ""));
     setMessage(state.fields.message ?? "");
   }, [state.fields]);
+
+  useEffect(() => {
+    if (state.status === "success") {
+      scrollRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    if (state.status === "error") {
+      formMessageRef.current?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    }
+  }, [state.status]);
 
   useEffect(() => {
     const input = phoneInputRef.current;
@@ -143,10 +228,12 @@ export function LeadModal() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [closeWithAnimation, isOpen]);
 
-  if (!isOpen) return null;
-
   return (
-    <div className={`modal-backdrop${isClosing ? " is-closing" : ""}`} onMouseDown={closeWithAnimation}>
+    <div
+      className={`modal-backdrop${isClosing ? " is-closing" : ""}`}
+      onMouseDown={closeWithAnimation}
+      ref={backdropRef}
+    >
       <div
         aria-modal="true"
         className="lead-modal"
@@ -155,91 +242,120 @@ export function LeadModal() {
         role="dialog"
         tabIndex={-1}
       >
-        <button
-          aria-label="Закрыть форму"
-          className="modal-close"
-          onClick={closeWithAnimation}
-          type="button"
-        >
-          <span aria-hidden="true" />
-        </button>
-        <div className="modal-copy">
-          <p className="section-label">Заявка</p>
-          <h2>{title}</h2>
-          <p className="modal-context">{contextLabel}</p>
-          <p>{description}</p>
-        </div>
-        <form action={formAction} className="lead-form">
-          <input name="source" type="hidden" value={source} />
-          <label>
-            Ваше имя
-            <input
-              autoComplete="name"
-              name="name"
-              placeholder="Иван Иванов"
-              required
-              type="text"
-              value={name}
-              onChange={(event) => setName(event.target.value)}
-            />
-          </label>
-          <label>
-            Телефон
-            <input
-              autoComplete="tel"
-              inputMode="numeric"
-              maxLength={18}
-              name="phone"
-              pattern="\+7 \([0-9]{3}\) [0-9]{3}-[0-9]{2}-[0-9]{2}"
-              placeholder="+7 (999) 000-00-00"
-              ref={phoneInputRef}
-              required
-              type="tel"
-              defaultValue={phone}
-              onKeyDown={(event) => {
-                if (event.key !== "Backspace") return;
-
-                event.preventDefault();
-
-                const input = event.currentTarget;
-
-                if (input.selectionStart !== input.selectionEnd) {
-                  commitPhoneValue(input, formatPhone(
-                    `${input.value.slice(0, input.selectionStart ?? 0)}${input.value.slice(input.selectionEnd ?? 0)}`
-                  ), setPhone);
-                  return;
-                }
-
-                const localDigits = getPhoneLocalDigits(input.value);
-                commitPhoneValue(input, localDigits ? formatLocalPhoneDigits(localDigits.slice(0, -1)) : "", setPhone);
-              }}
-              onInput={(event) => {
-                commitPhoneValue(event.currentTarget, formatPhone(event.currentTarget.value), setPhone);
-              }}
-              onPaste={(event) => {
-                event.preventDefault();
-                commitPhoneValue(event.currentTarget, formatPhone(event.clipboardData.getData("text")), setPhone);
-              }}
-            />
-          </label>
-          <label>
-            Пожелания
-            <textarea
-              name="message"
-              placeholder={placeholder}
-              rows={4}
-              value={message}
-              onChange={(event) => setMessage(event.target.value)}
-            />
-          </label>
-          <button className="btn btn-primary btn-wide" disabled={pending || !isFormValid} type="submit">
-            {pending ? "Проверяем..." : "Отправить заявку"}
+        <div className="lead-modal__header">
+          <button
+            aria-label="Закрыть форму"
+            className="modal-close"
+            onClick={closeWithAnimation}
+            type="button"
+          >
+            <span aria-hidden="true" />
           </button>
-          <p className={`form-message form-message--${state.status}`}>
-            {state.message ||
-              `Телефон для бронирования сейчас: ${business.phone}. Заявка уйдет администратору после отправки формы.`}
-          </p>
-        </form>
+        </div>
+        <div
+          className={`lead-modal__scroll${state.status === "success" ? " lead-modal__scroll--success" : ""}`}
+          ref={scrollRef}
+        >
+          {state.status === "success" ? (
+            <div className="lead-success" role="status">
+              <p className="section-label">Заявка отправлена</p>
+              <h2>Спасибо!</h2>
+              <p>{state.message}</p>
+              <div className="button-row">
+                <button className="btn btn-primary" onClick={closeWithAnimation} type="button">
+                  Закрыть
+                </button>
+                <a className="btn btn-secondary" href={business.phoneHref}>
+                  Позвонить
+                </a>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="modal-copy">
+                <p className="section-label">Заявка</p>
+                <h2>{title}</h2>
+                <p className="modal-context">{contextLabel}</p>
+                <p>{description}</p>
+              </div>
+              <form action={formAction} className="lead-form">
+                <input name="source" type="hidden" value={source} />
+                <label>
+                  Ваше имя
+                  <input
+                    autoComplete="name"
+                    name="name"
+                    placeholder="Иван Иванов"
+                    required
+                    type="text"
+                    value={name}
+                    onChange={(event) => setName(event.target.value)}
+                  />
+                </label>
+                <label>
+                  Телефон
+                  <input
+                    autoComplete="tel"
+                    inputMode="numeric"
+                    maxLength={18}
+                    name="phone"
+                    pattern="\+7 \([0-9]{3}\) [0-9]{3}-[0-9]{2}-[0-9]{2}"
+                    placeholder="+7 (999) 000-00-00"
+                    ref={phoneInputRef}
+                    required
+                    type="tel"
+                    defaultValue={phone}
+                    onKeyDown={(event) => {
+                      if (event.key !== "Backspace") return;
+
+                      event.preventDefault();
+
+                      const input = event.currentTarget;
+
+                      if (input.selectionStart !== input.selectionEnd) {
+                        commitPhoneValue(input, formatPhone(
+                          `${input.value.slice(0, input.selectionStart ?? 0)}${input.value.slice(input.selectionEnd ?? 0)}`
+                        ), setPhone);
+                        return;
+                      }
+
+                      const localDigits = getPhoneLocalDigits(input.value);
+                      commitPhoneValue(input, localDigits ? formatLocalPhoneDigits(localDigits.slice(0, -1)) : "", setPhone);
+                    }}
+                    onInput={(event) => {
+                      commitPhoneValue(event.currentTarget, formatPhone(event.currentTarget.value), setPhone);
+                    }}
+                    onPaste={(event) => {
+                      event.preventDefault();
+                      commitPhoneValue(event.currentTarget, formatPhone(event.clipboardData.getData("text")), setPhone);
+                    }}
+                  />
+                </label>
+                <label>
+                  Пожелания
+                  <textarea
+                    name="message"
+                    placeholder={placeholder}
+                    rows={4}
+                    value={message}
+                    onChange={(event) => setMessage(event.target.value)}
+                  />
+                </label>
+                <button className="btn btn-primary btn-wide" disabled={pending || !isFormValid} type="submit">
+                  {pending ? "Проверяем..." : "Отправить заявку"}
+                </button>
+                <p
+                  aria-live="polite"
+                  className={`form-message form-message--${state.status}`}
+                  ref={formMessageRef}
+                >
+                  {state.message ||
+                    `Телефон для бронирования сейчас: ${business.phone}. Заявка уйдет администратору после отправки формы.`}
+                </p>
+              </form>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
