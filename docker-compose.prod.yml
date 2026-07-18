@@ -124,7 +124,7 @@ services:
         condition: service_healthy
 
   hysteria:
-    image: tobyxdd/hysteria:latest
+    image: mirror.gcr.io/tobyxdd/hysteria:latest
     command: ["client", "-c", "/etc/hysteria/client.yaml"]
     restart: unless-stopped
     volumes:
