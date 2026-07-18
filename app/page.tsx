@@ -141,6 +141,11 @@ export default function HomePage() {
                 sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 25vw"
                 src={mode.image}
               />
+              {mode.slug === "vr" ? (
+                <Link className="mode-card__details" href="#vr">
+                  Подробнее
+                </Link>
+              ) : null}
               <div className="mode-card__content">
                 <h3>{mode.title}</h3>
                 <p>{mode.description}</p>
@@ -154,11 +159,6 @@ export default function HomePage() {
                 >
                   Выбрать
                 </LeadButton>
-                {mode.slug === "vr" ? (
-                  <Link className="mode-card__details" href="#vr">
-                    Подробнее
-                  </Link>
-                ) : null}
               </div>
             </article>
           ))}
