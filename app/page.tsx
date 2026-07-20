@@ -138,7 +138,8 @@ export default function HomePage() {
               <Image
                 alt={mode.alt}
                 fill
-                sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 25vw"
+                loading="eager"
+                sizes="(max-width: 700px) calc(100vw - 28px), (max-width: 1100px) calc(50vw - 28px), 295px"
                 src={mode.image}
               />
               {mode.slug === "vr" ? (
