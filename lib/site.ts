@@ -79,7 +79,7 @@ export const modes: Mode[] = [
     description: "Городской ритм, плотный поток и динамичные заезды для компании."
   },
   {
-    title: "Дальнобойщики",
+    title: "Грузоперевозки",
     slug: "truck",
     image: "/assets/optimized/Truck.webp",
     alt: "Симулятор дальнобойщика",

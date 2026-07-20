@@ -15,7 +15,7 @@ const sourceLabels: Record<string, string> = {
   "mode:drift": "Режим: дрифт",
   "mode:rally": "Режим: ралли",
   "mode:traffic": "Режим: шашки/трафик",
-  "mode:truck": "Режим: дальнобойщики",
+  "mode:truck": "Режим: грузоперевозки",
   "mode:open-world": "Режим: open world",
   "mode:vr": "Режим: VR",
   "mode:offroad": "Режим: бездорожье"
