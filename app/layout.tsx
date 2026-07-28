@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import Script from "next/script";
 import type { ReactNode } from "react";
 
 import "@/app/globals.css";
@@ -9,8 +10,10 @@ import { JsonLd } from "@/components/JsonLd";
 import { LeadModal } from "@/components/LeadModal";
 import { LeadProvider } from "@/components/LeadProvider";
 import { ScrollMotion } from "@/components/ScrollMotion";
+import { YandexMetrikaTracker } from "@/components/YandexMetrikaTracker";
 import { localBusinessJsonLd, websiteJsonLd } from "@/lib/seo";
 import { absoluteUrl, business, siteUrl } from "@/lib/site";
+import { YANDEX_METRIKA_ID } from "@/lib/yandex-metrika";
 
 const ogImageUrl = absoluteUrl("/assets/og/autosim-og.jpg?v=20260630-2");
 
@@ -81,7 +84,28 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ru" className={cinematografica.variable} data-scroll-behavior="smooth">
+      <head>
+        <Script id="yandex-metrika" strategy="beforeInteractive">
+          {`(function(m,e,t,r,i,k,a){
+            m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+            m[i].l=1*new Date();
+            for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+            k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+          })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=${YANDEX_METRIKA_ID}', 'ym');
+
+          ym(${YANDEX_METRIKA_ID}, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true, trackHash:true});`}
+        </Script>
+      </head>
       <body>
+        <noscript>
+          <div>
+            <img
+              alt=""
+              src={`https://mc.yandex.ru/watch/${YANDEX_METRIKA_ID}`}
+              style={{ position: "absolute", left: "-9999px" }}
+            />
+          </div>
+        </noscript>
         <JsonLd data={localBusinessJsonLd()} />
         <JsonLd data={websiteJsonLd()} />
         <LeadProvider>
@@ -90,6 +114,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <Footer />
           <LeadModal />
           <ScrollMotion />
+          <YandexMetrikaTracker />
         </LeadProvider>
       </body>
     </html>

@@ -5,6 +5,7 @@ import { useActionState, useCallback, useEffect, useRef, useState } from "react"
 import { submitLead, type LeadActionState } from "@/app/actions";
 import { useLead } from "@/components/LeadProvider";
 import { business } from "@/lib/site";
+import { reachYandexMetrikaGoal } from "@/lib/yandex-metrika";
 
 const initialState: LeadActionState = {
   status: "idle",
@@ -133,6 +134,7 @@ function LeadModalSession() {
   const formMessageRef = useRef<HTMLParagraphElement>(null);
   const phoneInputRef = useRef<HTMLInputElement>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const successTrackedRef = useRef(false);
   const isFormValid = name.trim().length >= 1 && phonePattern.test(phone);
 
   const closeWithAnimation = useCallback(() => {
@@ -188,6 +190,11 @@ function LeadModalSession() {
 
   useEffect(() => {
     if (state.status === "success") {
+      if (!successTrackedRef.current) {
+        reachYandexMetrikaGoal("zayavka");
+        successTrackedRef.current = true;
+      }
+
       scrollRef.current?.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
