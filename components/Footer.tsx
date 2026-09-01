@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { LeadButton } from "@/components/LeadButton";
@@ -8,8 +9,10 @@ export function Footer() {
     <footer className="footer" id="footer">
       <div className="container footer-grid">
         <div>
-          <Link className="brand footer-brand" href="/">
-            Авто<span>Сим</span>
+          <Link aria-label="АвтоСим - на главную" className="brand footer-brand" href="/">
+            <span className="brand-logo">
+              <Image alt="АвтоСим" fill sizes="230px" src="/assets/optimized/autosim-logo-wordmark.png" />
+            </span>
           </Link>
           <p>
             Клуб автосимуляторов в Оренбурге: гонки, VR, компания друзей,

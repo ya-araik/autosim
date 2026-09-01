@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { type MouseEvent, useEffect, useRef, useState } from "react";
@@ -82,7 +83,9 @@ export function Header() {
     <header className="site-header">
       <div className="container header-inner">
         <Link aria-label="АвтоСим - на главную" className="brand" href="/" onClick={scrollHomeTop}>
-          Авто<span>Сим</span>
+          <span className="brand-logo">
+            <Image alt="АвтоСим" fill priority sizes="230px" src="/assets/optimized/autosim-logo-wordmark.png" />
+          </span>
         </Link>
         <nav aria-label="Основная навигация" className="desktop-nav">
           {navItems.map((item) => (
@@ -127,8 +130,10 @@ export function Header() {
       >
         <div className="mobile-menu__panel">
           <div className="mobile-menu__head">
-            <Link className="brand" href="/" onClick={scrollHomeTop}>
-              Авто<span>Сим</span>
+            <Link aria-label="АвтоСим - на главную" className="brand" href="/" onClick={scrollHomeTop}>
+              <span className="brand-logo">
+                <Image alt="АвтоСим" fill sizes="200px" src="/assets/optimized/autosim-logo-wordmark.png" />
+              </span>
             </Link>
             <button
               aria-label="Закрыть меню"
