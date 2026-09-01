@@ -23,8 +23,8 @@ export function PriceCards({ compact = false }: { compact?: boolean }) {
               </div>
               {subscription ? (
                 <p className="price-summary-card__note">
-                  Абонемент 10 часов: {subscription.value}
-                  {subscription.note ? `, ${subscription.note}` : ""}
+                  <span>Абонемент 10ч</span>
+                  <strong>{subscription.value}</strong>
                 </p>
               ) : null}
               <LeadButton

@@ -18,8 +18,7 @@ export const business = {
   mapWidgetUrl:
     "https://yandex.ru/map-widget/v1/?from=mapframe&ll=55.104656%2C51.775216&mode=search&oid=86043181546&ol=biz&pt=55.104252%2C51.775331&source=mapframe&utm_source=mapframe&z=20.47",
   reviewsWidgetUrl: "https://yandex.ru/maps-reviews-widget/86043181546?comments",
-  twoGisUrl:
-    "https://2gis.ru/orenburg/search/%D0%A0%D1%8B%D0%B1%D0%B0%D0%BA%D0%BE%D0%B2%D1%81%D0%BA%D0%B0%D1%8F%2059?m=55.104252%2C51.775331%2F17",
+  twoGisUrl: "https://2gis.ru/orenburg/firm/70000001099814962",
   latitude: 51.775331418433325,
   longitude: 55.104252290539925
 };
@@ -174,22 +173,22 @@ export const features = [
   {
     number: "01",
     title: "Топ-железо",
-    text: "Симуляторы собраны на профессиональных комплектующих мировых брендов. Это не игрушки, а гоночная техника."
+    text: "Комплектующие мировых брендов — не игрушки, а гоночная техника."
   },
   {
     number: "02",
     title: "Реалистичная физика",
-    text: "Настройки, обратная связь и посадка помогают почувствовать автомобиль, трассу и работу педалей."
+    text: "Обратная связь и посадка — чувствуешь машину, трассу, педали."
   },
   {
     number: "03",
     title: "Игра с друзьями",
-    text: "Можно гонять по сети, устраивать заезды компанией и выбирать формат под настроение."
+    text: "Гоняй по сети компанией, выбирай формат под настроение."
   },
   {
     number: "04",
     title: "Полное погружение",
-    text: "Ультраширокие мониторы, VR и правильная посадка создают эффект настоящего кокпита."
+    text: "Ультраширокие мониторы и VR — эффект настоящего кокпита."
   }
 ];
 
@@ -267,16 +266,24 @@ export const reviews = [
   {
     source: "Яндекс Карты",
     rating: "5,0",
+    url: business.mapUrl,
     text: "Гости отмечают атмосферу клуба, оборудование и помощь администраторов."
   },
   {
     source: "2ГИС",
     rating: "5,0",
+    url: business.twoGisUrl,
     text: "Формат подходит для компании, праздника и первого знакомства с автосимуляторами."
   }
 ];
 
 export const galleryImages = [
+  { src: "/assets/optimized/IND04212.webp", alt: "Автосимуляторы клуба АвтоСим крупным планом" },
+  { src: "/assets/optimized/IND04270.webp", alt: "Зона отдыха клуба АвтоСим" },
+  { src: "/assets/optimized/IND04324.webp", alt: "Кокпит гоночного симулятора АвтоСим" },
+  { src: "/assets/optimized/IND04379.webp", alt: "Игровая зона клуба автосимуляторов" },
+  { src: "/assets/optimized/IND04422.webp", alt: "Оборудование для гонок в клубе АвтоСим" },
+  { src: "/assets/optimized/IND04507.webp", alt: "Атмосфера клуба АвтоСим в Оренбурге" },
   { src: "/assets/optimized/IND04559.webp", alt: "Игровая зона клуба АвтоСим" },
   { src: "/assets/optimized/IND04578.webp", alt: "Автосимуляторы в клубе АвтоСим" },
   { src: "/assets/optimized/IND04619.webp", alt: "Атмосфера клуба автосимуляторов" },

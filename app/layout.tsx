@@ -9,6 +9,7 @@ import { Header } from "@/components/Header";
 import { JsonLd } from "@/components/JsonLd";
 import { LeadModal } from "@/components/LeadModal";
 import { LeadProvider } from "@/components/LeadProvider";
+import { MobileStickyCta } from "@/components/MobileStickyCta";
 import { ScrollMotion } from "@/components/ScrollMotion";
 import { YandexMetrikaTracker } from "@/components/YandexMetrikaTracker";
 import { localBusinessJsonLd, websiteJsonLd } from "@/lib/seo";
@@ -33,7 +34,15 @@ const cinematografica = localFont({
     }
   ],
   variable: "--font-racing",
-  display: "swap"
+  display: "swap",
+  // Файл шрифта хранит завышенные hhea-метрики (аскент 2232/1920em) - из-за
+  // этого браузер красит выделение текста намного выше и ниже видимых букв.
+  // Переопределяем на реальные typo-метрики шрифта (1133/-72/204 при 1920 UPM).
+  declarations: [
+    { prop: "ascent-override", value: "59%" },
+    { prop: "descent-override", value: "3.75%" },
+    { prop: "line-gap-override", value: "0%" }
+  ]
 });
 
 export const metadata: Metadata = {
@@ -113,6 +122,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           {children}
           <Footer />
           <LeadModal />
+          <MobileStickyCta />
           <ScrollMotion />
           <YandexMetrikaTracker />
         </LeadProvider>

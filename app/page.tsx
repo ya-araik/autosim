@@ -3,8 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { FaqList } from "@/components/FaqList";
+import { Gallery } from "@/components/Gallery";
 import { JsonLd } from "@/components/JsonLd";
 import { LeadButton } from "@/components/LeadButton";
+import { ModesGrid } from "@/components/ModesGrid";
 import { PriceCards } from "@/components/PriceCards";
 import { breadcrumbJsonLd } from "@/lib/seo";
 import {
@@ -13,8 +15,7 @@ import {
   eventBenefits,
   externalLinks,
   features,
-  galleryImages,
-  modes,
+  reviews,
   siteUrl
 } from "@/lib/site";
 
@@ -47,11 +48,10 @@ export default function HomePage() {
         />
         <div className="hero-shade" />
         <div className="container hero-content">
-          <h1>Первый клуб автосимуляторов в Оренбурге</h1>
-          <p>
-            Погрузись в атмосферу кольцевых гонок, дрифта, ралли, VR,
-            грузоперевозок и заездов по бездорожью.
-          </p>
+          <h1>
+            <span className="accent">Первый</span> клуб автосимуляторов в Оренбурге
+          </h1>
+          <p>Гонки, дрифт, ралли, VR и бездорожье — в одном клубе.</p>
           <div className="button-row">
             <LeadButton
               modalContext="Главная страница"
@@ -68,39 +68,40 @@ export default function HomePage() {
           <Link className="hero-price-link" href="/prices">
             Смотреть цены и абонементы
           </Link>
+          <div className="trust-strip">
+            {reviews.map((review) => (
+              <a
+                className="trust-pill"
+                href={review.url}
+                key={review.source}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <strong>★ {review.rating}</strong> {review.source}
+              </a>
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="section" id="about">
-        <div className="container section-head">
-          <p className="section-label">О клубе</p>
-          <h2>Мы собрали лучшее из мира гонок</h2>
-          <p>
-            У нас десятки режимов, легендарные трассы и актуальные симуляторы -
-            от первого заезда до тренировок на результат.
-          </p>
-        </div>
-        <div className="container feature-grid">
-          {features.map((feature) => (
-            <article className="feature-card" key={feature.number}>
-              <span>{feature.number}</span>
-              <h3>{feature.title}</h3>
-              <p>{feature.text}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="section split-section">
+      <section className="section split-section" id="about">
         <div className="container split-grid">
           <div>
-            <p className="section-label">Автосимулятор - это</p>
-            <h2>Реальный опыт вождения без риска для дороги</h2>
-            <p>
-              Кроме компьютера и монитора, симуляторы оснащены спортивными
-              сидениями, педалями, рулем с обратной связью, ручным тормозом и
-              настройками под разные дисциплины.
-            </p>
+            <p className="section-label">О клубе</p>
+            <h2>
+              Реальный опыт вождения без <span className="accent">риска</span>
+            </h2>
+            <ul className="about-features">
+              {features.map((feature) => (
+                <li key={feature.number}>
+                  <span>{feature.number}</span>
+                  <div>
+                    <h3>{feature.title}</h3>
+                    <p>{feature.text}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
             <LeadButton
               modalTitle="Первый заезд"
               modalContext="Первый заезд"
@@ -127,87 +128,49 @@ export default function HomePage() {
         <div className="container section-head section-head--wide">
           <p className="section-label">Режимы</p>
           <h2>Выбирай свой формат заезда</h2>
-          <p>
-            От спокойной езды по городу, до полного погружения в гонку с VR.
-            Можете выбрать любой режим.
-          </p>
+          <p>От спокойной езды по городу до полного погружения в VR.</p>
         </div>
-        <div className="container mode-grid">
-          {modes.map((mode) => (
-            <article className="mode-card" key={mode.slug}>
-              <Image
-                alt={mode.alt}
-                fill
-                loading="eager"
-                sizes="(max-width: 700px) calc(100vw - 28px), (max-width: 1100px) calc(50vw - 28px), 295px"
-                src={mode.image}
-              />
-              {mode.slug === "vr" ? (
-                <Link className="mode-card__details" href="#vr">
-                  Подробнее
-                </Link>
-              ) : null}
-              <div className="mode-card__content">
-                <h3>{mode.title}</h3>
-                <p>{mode.description}</p>
-                <LeadButton
-                  className="btn btn-ghost"
-                  modalTitle={`Бронирование режима: ${mode.title}`}
-                  modalContext={`Режим: ${mode.title}`}
-                  modalDescription={`Вы выбрали режим «${mode.title}». Оставьте контакты и пожелания по времени, чтобы администратор помог с бронью.`}
-                  messagePlaceholder={`Например: хочу ${mode.title.toLowerCase()} на 1 час, нас будет 2 человека`}
-                  source={`mode:${mode.slug}`}
-                >
-                  Выбрать
-                </LeadButton>
-              </div>
-            </article>
-          ))}
-        </div>
+        <ModesGrid />
       </section>
 
       <section className="section section-accent vr-section" id="vr">
         <div className="container section-head section-head--wide">
           <p className="section-label">VR для компании</p>
-          <h2>Совместные заезды в VR</h2>
-          <p>
-            Собери компанию до 5 человек: одна сетевая гонка, каждый в своем
-            кокпите. VR-очков хватит на всех - вместо монитора вокруг тебя
-            настоящая трасса.
-          </p>
+          <h2>
+            Совместные заезды <span className="accent">в VR</span>
+          </h2>
+          <p>До 5 человек в одной гонке — VR-очков хватит на всех.</p>
+        </div>
+        <div className="container">
+          <div className="vr-portrait">
+            <Image
+              alt="Гостья клуба АвтоСим надевает VR-очки перед заездом"
+              fill
+              sizes="(max-width: 900px) 100vw, 1180px"
+              src="/assets/optimized/vr-portrait.webp"
+            />
+          </div>
         </div>
         <div className="container feature-grid vr-grid">
           <article className="feature-card vr-card">
             <span>01</span>
             <h3>Одна гонка на всех</h3>
-            <p>
-              До 5 человек в одном сетевом заезде: общий старт, борьба за
-              позиции, а соперники - твои друзья в соседних кокпитах.
-            </p>
+            <p>Общий старт, борьба за позиции — соперники в соседних кокпитах.</p>
           </article>
           <article className="feature-card vr-card">
             <span>02</span>
             <h3>Обзор на 360°</h3>
-            <p>
-              Поворот головы работает как в реальной машине: зеркала, апекс,
-              соперник в слепой зоне. Монитор такого ощущения не дает.
-            </p>
+            <p>Поворот головы как в реальной машине: зеркала, апекс, слепые зоны.</p>
           </article>
           <article className="feature-card vr-card">
             <span>03</span>
             <h3>VR на всю компанию</h3>
-            <p>
-              Очки добавляются к Standart, Pro или VIP - от 300 ₽ за 30 минут.
-              Хоть к одному месту, хоть ко всем сразу: заезд общий.
-            </p>
+            <p>От 300 ₽ за 30 минут — к одному месту или сразу ко всем.</p>
           </article>
           <article className="feature-card vr-card">
             <span>04</span>
             <h3>Подходит новичкам</h3>
-            <p>
-              Администратор настроит очки и посадку, поможет выбрать спокойный
-              режим. Снять очки и продолжить на мониторе можно в любой момент.
-            </p>
+            <p>Администратор настроит очки и посадку. Снять и продолжить на мониторе можно в любой момент.</p>
           </article>
         </div>
         <div className="container vr-actions">
@@ -231,23 +194,14 @@ export default function HomePage() {
           <p className="section-label">Галерея</p>
           <h2>Атмосфера клуба</h2>
         </div>
-        <div className="container gallery-grid">
-          {galleryImages.map((image) => (
-            <div className="gallery-item" key={image.src}>
-              <Image alt={image.alt} fill sizes="(max-width: 900px) 100vw, 50vw" src={image.src} />
-            </div>
-          ))}
-        </div>
+        <Gallery />
       </section>
 
       <section className="section section-accent" id="prices">
         <div className="container section-head">
           <p className="section-label">Цены</p>
           <h2>Цены и абонементы</h2>
-          <p>
-            На главной - коротко по всем форматам. Полная сетка с длительностью
-            заездов и абонементами доступна на отдельной странице.
-          </p>
+          <p>Коротко — по форматам. Полная сетка цен на отдельной странице.</p>
           <Link className="btn btn-primary prices-more-link" href="/prices">
             Открыть полные цены
           </Link>
@@ -269,11 +223,10 @@ export default function HomePage() {
           </div>
           <div>
             <p className="section-label">Мероприятия</p>
-            <h2>День рождения или корпоратив в АвтоСим</h2>
-            <p>
-              Необычный формат для компании: адреналин, соревнование, помощь
-              администратора и сценарии под разный возраст.
-            </p>
+            <h2>
+              День рождения или <span className="accent">корпоратив</span>
+            </h2>
+            <p>Адреналин, соревнование и сценарии под любой возраст.</p>
             <div className="benefit-list">
               {eventBenefits.map((benefit) => (
                 <article key={benefit.title}>
@@ -327,11 +280,8 @@ export default function HomePage() {
         <div className="container app-grid">
           <div>
             <p className="section-label">Приложение</p>
-            <h2>Бронируй и следи за бонусной программой в SmartGamer</h2>
-            <p>
-              Скачайте приложение, чтобы быстрее бронировать визиты и следить за
-              статусом в программе лояльности. Без промокодов и скрытых условий.
-            </p>
+            <h2>Бронируй и следи за бонусами в SmartGamer</h2>
+            <p>Быстрая бронь и программа лояльности — без промокодов и скрытых условий.</p>
             <div className="store-links">
               <a href={externalLinks.googlePlay} rel="noopener noreferrer" target="_blank">
                 Google Play
