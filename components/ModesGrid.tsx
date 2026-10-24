@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useMemo, useState } from "react";
 
 import { LeadButton } from "@/components/LeadButton";
@@ -17,8 +16,7 @@ const categories: Category[] = [
   { id: "all", label: "Все", slugs: null },
   { id: "circuit", label: "Гонки", slugs: ["ring", "open-world", "traffic"] },
   { id: "drift-rally", label: "Дрифт и ралли", slugs: ["drift", "rally"] },
-  { id: "cargo", label: "Грузоперевозки и бездорожье", slugs: ["truck", "offroad"] },
-  { id: "vr", label: "VR", slugs: ["vr"] }
+  { id: "cargo", label: "Грузоперевозки и бездорожье", slugs: ["truck", "offroad"] }
 ];
 
 function ModeArrow() {
@@ -82,15 +80,6 @@ export function ModesGrid() {
               <ModeArrow />
             </div>
           );
-
-          if (mode.slug === "vr") {
-            return (
-              <Link aria-label={`Подробнее о режиме: ${mode.title}`} className="mode-card" href="#vr" key={mode.slug}>
-                {media}
-                {footer}
-              </Link>
-            );
-          }
 
           return (
             <LeadButton

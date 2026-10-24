@@ -9,12 +9,12 @@ export function localBusinessJsonLd() {
     alternateName: "Автосимуляторы АвтоСим",
     legalName: business.legalName,
     description:
-      "Клуб автосимуляторов в Оренбурге: профессиональные автосимуляторы, VR, гонки с друзьями, дни рождения и корпоративы.",
+      "Клуб автосимуляторов в Оренбурге: профессиональные автосимуляторы, гонки с друзьями, дни рождения и корпоративы.",
     url: siteUrl,
     image: `${siteUrl}/assets/og/autosim-og.jpg`,
     logo: `${siteUrl}/favicon.png`,
     telephone: business.phone,
-    priceRange: "350-5800 RUB",
+    priceRange: "400-5800 RUB",
     currenciesAccepted: "RUB",
     paymentAccepted: "Cash, Credit Card, SBP",
     address: {
@@ -78,11 +78,11 @@ export function websiteJsonLd() {
   };
 }
 
-export function faqJsonLd() {
+export function faqJsonLd(items: Array<{ question: string; answer: string }> = faqItems) {
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: faqItems.map((item) => ({
+    mainEntity: items.map((item) => ({
       "@type": "Question",
       name: item.question,
       acceptedAnswer: {

@@ -7,7 +7,6 @@ const motionSelector = [
   ".split-grid > *",
   ".feature-card",
   ".about-features li",
-  ".vr-actions",
   ".mode-card",
   ".gallery-item",
   ".price-card",
@@ -20,8 +19,7 @@ const motionSelector = [
   ".event-panel",
   ".media-frame",
   ".rig-showcase",
-  ".phone-shot",
-  ".vr-portrait"
+  ".phone-shot"
 ].join(",");
 
 export function ScrollMotion() {

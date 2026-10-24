@@ -903,50 +903,6 @@ img {
   transform: translate(2px, -2px);
 }
 
-.vr-section {
-  scroll-margin-top: var(--header-h);
-}
-
-.vr-grid {
-  margin-top: 18px;
-}
-
-.vr-portrait {
-  position: relative;
-  overflow: hidden;
-  aspect-ratio: 2.56 / 1;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  background: var(--surface-strong);
-  box-shadow: var(--shadow);
-}
-
-.vr-portrait img {
-  object-fit: cover;
-  object-position: center 30%;
-}
-
-@media (max-width: 620px) {
-  .vr-portrait {
-    aspect-ratio: 4 / 5;
-  }
-
-  .vr-portrait img {
-    object-position: center 20%;
-  }
-}
-
-.vr-card h3 {
-  font-size: clamp(1.65rem, 2.2vw, 2.2rem);
-}
-
-.vr-actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 28px;
-}
-
 .gallery-grid {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
@@ -1504,6 +1460,10 @@ p.price-summary-card__note {
 .choice-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   margin: 28px 0;
+}
+
+.choice-grid--compare {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .choice-grid article,
@@ -2119,7 +2079,6 @@ p.price-summary-card__note {
   }
 
   .button-row,
-  .vr-actions,
   .store-links {
     align-items: stretch;
     flex-direction: column;
