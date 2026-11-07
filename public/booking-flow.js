@@ -1,5 +1,5 @@
-import {SeatPicker} from './seat-picker.js?v=30';
-import {VR_PRICES,money} from './club-data.js?v=23';
+import {SeatPicker} from './seat-picker.js?v=20261107';
+import {VR_PRICES,money} from './club-data.js?v=20261107';
 
 const root=document.querySelector('[data-public-seat-picker]');
 if(root){

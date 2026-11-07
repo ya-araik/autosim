@@ -24,7 +24,7 @@ COOKIE = "__Host-autosim_admin"
 SESSION_SECONDS = 8 * 3600
 ANALYTICS_DAYS, AUDIT_DAYS, CRM_DAYS = 30, 90, 365
 MAX_REPORT_ROWS = 10000
-PRICES = {"standard": {30: 350, 60: 650, 120: 1150},
+PRICES = {"standard": {30: 400, 60: 700, 120: 1200},
           "pro": {30: 500, 60: 800, 120: 1500},
           "vip": {30: 500, 60: 800, 120: 1500}}
 VR_PRICES = {30: 300, 60: 400, 120: 800}

@@ -3,14 +3,14 @@ import { PHONE,VR_MODEL,TARIFFS,DURATIONS,VR_PRICES,defaultDraft,validDraft,pars
 
 const now=new Date('2026-09-19T12:00:00Z'); // 17:00 Orenburg.
 const draft=(patch={})=>({...defaultDraft(),...patch});
-const standard={30:350,60:650,90:900,120:1150,180:1550};
+const standard={30:400,60:700,90:900,120:1200,180:1600};
 const premium={30:500,60:800,90:1200,120:1500,180:2100};
 assert.equal(PHONE,'+79510308856');
 assert.equal(VR_MODEL,'Meta Quest 2');
 assert.deepEqual(TARIFFS.standard.prices,standard);
 assert.deepEqual(TARIFFS.pro.prices,premium);
 assert.deepEqual(TARIFFS.vip.prices,premium);
-assert.deepEqual([TARIFFS.standard.pass5,TARIFFS.standard.pass10,TARIFFS.pro.pass5,TARIFFS.pro.pass10,TARIFFS.vip.pass5,TARIFFS.vip.pass10],[2500,4400,3300,5800,3300,5800]);
+assert.deepEqual([TARIFFS.standard.pass5,TARIFFS.standard.pass10,TARIFFS.pro.pass5,TARIFFS.pro.pass10,TARIFFS.vip.pass5,TARIFFS.vip.pass10],[2700,5000,3300,5800,3300,5800]);
 assert.deepEqual(VR_PRICES,{30:300,60:400,120:800});
 let combinations=0;
 for(const tariff of ['standard','pro','vip'])for(const duration of DURATIONS)for(let people=1;people<=7;people++)for(let vrCount=0;vrCount<=people;vrCount++){
@@ -20,7 +20,7 @@ for(const tariff of ['standard','pro','vip'])for(const duration of DURATIONS)for
   combinations++;
 }
 assert.equal(quoteDraft(draft({tariff:'pro',people:7,vrCount:7})).total,8400,'seven VR guests are allowed');
-assert.equal(quoteDraft(draft({people:7,vrCount:3})).total,5750,'mixed VR + monitors only bills three add-ons');
+assert.equal(quoteDraft(draft({people:7,vrCount:3})).total,6100,'mixed VR + monitors only bills three add-ons');
 assert.match(draftText(draft({duration:120,vrCount:1})),/2 × 400/,'two-hour VR is explicitly a calculation');
 assert.doesNotMatch(draftText(draft({duration:120,vrCount:0})),/2 × 400/);
 

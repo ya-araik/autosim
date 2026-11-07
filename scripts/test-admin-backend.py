@@ -133,6 +133,14 @@ class ApiTests(unittest.TestCase):
         self.assertEqual((booking["status"], booking["pricePerPersonRub"], booking["priceRub"]), ("draft", 2300, 16100))
         self.assertNotIn("_createdEpoch", booking)
 
+    def test_current_standard_prices(self):
+        self.login()
+        for duration, price in ((30, 400), (60, 700), (120, 1200)):
+            with self.subTest(duration=duration):
+                status, booking, _ = self.create_booking(duration=duration, participants=2)
+                self.assertEqual(status, 201)
+                self.assertEqual(booking['priceRub'], price * 2)
+
     def test_opening_hours_and_midnight(self):
         self.login()
         for instant, duration, expected in (("2026-09-20T00:30:00+05:00", 60, 201),

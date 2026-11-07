@@ -58,7 +58,7 @@ const tariffs = {
     label: 'Standard', model: 'R5', image: '/assets/moza-r5.png',
     screenLabel: '4K-телевизор', screen: '55 дюймов', chip: 'ДЛЯ ПЕРВОГО ЗАЕЗДА',
     description: 'Всё, чтобы влюбиться в свой первый заезд. Руль с прямым приводом и большой 4K-экран.',
-    prices: { 30: 350, 60: 650, 120: 1150 }
+    prices: { 30: 400, 60: 700, 120: 1200 }
   },
   pro: {
     label: 'Pro', model: 'R12', image: '/assets/moza-r12.webp',

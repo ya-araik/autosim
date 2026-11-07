@@ -1,10 +1,10 @@
-// Verified against https://auto-sim.ru/prices on 2026-09-19.
+// Prices migrated from the previous website commit 648d3be (2026-10-24).
 // Generation, display make, pedal model and VR headset model are not confirmed.
 export const PHONE = '+79510308856';
 // Confirmed directly by the club owner during the v7 revision.
 export const VR_MODEL = 'Meta Quest 2';
 export const TARIFFS = Object.freeze({
-  standard: {name:'Standard',base:'MOZA R5',screen:'55″ · 4K-телевизор',diagonal:55,ratio:16/9,tag:'Для первого знакомства',description:'Прямой привод и большой экран — для твоего первого старта.',photo:'/assets/IND04212.webp',photoAlt:'Реальные симуляторы и большие экраны в клубе АВТОСИМ',caption:'Симуляторы клуба · общий вид',extra:'Руль и педали · настройка посадки',prices:{30:350,60:650,90:900,120:1150,180:1550},pass5:2500,pass10:4400},
+  standard: {name:'Standard',base:'MOZA R5',screen:'55″ · 4K-телевизор',diagonal:55,ratio:16/9,tag:'Для первого знакомства',description:'Прямой привод и большой экран — для твоего первого старта.',photo:'/assets/IND04212.webp',photoAlt:'Реальные симуляторы и большие экраны в клубе АВТОСИМ',caption:'Симуляторы клуба · общий вид',extra:'Руль и педали · настройка посадки',prices:{30:400,60:700,90:900,120:1200,180:1600},pass5:2700,pass10:5000},
   pro: {name:'Pro',base:'MOZA R12',screen:'49″ · ultrawide',diagonal:49,ratio:32/9,tag:'Больше дороги перед тобой',description:'Больше обзора. Больше усилия. Точнее каждый поворот.',photo:'/assets/v7/club-pro-drive.webp',photoAlt:'Гость клуба за рулём перед изогнутым ультрашироким экраном с гонкой',caption:'Ультраширокий экран · реальный заезд в клубе',extra:'Руль и педали · настройка посадки',prices:{30:500,60:800,90:1200,120:1500,180:2100},pass5:3300,pass10:5800},
   vip: {name:'VIP',base:'MOZA R9',screen:'65″ · телевизор',diagonal:65,ratio:16/9,tag:'Большой экран. Свой ритм.',description:'Экран 65″ и шифтер Simagic — всё в твоих руках.',photo:'/assets/v7/club-rig.webp',photoAlt:'Настоящий симулятор АВТОСИМ: кресло, руль MOZA, рычаг и включённый большой экран',caption:'Симулятор клуба · фотография установки',extra:'Шифтер Simagic · руль и педали',prices:{30:500,60:800,90:1200,120:1500,180:2100},pass5:3300,pass10:5800}
 });

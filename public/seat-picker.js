@@ -1,7 +1,8 @@
+import {TARIFFS} from './club-data.js?v=20261107';
 import {createBookingCalendar} from './booking-calendar.js?v=23';
 // One public schedule for the home page and member booking form.
 const names={standard:'Standard',pro:'Pro',vip:'VIP'};
-const prices={standard:{60:650,120:1150},pro:{60:800,120:1500},vip:{60:800,120:1500}};
+const prices=Object.fromEntries(Object.entries(TARIFFS).map(([key,tariff])=>[key,tariff.prices]));
 const positions={V01:[1,1],S01:[1,2],S02:[1,3],S03:[1,4],S04:[2,1],S05:[2,2],S06:[2,3],S07:[2,4],P01:[3,2],P02:[3,3]};
 const cockpit='<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 5h20M8 8h16M11 16v-5h10v5M10 19l-2 9h16l-2-9Z"/><ellipse cx="16" cy="16" rx="7" ry="3"/></svg>';
 const make=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n;};

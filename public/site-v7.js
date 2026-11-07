@@ -1,4 +1,4 @@
-import {PHONE,TARIFFS,money} from './club-data.js?v=23';
+import {PHONE,TARIFFS,money} from './club-data.js?v=20261107';
 
 const $=id=>document.getElementById(id);
 const $$=selector=>[...document.querySelectorAll(selector)];

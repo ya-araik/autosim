@@ -1,5 +1,5 @@
 import {trackApplication} from './yandex-metrika.js';
-import {TARIFFS,VR_PRICES,defaultDraft,quoteDraft,timeChoices,localDate,parseDraftHash,money} from './club-data.js?v=23';
+import {TARIFFS,VR_PRICES,defaultDraft,quoteDraft,timeChoices,localDate,parseDraftHash,money} from './club-data.js?v=20261107';
 import {pendingResult,pendingAttempt,gameTime} from './game-results.js';
 import {initialMemberSession} from './member-session.js?v=21';
 const $=id=>document.getElementById(id),$$=s=>[...document.querySelectorAll(s)];
@@ -118,7 +118,7 @@ function loadSelection(){
 async function initBooking(){
   if(seatPicker||bookingLoading)return;bookingLoading=true;
   try{
-    const {SeatPicker}=await import('./seat-picker.js?v=30');
+    const {SeatPicker}=await import('./seat-picker.js?v=20261107');
     seatPicker=new SeatPicker($('member-seat-picker'),{onChange:v=>{
       selection=v;const f=form.elements;f.date.value=v.date;f.time.value=v.time;f.duration.value=v.duration;f.tariff.value=v.tariff;f.people.value=v.people;
       if(v.ready&&pendingVrCount!==null){updateQuote();f.vrCount.value=String(Math.min(pendingVrCount,v.people));pendingVrCount=null;}

@@ -13,9 +13,9 @@ assert.equal(addDays('2026-12-31', 1), '2027-01-01');
 assert.throws(() => localToUTC('2026-02-30', '12:00'), RangeError);
 assert.throws(() => localToUTC('2026-09-19', '24:30'), RangeError);
 
-assert.deepEqual(quote(base), { base: 650, vr: 0, each: 650, total: 1300 });
+assert.deepEqual(quote(base), { base: 700, vr: 0, each: 700, total: 1400 });
 assert.deepEqual(quote({ ...base, tariff: 'vip', duration: 120, people: 5, vr: true }), { base: 1500, vr: 800, each: 2300, total: 11500 });
-assert.equal(quote({ ...base, people: 7, duration: 30 }).total, 2450);
+assert.equal(quote({ ...base, people: 7, duration: 30 }).total, 2800);
 assert.equal(quote({ ...base, tariff: 'pro', duration: 30, vr: true, people: 3 }).total, 2400);
 assert.equal(validState({ ...base, people: 0 }), false);
 assert.equal(validState({ ...base, people: 8 }), false);

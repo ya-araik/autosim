@@ -1,4 +1,4 @@
-import {TARIFFS,money} from './club-data.js?v=23';
+import {TARIFFS,money} from './club-data.js?v=20261107';
 const $=id=>document.getElementById(id);
 const descriptions={standard:'Большой экран. Руль с прямым приводом.',pro:'Панорамный экран. Больше усилия и точности.',vip:'Экран 65″ и шифтер Simagic. Всё под рукой.'};
 function menu(open){$('menu-toggle').setAttribute('aria-expanded',String(open));$('menu-toggle').setAttribute('aria-label',open?'Закрыть меню':'Открыть меню');$('navigation').classList.toggle('open',open);document.body.classList.toggle('menu-open',open);}

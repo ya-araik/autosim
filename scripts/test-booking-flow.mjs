@@ -41,4 +41,5 @@ $('[data-minutes="120"]').click();await tick();
 assert.equal(trigger.getAttribute('aria-disabled'),'true');assert.equal($('#public-vr').value,'0','cleared seats clear VR');
 trigger.click();assert.equal($('#booking-choice').open,false,'invalid selection cannot open checkout');
 seat('VIP 1').click();assert.match($('#public-booking-summary').textContent,/1\s?500/,'two-hour tariff');
+seat('Standard 1').click();assert.match($('#public-booking-summary').textContent,/2\s?700/,'VIP and current Standard two-hour prices agree');
 console.log('PASS unified booking: lazy schedule, mixed seats, VR, modal handoff, focus, invalidation');

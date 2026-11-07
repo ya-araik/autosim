@@ -1,5 +1,5 @@
 export const CLUB_OFFSET = 5 * 60;
-export const PRICE_TABLE = Object.freeze({ standard: { 30: 350, 60: 650, 120: 1150 }, pro: { 30: 500, 60: 800, 120: 1500 }, vip: { 30: 500, 60: 800, 120: 1500 } });
+export const PRICE_TABLE = Object.freeze({ standard: { 30: 400, 60: 700, 120: 1200 }, pro: { 30: 500, 60: 800, 120: 1500 }, vip: { 30: 500, 60: 800, 120: 1500 } });
 export const VR_PRICES = Object.freeze({ 30: 300, 60: 400, 120: 800 });
 export const TARIFF_NAMES = Object.freeze({ standard: 'Standard', pro: 'Pro', vip: 'VIP' });
 export const INTENTS = Object.freeze({ discover: 'Попробовать новое', pace: 'За личным рекордом', drift: 'Поймать занос', friends: 'Вечер с друзьями' });
