@@ -62,3 +62,32 @@ docker compose -p autosim-new build app worker
 истории заявок и переключения обработки обновлений. Перед запуском необходимо
 решить маршрутизацию портов 80/443 и доступ к существующему прокси Telegram.
 Если найдено несколько старых контейнеров, укажите `--container ИМЯ`.
+
+
+## Просмотр новой версии перед переключением домена
+
+На сервере, где старый сайт уже работает на HTTPS:
+
+```sh
+docker compose -p autosim-new -f compose.yaml -f compose.preview.yaml up -d --build app preview
+```
+
+Новый сайт: `https://auto-sim.ru:8443/`, новая админка: `https://auto-sim.ru:8443/adminka`.
+Предпросмотр использует действующий сертификат из `/root/autosim/volume/letsencrypt`
+(путь можно переопределить через `LEGACY_CERT_PATH` в `.env`). Основной сайт на 443
+остаётся прежним. Для API автоматически добавляется Origin с портом 8443.
+Метрика на этом порту отключена, страницы помечены noindex. Worker не запускается:
+заявки сохраняются в новой базе, но автоматическая доставка пока не включена.
+SmartShell требует отдельного подключения для реального расписания.
+
+Проверка на сервере:
+
+```sh
+curl -I --resolve auto-sim.ru:8443:127.0.0.1 https://auto-sim.ru:8443/
+```
+
+Остановить только просмотр:
+
+```sh
+docker compose -p autosim-new -f compose.yaml -f compose.preview.yaml stop preview
+```

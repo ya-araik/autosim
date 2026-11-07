@@ -20,7 +20,7 @@ dom.window.document.getElementById('chat').dispatchEvent(new dom.window.MouseEve
 assert.deepEqual(calls.filter(c=>c[1]==='reachGoal').map(c=>c[2]),['zayavka','phone_click','messenger_click']);
 api.setMetrikaConsent(false);const length=calls.length;api.trackApplication('another-request');assert.equal(calls.length,length);
 assert.equal(calls.at(-1)[1],'destruct');
-for(const url of ['https://localhost:4178/','https://fixture.example/adminka','https://fixture.example/source']){
+for(const url of ['https://localhost:4178/','https://fixture.example:8443/','https://fixture.example/adminka','https://fixture.example/source']){
   const test=setup(url);test.api.setMetrikaConsent(true);test.api.trackApplication('fixture');assert.equal(test.calls.length,0);test.dom.window.close();
 }
 const cabinet=setup('https://fixture.example/cabinet');cabinet.api.setMetrikaConsent(true);assert.equal(cabinet.calls[0][2].webvisor,false);

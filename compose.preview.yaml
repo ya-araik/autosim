@@ -1,0 +1,21 @@
+# Preview on a separate HTTPS port using the existing site's certificate.
+# Start only app and preview; the existing website and bot remain active.
+services:
+  app:
+    environment:
+      ALLOWED_ORIGINS: "${ALLOWED_ORIGINS},https://${DOMAIN}:8443"
+  preview:
+    image: mirror.gcr.io/library/nginx:1.30-alpine
+    restart: unless-stopped
+    ports:
+      - "8443:443"
+    environment:
+      DOMAIN: ${DOMAIN}
+    volumes:
+      - ./infra/preview/default.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - ./public:/srv:ro
+      - ${LEGACY_CERT_PATH:-/root/autosim/volume/letsencrypt}:/etc/letsencrypt:ro
+    depends_on:
+      - app
+    security_opt:
+      - no-new-privileges:true

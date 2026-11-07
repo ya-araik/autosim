@@ -2,10 +2,11 @@
 export const COUNTER_ID = 111096292;
 let enabled = false;
 const local = ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname);
+const preview = location.port === '8443';
 const privatePage = /^\/(adminka|source)(\/|\.|$)/.test(location.pathname);
 
 export function setMetrikaConsent(accepted) {
-  if (privatePage || local || accepted === enabled) return;
+  if (privatePage || local || preview || accepted === enabled) return;
   enabled = accepted;
   if (!accepted) {
     window.ym?.(COUNTER_ID, 'destruct');
