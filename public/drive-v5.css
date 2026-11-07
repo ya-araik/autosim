@@ -1,0 +1,364 @@
+/* V5: independent analog thumb channels and a compact driver workspace. */
+.sim-shell { position:relative; grid-template-rows:60px minmax(0,1fr) 220px; }
+.sim-toolbar { padding:0 24px; background:#101316; }
+.sim-mode-switch { padding:3px; border-color:#ffffff24; }
+.sim-mode-switch button { min-height:38px; padding:8px 25px; }
+.sim-mode-switch button[aria-pressed=true] { background:#eeeae4; color:#14171a; }
+.sim-shell[data-assist=pro] .sim-mode-switch button[aria-pressed=true] { background:#f4683b; color:#fff; }
+.sim-brand small { letter-spacing:.16em; }
+.sim-view { min-height:140px; }
+.sim-vignette { background:linear-gradient(180deg,#09100b60,transparent 25%,transparent 75%,#09101099); }
+.sim-sector-progress { position:absolute; top:0; left:0; width:100%; height:2px; background:#fff1; z-index:2; }
+.sim-sector-progress i { display:block; width:0; height:100%; background:#ef7245; transition:width .13s linear; }
+.sim-session { top:19px; left:25px; font-size:9px; }
+.sim-track-title { position:absolute; top:48px; left:25px; color:#fff; text-shadow:0 2px 8px #0009; pointer-events:none; }
+.sim-track-title span { display:block; font-size:8px; letter-spacing:.19em; color:#d0d9c9; }
+.sim-track-title strong { display:block; font-size:14px; font-weight:500; margin-top:5px; }
+.sim-track-map { top:15px; right:20px; width:114px; height:100px; background:#111a1680; padding:10px; }
+.sim-tools { top:125px; right:22px; gap:6px; }
+.sim-tool { min-width:44px; min-height:40px; background:#101a17c9; border-color:#d2ddc633; border-radius:10px; }
+.sim-tools .sim-tool span { font-size:9px; }
+.sim-hud { bottom:20px; left:24px; right:145px; gap:17px; }
+.sim-tach { width:100px; height:90px; }
+.sim-speed strong { font-size:58px; min-width:75px; }
+.sim-instruments { max-width:240px; }
+.sim-rpm { gap:9px; }
+.sim-assist-live { position:absolute; left:26px; bottom:126px; display:flex; gap:16px; color:#e1e8de; font-size:9px; text-shadow:0 1px 5px #000a; pointer-events:none; }
+.sim-assist-live .is-active { color:#ffb582; }
+.sim-corner-guide { color:#bdcbbf; }
+.sim-corner-guide b { font-weight:600; color:#f1eee8; }
+.sim-shell[data-assist=pro] .sim-corner-guide { display:none; }
+.sim-notice { top:99px; left:24px; max-width:340px; font-size:9px; border-radius:8px; }
+.sim-engineering-data { top:168px; }
+.sim-engineering-legend { top:113px; }
+.sim-view:has(.sim-start-screen:not([hidden])) .sim-assist-live,
+.sim-view:has(.sim-start-screen:not([hidden])) .sim-notice { opacity:0; }
+.sim-start-screen { padding:24px 6%; background:linear-gradient(90deg,#07100c88,transparent 75%); }
+.sim-start-card { max-width:340px; border-radius:22px; background:#101915ed; border-color:#ffffff29; box-shadow:0 20px 70px #0003; }
+.sim-start-card h3 { font-size:34px; letter-spacing:-.06em; }
+.sim-start-card>p:not(.eyebrow) { font-size:12px; line-height:1.7; margin:15px 0 20px; }
+.sim-start-card .eyebrow { color:#d4b490; font-size:7px; letter-spacing:.11em; }
+.sim-start-card .button { background:#ec5729; border-radius:12px; }
+.sim-start-card .sim-assist-copy { padding-top:14px; border-top:1px solid #ffffff1f; color:#d2d8cb; font-size:10px!important; margin:17px 0 0!important; }
+.sim-start-note { font-size:7px; margin-top:11px; }
+.sim-car-specs { display:none; }
+.sim-credits { color:#a9b8aa; }
+.sim-deck { padding:16px max(30px,calc((100vw - 1130px)/2)); grid-template-columns:210px 1fr 210px; gap:30px; background:linear-gradient(130deg,#202725,#121917 55%,#19221d); color:#e7eae3; border-top:1px solid #728b6740; box-shadow:0 -4px 20px #0003; }
+.sim-wheel-pad { mix-blend-mode:normal; filter:drop-shadow(0 6px 5px #0006); height:145px; width:150px; }
+.sim-wheel-section { min-width:190px; }
+.sim-wheel-caption { margin-top:10px; width:160px; color:#a5b5a6; font-size:8px; }
+.sim-wheel-caption output { color:#e1e6dc; }
+.sim-wheel-pad input { accent-color:#ef7947; }
+.sim-paddle { top:33px; background:linear-gradient(130deg,#4f5c54,#27332d); color:#e9eee6; border-color:#7b8f7355; height:74px; }
+.sim-paddle small { color:#bbc8b6; }
+.sim-pedals { width:195px; }
+.sim-handbrake { background:#3c4840; border-color:#687a5a66; color:#cad5c2; min-height:31px; }
+.sim-pedal { height:113px; box-shadow:inset 0 1px 0 #fff2,0 4px 0 #0005; }
+.sim-brake { background:linear-gradient(145deg,#829084,#4b5d50); color:#f1f2e9; border-color:#a4b09955; }
+.sim-throttle { background:linear-gradient(145deg,#36443a,#141c17); border-color:#8aa17c44; }
+.sim-deck-middle { display:flex; flex-direction:column; max-width:340px; gap:16px; width:100%; }
+.sim-action-row { gap:8px; align-items:center; flex-wrap:wrap; }
+.sim-deck-button { min-height:38px; font-size:10px; padding:9px 13px; color:#d9e2d4; background:#ffffff07; border:1px solid #98af8540; border-radius:8px; }
+.sim-deck-button:disabled { opacity:.35; }
+.sim-deck-button .icon { width:14px; height:14px; }
+.sim-book-link { display:flex; margin:0; color:#ee9c6e; font-size:9px; gap:9px; }
+.sim-control-hint { color:#9dae98; font-size:9px; line-height:1.7; }
+.sim-control-hint>span { display:block; }
+.sim-control-hint button { display:flex; align-items:center; gap:9px; padding:4px 0 0; color:#e3e8db; background:none; font-size:10px; }
+.sim-control-hint .icon { height:12px; width:12px; }
+.sim-thumb-controls { display:none; }
+.sim-shell[data-controls=thumbs] .sim-wheel-section,
+.sim-shell[data-controls=thumbs] .sim-pedals { display:none; }
+.sim-shell[data-controls=thumbs] .sim-thumb-controls { display:grid; grid-template-columns:1fr 1fr; gap:26px; }
+.sim-shell[data-controls=thumbs] .sim-deck { grid-template-columns:minmax(340px,580px) minmax(200px,280px); gap:45px; justify-content:center; }
+.sim-thumb-heading { display:flex; justify-content:space-between; gap:8px; font-size:7px; letter-spacing:.12em; color:#c2ceb9; margin-bottom:7px; }
+.sim-thumb-heading>span:last-child { color:#899b81; font-size:6px; }
+.sim-thumb-group>p { color:#8fa084; font-size:7px; text-align:center; margin:7px 0 0; line-height:1.3; }
+.sim-thumb-pad { height:120px; width:100%; position:relative; border-radius:19px; background:linear-gradient(140deg,#ffffff08,#0002); border:1px solid #95ac7c50; touch-action:none; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; cursor:crosshair; box-shadow:inset 0 0 30px #0002; overflow:hidden; }
+.sim-thumb-pad:focus-visible { outline:2px solid #ed955f; outline-offset:3px; }
+.sim-thumb-pad.is-held { border-color:#a3bc83a6; background:#bacb9f0b; }
+.thumb-knob { position:absolute; left:50%; top:50%; width:44px; height:44px; margin:-22px 0 0 -22px; border-radius:50%; background:linear-gradient(135deg,#65745c,#2f402f); border:1px solid #d8e2c766; box-shadow:0 4px 11px #0005,inset 0 1px 1px #fff4; display:grid; place-items:center; pointer-events:none; }
+.thumb-knob svg { width:21px; height:21px; stroke:#e3edcf; stroke-width:1.25; stroke-linecap:round; stroke-linejoin:round; fill:none; }
+.thumb-gear-button { position:absolute; z-index:2; top:4px; width:36px; height:34px; background:#dbe8be0c; border:1px solid #c6daa52c; border-radius:10px; color:#d9e7c5; font-size:20px; display:grid; place-items:center; line-height:1; touch-action:none; }
+.thumb-gear-down { left:5px; }
+.thumb-gear-up { right:5px; }
+.thumb-gear-button:active { background:#e790593b; color:#ffb583; }
+.sim-thumb-steering .thumb-knob { transform:translateX(calc(var(--thumb-steer,0) * 75px)); }
+.sim-thumb-power .thumb-knob { transform:translateY(calc(var(--thumb-power,0) * -40px)); }
+.thumb-horizontal-line { position:absolute; left:12%; right:12%; top:50%; height:1px; background:linear-gradient(90deg,transparent,#a3b98866,transparent); }
+.thumb-center-line { position:absolute; left:50%; top:17%; bottom:17%; width:1px; background:repeating-linear-gradient(0deg,#90a57866 0 2px,transparent 2px 5px); }
+.thumb-shift-up,.thumb-shift-down { position:absolute; left:50%; transform:translateX(-50%); display:flex; align-items:center; gap:4px; font-size:11px; color:#a5b592; line-height:1; }
+.thumb-shift-up { top:8px; }
+.thumb-shift-down { bottom:8px; }
+.thumb-shift-up svg,.thumb-shift-down svg { height:6px; width:8px; fill:none; stroke:currentColor; stroke-width:1.2; }
+.sim-thumb-steering[data-shift=up] .thumb-shift-up,.sim-thumb-steering[data-shift=down] .thumb-shift-down { color:#ff9c5e; }
+.thumb-neutral-line { position:absolute; left:12%; right:12%; top:50%; border-top:1px dashed #bfd49b55; }
+.thumb-gas-label,.thumb-brake-label { position:absolute; right:13px; color:#b6c7a2; font-size:8px; letter-spacing:.09em; }
+.thumb-gas-label { top:16px; }
+.thumb-brake-label { bottom:16px; }
+.thumb-power-fill { position:absolute; width:100%; height:50%; left:0; pointer-events:none; overflow:hidden; }
+.throttle-fill { top:0; background:linear-gradient(0deg,#aec58430,transparent); clip-path:inset(calc(100% - var(--throttle-fill,0%)) 0 0); }
+.brake-fill { bottom:0; background:linear-gradient(180deg,#e8a17633,transparent); clip-path:inset(0 0 calc(100% - var(--brake-fill,0%))); }
+.sim-thumb-power.is-handbrake { border-color:#fb985f; background:#98472030; }
+.sim-thumb-power.is-handbrake .thumb-knob { background:#91492a; }
+.sim-thumb-group:has(.is-handbrake) .thumb-handbrake-label { color:#ff9c5e; }
+.sim-settings-panel { position:absolute; z-index:15; right:16px; top:72px; bottom:16px; width:365px; padding:24px; overflow:auto; border-radius:22px; border:1px solid #c0d1a644; background:#142019f5; box-shadow:0 14px 70px #0009; backdrop-filter:blur(24px); color:#e2e9dc; }
+.sim-settings-panel[hidden] { display:none; }
+.sim-settings-heading { display:flex; justify-content:space-between; align-items:center; margin-bottom:27px; }
+.sim-settings-heading span { font-size:7px; letter-spacing:.14em; color:#adbda0; }
+.sim-settings-heading h3 { font-size:28px; font-weight:500; letter-spacing:-.04em; margin-top:5px; }
+.sim-settings-heading .sim-icon-button { width:40px; height:40px; flex:none; background:#dce7c912; }
+.sim-setting-label { font-size:8px; letter-spacing:.12em; color:#a9b99a; margin:25px 0 10px; }
+.sim-segmented { display:flex; background:#0002; border:1px solid #b3c89536; padding:3px; border-radius:10px; gap:3px; }
+.sim-segmented button { flex:1; font-size:11px; border-radius:7px; padding:11px 7px; background:none; color:#b3c3a8; }
+.sim-segmented button[aria-pressed=true] { color:#20271d; background:#dbe4ce; font-weight:600; }
+.sim-gesture-guide { display:flex; flex-direction:column; gap:13px; margin-top:18px; }
+.sim-gesture-guide strong { font-size:11px; font-weight:500; color:#dfcab2; }
+.sim-gesture-guide p { margin:5px 0 0; font-size:10px; line-height:1.7; color:#a4b299; }
+.sim-settings-panel .sim-transmission-row { display:flex; margin:0; gap:8px; }
+.sim-settings-panel .sim-transmission-row button { background:#fff1; border-color:#d0e2b444; color:#d3e0c5; font-size:11px; min-height:39px; padding:8px 12px; }
+.sim-settings-panel .sim-transmission-row button[aria-pressed=true] { color:#ffc69f; background:#71452344; border-color:#ffa26177; }
+.sim-settings-panel .sim-cruise { display:flex; margin:18px 0 4px; font-size:11px; color:#d4dfca; min-height:35px; gap:9px; }
+.sim-cruise .cruise-indicator { background:#526344; }
+.sim-cruise>span:last-child { font-size:9px; color:#9aaa8b; }
+.sim-recover { display:flex; align-items:center; justify-content:center; gap:10px; background:#0002; border:1px solid #b6c99144; border-radius:10px; font-size:11px; color:#c1ceb2; width:100%; padding:13px; margin-top:22px; }
+.sim-recover .icon { width:16px; height:16px; }
+.sim-settings-panel .sim-keys { display:block; margin:22px 0 14px; font-size:9px; line-height:2.3; color:#9cae8f; }
+.sim-settings-panel .sim-keys kbd { background:#c5d3ac15; border-color:#b4c79833; color:#c4d4b1; }
+.sim-source-link { display:flex; gap:10px; align-items:center; color:#c7d4b8; font-size:9px; margin-top:20px; text-decoration:underline; text-underline-offset:3px; }
+.sim-source-link .icon { width:12px; height:12px; }
+.sim-audio-source { color:#a4b299; font-size:10px; margin-top:22px; }
+@media(max-width:800px) {
+ .sim-deck { gap:20px; grid-template-columns:185px 1fr 160px; padding-inline:20px; }
+ .sim-shell[data-controls=thumbs] .sim-deck { grid-template-columns:minmax(300px,1fr) 185px; gap:25px; }
+ .sim-pedals { width:160px; }
+ .sim-book-link { font-size:8px; }
+ .sim-tach { width:85px; height:78px; }
+ .sim-hud { gap:12px; }
+}
+@media(max-width:700px) and (min-height:581px), (max-width:540px) {
+ .sim-shell { grid-template-rows:54px minmax(0,1fr) 234px; }
+ .sim-toolbar { padding:0 12px; gap:8px; }
+ .sim-brand { gap:7px; }
+ .sim-brand img { width:24px; height:24px; }
+ .sim-brand>span { font-size:11px; }
+ .sim-brand small { font-size:6px; margin-top:3px; }
+ .sim-mode-switch button { min-height:36px; padding:7px 14px; font-size:11px; }
+ .sim-icon-button,.sim-toolbar .sim-close { min-width:36px; min-height:36px; width:36px; height:36px; }
+ .sim-session { top:13px; left:14px; font-size:7px; gap:7px; }
+ .sim-session>#sim-lap { display:none; }
+ .sim-track-title { top:40px; left:14px; }
+ .sim-track-title span { font-size:6px; }
+ .sim-track-title strong { font-size:10px; margin-top:4px; }
+ .sim-track-map { top:12px; right:12px; width:64px; height:82px; padding:6px; border-radius:12px; }
+ .sim-tools { right:12px; top:106px; gap:6px; }
+ .sim-tool { min-width:36px; min-height:36px; padding:9px; border-radius:9px; }
+ .sim-tool>span { display:none; }
+ .sim-tool .icon { width:16px; height:16px; }
+ .sim-hud { left:14px; right:14px; bottom:15px; gap:13px; }
+ .sim-tach { display:none; }
+ .sim-speed strong { font-size:51px; min-width:59px; }
+ .sim-speed>span { font-size:7px; }
+ .sim-instruments { max-width:230px; flex:1; }
+ .sim-rpm { gap:7px; margin-bottom:9px; }
+ .sim-rpm>span:first-child { font-size:20px; width:32px; }
+ .sim-rpm>span:last-child { font-size:8px; }
+ .sim-rev-bars { gap:2px; }
+ .sim-rev-bars i { height:4px; }
+ .sim-shift-status { margin:0 0 9px; }
+ .sim-shift-status>span:first-child { font-size:6px; }
+ .sim-hud .sim-live-stats span { font-size:6px; }
+ .sim-hud .sim-live-stats strong { font-size:13px; }
+ .sim-assist-live { left:15px; bottom:99px; font-size:7px; gap:10px; }
+ .sim-notice { top:78px; left:13px; right:87px; max-width:none; font-size:8px; padding:7px 9px; }
+ .sim-start-screen { align-items:flex-end; padding:11px; background:linear-gradient(0deg,#08110b66,transparent 75%); }
+ .sim-start-card { max-width:none; width:100%; padding:17px 19px; border-radius:18px; }
+ .sim-start-card h3 { font-size:28px; }
+ .sim-start-card>.eyebrow { display:block; font-size:6px; margin-bottom:7px; }
+ .sim-start-card>p:not(.eyebrow) { font-size:10px; line-height:1.55; margin:10px 0 14px; }
+ .sim-start-card .button { min-height:42px; font-size:11px; }
+ .sim-start-card .sim-assist-copy { font-size:8px!important; padding-top:9px; margin-top:11px!important; }
+ .sim-start-note { display:none; }
+ .sim-credits { font-size:6px; margin-top:8px; }
+ .sim-shell .sim-deck,.sim-shell[data-controls=thumbs] .sim-deck { grid-template-columns:1fr 1fr; grid-template-rows:157px 49px; padding:10px 14px 8px; gap:7px 14px; }
+ .sim-shell[data-controls=thumbs] .sim-thumb-controls { grid-column:1/-1; grid-row:1; gap:16px; }
+ .sim-thumb-pad { height:124px; border-radius:17px; }
+ .sim-thumb-steering .thumb-knob { transform:translateX(calc(var(--thumb-steer,0) * 53px)); }
+ .sim-thumb-heading { font-size:6px; margin-bottom:6px; }
+ .sim-thumb-heading>span:last-child { font-size:5px; }
+ .sim-thumb-group>p { font-size:7px; margin-top:7px; white-space:nowrap; letter-spacing:-.015em; }
+ .thumb-knob { width:42px; height:42px; margin:-21px 0 0 -21px; }
+ .thumb-gas-label,.thumb-brake-label { font-size:8px; right:9px; }
+ .sim-deck-middle { grid-column:1/-1; grid-row:2; display:flex; max-width:none; gap:3px; align-self:stretch; }
+ .sim-action-row { display:flex; flex-wrap:nowrap; gap:7px; grid-column:auto; grid-row:auto; }
+ .sim-deck-button { min-height:31px; padding:6px 10px; font-size:8px; gap:6px; }
+ .sim-deck-button .icon { width:12px; height:12px; }
+ .sim-book-link { display:flex; margin-left:auto; font-size:7px; gap:5px; max-width:none; }
+ .sim-book-link .icon { height:12px; width:12px; }
+ .sim-control-hint { display:flex; justify-content:space-between; align-items:center; gap:10px; font-size:6px; }
+ .sim-control-hint button { font-size:7px; padding:0; gap:5px; min-height:17px; }
+ .sim-control-hint .icon { height:9px; width:9px; }
+ .sim-wheel-section { grid-column:1; grid-row:1; min-width:135px; }
+ .sim-wheel-pad { width:122px; height:122px; }
+ .sim-paddle { width:21px; top:24px; height:60px; }
+ .sim-wheel-caption { width:124px; margin-top:12px; font-size:6px; }
+ .sim-pedals { grid-column:2; grid-row:1; width:100%; max-width:190px; gap:8px; }
+ .sim-pedal { height:114px; padding:12px 10px; }
+ .sim-handbrake { min-height:29px; padding:6px 10px; }
+ .sim-settings-panel { left:8px; right:8px; width:auto; top:62px; bottom:8px; padding:22px; border-radius:20px; }
+ .sim-engineering-data { top:129px; left:13px; width:190px; }
+ .sim-engineering-legend { top:84px; left:13px; font-size:6px; }
+}
+@media(max-width:370px) {
+ .sim-toolbar { padding:0 9px; }
+ .sim-brand img { display:none; }
+ .sim-brand>span { font-size:11px; }
+ .sim-mode-switch button { padding-inline:12px; font-size:10px; }
+ .sim-thumb-pad { border-radius:14px; }
+ .sim-thumb-controls { gap:12px!important; }
+ .sim-thumb-group>p { font-size:5px; }
+ .sim-thumb-heading { letter-spacing:.04em; }
+ .sim-thumb-steering .thumb-knob { transform:translateX(calc(var(--thumb-steer,0) * 42px)); }
+ .sim-book-link { font-size:6px; }
+ .sim-control-hint { font-size:5px; }
+ .sim-control-hint button { font-size:6px; }
+ .sim-start-card { padding:13px 15px; }
+}
+@media(max-height:710px) and (max-width:700px) and (min-height:581px) {
+ .sim-shell { grid-template-rows:50px minmax(0,1fr) 208px; }
+ .sim-shell .sim-deck,.sim-shell[data-controls=thumbs] .sim-deck { grid-template-rows:133px 49px; gap:7px 14px; padding-block:8px; }
+ .sim-thumb-pad { height:101px; }
+ .sim-thumb-power .thumb-knob { transform:translateY(calc(var(--thumb-power,0) * -31px)); }
+ .sim-thumb-group>p { margin-top:5px; }
+ .sim-start-card { padding:12px 15px; }
+ .sim-start-card h3 { font-size:25px; }
+ .sim-start-card .sim-assist-copy { display:none; }
+ .sim-start-card>p:not(.eyebrow) { font-size:9px; margin:8px 0 11px; }
+ .sim-start-card>.eyebrow { font-size:5px; margin-bottom:5px; }
+ .sim-credits { display:none; }
+ .sim-wheel-pad { width:100px; height:101px; }
+ .sim-pedal { height:88px; }
+ .sim-tools { top:95px; gap:4px; }
+ .sim-tool { min-height:32px; min-width:32px; padding:8px; }
+ .sim-assist-live { display:none; }
+ .sim-hud { bottom:12px; }
+}
+@media(max-height:580px) and (min-width:541px) {
+ .sim-shell { grid-template-rows:46px minmax(0,1fr) 137px; }
+ .sim-toolbar { padding:0 18px; }
+ .sim-mode-switch button { padding:5px 24px; min-height:31px; }
+ .sim-shell .sim-deck,.sim-shell[data-controls=thumbs] .sim-deck { grid-template-columns:minmax(340px,520px) minmax(180px,240px); padding:7px 30px; gap:25px; }
+ .sim-shell[data-controls=wheel] .sim-deck { grid-template-columns:145px 1fr 170px; }
+ .sim-thumb-controls { gap:24px!important; }
+ .sim-thumb-pad { height:88px; border-radius:14px; }
+ .sim-thumb-heading { margin-bottom:5px; font-size:6px; }
+ .sim-thumb-group>p { font-size:6px; margin-top:5px; }
+ .thumb-knob { width:36px; height:36px; margin:-18px 0 0 -18px; }
+ .sim-thumb-power .thumb-knob { transform:translateY(calc(var(--thumb-power,0) * -25px)); }
+ .thumb-gas-label { top:10px; }
+ .thumb-brake-label { bottom:10px; }
+ .thumb-shift-up { top:5px; font-size:9px; }
+ .thumb-shift-down { bottom:5px; font-size:9px; }
+ .sim-deck-middle { display:flex; gap:8px; }
+ .sim-action-row { float:none; margin:0; gap:6px; }
+ .sim-deck-button { min-height:30px; font-size:8px; padding:6px 10px; }
+ .sim-book-link { display:none; }
+ .sim-control-hint { font-size:7px; }
+ .sim-control-hint button { font-size:8px; }
+ .sim-wheel-section { min-width:140px; }
+ .sim-wheel-pad { width:104px; height:96px; }
+ .sim-wheel-caption { width:108px; font-size:6px; margin-top:8px; }
+ .sim-pedals { width:170px; gap:6px; }
+ .sim-pedal { height:75px; }
+ .sim-handbrake { min-height:25px; }
+ .sim-session { top:10px; left:17px; font-size:7px; }
+ .sim-track-title { top:34px; left:17px; }
+ .sim-track-title span { font-size:6px; }
+ .sim-track-title strong { font-size:10px; margin-top:3px; }
+ .sim-track-map { width:58px; height:64px; right:15px; top:9px; }
+ .sim-tools { flex-direction:row; right:15px; top:79px; gap:5px; }
+ .sim-tool { min-width:32px; min-height:32px; padding:8px; }
+ .sim-tools .sim-tool span { display:none; }
+ .sim-tools .sim-tool .icon { height:14px; width:14px; }
+ .sim-hud { left:17px; right:180px; bottom:10px; gap:14px; }
+ .sim-tach { display:none; }
+ .sim-speed strong { font-size:42px; min-width:53px; }
+ .sim-rpm>span:first-child { font-size:17px; }
+ .sim-instruments { max-width:230px; }
+ .sim-assist-live { display:none; }
+ .sim-start-screen { padding:10px 5%; }
+ .sim-start-card { padding:13px 17px; max-width:310px; }
+ .sim-start-card h3 { font-size:25px; }
+ .sim-start-card>.eyebrow,.sim-start-card .sim-assist-copy { display:none; }
+ .sim-start-card>p:not(.eyebrow) { font-size:9px; line-height:1.5; margin:9px 0; }
+ .sim-start-card .button { min-height:34px; padding:8px 12px; font-size:10px; }
+ .sim-settings-panel { top:54px; bottom:8px; width:340px; }
+ .sim-notice { top:66px; left:17px; right:auto; max-width:300px; font-size:7px; }
+ .sim-engineering-data { top:65px; left:17px; width:176px; }
+}
+/* Short portrait must keep the touch deck in the viewport, including 320 × 440. */
+@media(max-width:540px) and (max-height:580px) {
+ .sim-shell { grid-template-rows:46px minmax(0,1fr) 188px; }
+ .sim-shell .sim-deck,.sim-shell[data-controls=thumbs] .sim-deck { grid-template-columns:minmax(0,1fr) minmax(0,1fr); grid-template-rows:120px 48px; gap:6px 12px; padding:6px 12px; }
+ .sim-shell[data-controls=thumbs] .sim-thumb-controls { gap:12px; }
+ .sim-thumb-heading { font-size:6px; margin-bottom:4px; }
+ .sim-thumb-pad { height:94px; border-radius:14px; }
+ .sim-thumb-group>p { font-size:5px; line-height:1.4; margin-top:4px; }
+ .thumb-knob { width:36px; height:36px; margin:-18px 0 0 -18px; }
+ .sim-thumb-steering .thumb-knob { transform:translateX(calc(var(--thumb-steer,0) * 42px)); }
+ .sim-thumb-power .thumb-knob { transform:translateY(calc(var(--thumb-power,0) * -29px)); }
+ .sim-wheel-section { min-width:0; }
+ .sim-wheel-pad { width:91px; height:91px; }
+ .sim-wheel-caption { width:108px; margin-top:9px; font-size:6px; }
+ .sim-paddle { top:18px; width:20px; height:53px; }
+ .sim-pedals { width:100%; gap:6px; }
+ .sim-pedal { height:83px; padding:8px; }
+ .pedal-lines { height:37px; }
+ .sim-handbrake { min-height:25px; padding:5px 8px; }
+ .sim-handbrake span { font-size:6px; }
+ .sim-deck-button { min-height:29px; padding:5px 8px; font-size:7px; }
+ .sim-control-hint { font-size:5px; gap:6px; }
+ .sim-control-hint button { min-height:15px; font-size:6px; }
+ .sim-start-screen { padding:7px 10px; }
+ .sim-start-card { padding:11px 13px; }
+ .sim-start-card h3 { font-size:23px; }
+ .sim-start-card>p:not(.eyebrow) { font-size:9px; line-height:1.5; margin:8px 0 10px; }
+ .sim-start-card .button { min-height:34px; padding:8px 12px; font-size:10px; }
+ .sim-start-card>.eyebrow,.sim-start-card .sim-assist-copy,.sim-car-specs,.sim-start-note,.sim-credits { display:none; }
+ .sim-tools { top:102px; right:12px; flex-direction:row; gap:3px; }
+ .sim-tool { min-width:29px; min-height:29px; padding:7px; }
+ .sim-tool .icon { width:14px; height:14px; }
+ .sim-hud { bottom:10px; }
+ .sim-assist-live { display:none; }
+ .sim-settings-panel { top:52px; bottom:6px; padding:16px; }
+}
+/* The regular landscape deck has a 605px minimum; fit the narrow 541–650px band. */
+@media(min-width:541px) and (max-width:650px) and (max-height:580px) {
+ .sim-shell .sim-deck,.sim-shell[data-controls=thumbs] .sim-deck { grid-template-columns:minmax(0,1.6fr) minmax(0,1fr); padding-inline:14px; gap:12px; }
+ .sim-shell[data-controls=wheel] .sim-deck { grid-template-columns:140px minmax(0,1fr) 140px; }
+ .sim-thumb-controls { gap:12px!important; }
+ .sim-pedals { width:140px; }
+ .sim-control-hint { font-size:6px; }
+ .sim-control-hint button { font-size:7px; }
+}
+@media(prefers-reduced-motion:reduce) { .sim-sector-progress i { transition:none; } }
+/* v11.4: direct camera selection and a readable, scrollable settings sheet. */
+.sim-settings-panel{width:min(430px,calc(100% - 32px));background:linear-gradient(150deg,#303436f9,#171b1dfc);color:#e7e6df;border-color:#ffffff25;padding:0 24px 20px;overscroll-behavior:contain;scroll-padding-block:105px 76px}
+.sim-settings-heading{position:sticky;top:0;z-index:2;padding:22px 0 15px;margin:0;background:#2b3031;border-bottom:1px solid #ffffff16}
+.sim-settings-heading span{color:#ea9877;font-size:9px}.sim-settings-heading h3{font-size:30px;margin:5px 0 0}
+.sim-settings-intro,.sim-setting-note{font-size:11px;line-height:1.7;color:#aeb5af;margin:15px 0}
+.sim-setting-label{font-size:10px;color:#c2c7be;margin-top:26px;letter-spacing:.1em}
+.sim-camera-options{display:grid;gap:8px}.sim-camera-options button{display:grid;grid-template-columns:56px minmax(0,1fr);gap:3px 13px;padding:13px;text-align:left;border:1px solid #ffffff19;border-radius:15px;background:#ffffff04;color:#e5e7df;min-width:0}
+.sim-camera-options button[aria-pressed=true]{background:#ee805d15;border-color:#ef946377;box-shadow:inset 3px 0 #f48259}
+.sim-camera-options svg{width:56px;height:40px;grid-row:1/3;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;align-self:center;color:#bfc8bc}
+.sim-camera-options strong{font-size:13px}.sim-camera-options small{font-size:10px;color:#aab3a8;line-height:1.5}.sim-camera-options button[aria-pressed=true] svg{color:#ee9975}
+.sim-settings-panel .sim-segmented{border-color:#ffffff22;border-radius:13px;min-height:48px}.sim-settings-panel .sim-segmented button{font-size:12px;min-height:40px;color:#bfc5bd}.sim-settings-panel .sim-segmented button[aria-pressed=true]{background:#dcded5;color:#242a27}
+.sim-settings-panel .sim-transmission-row{display:grid;grid-template-columns:1fr;gap:12px}.sim-settings-panel .sim-transmission-row button{min-height:46px;border-radius:12px;font-size:13px}
+.sim-program-label{display:grid;gap:8px;font-size:11px;color:#b5beb2}.sim-program-label select{min-width:0;width:100%;padding:12px;color:#eceee5;background:#343a39;border:1px solid #ffffff25;border-radius:12px;font:inherit;font-size:16px;min-height:48px;color-scheme:dark}
+.sim-preferences{display:grid;gap:8px}.sim-preferences .sim-tool{display:flex;width:100%;gap:12px;padding:13px;border:1px solid #ffffff1c;min-height:49px;background:#ffffff05;border-radius:13px;color:#e1e5db}.sim-preferences .sim-tool span{display:block;font-size:12px}.sim-preferences .sim-tool i{margin-left:auto;width:30px;height:18px;border-radius:20px;background:#59605c;position:relative;flex:none}.sim-preferences .sim-tool i:after{content:'';position:absolute;width:12px;height:12px;top:3px;left:3px;border-radius:50%;background:#e5e8de}.sim-preferences .sim-tool[aria-pressed=true] i{background:#c66442}.sim-preferences .sim-tool[aria-pressed=true] i:after{transform:translateX(12px)}
+.sim-settings-footer{position:sticky;bottom:-20px;padding:16px 0 20px;background:linear-gradient(transparent,#1b2021 20%);margin-top:20px}.sim-settings-footer .button{width:100%;font-size:13px;min-height:48px}
+.sim-tools .sim-tool{min-height:42px;display:flex;align-items:center;gap:9px}.sim-tools .sim-tool span{display:block;font-size:9px;max-width:70px;line-height:1.35}.sim-tools .sim-tool .icon{flex:none;width:16px;height:16px}
+.sim-shell[data-controls=wheel] .sim-gesture-guide{display:none}
+.sim-shell[data-assist=pro] .sim-corner-guide{display:none}
+@media(max-width:700px){.sim-settings-panel{width:auto;left:8px;right:8px;padding:0 18px 18px}.sim-settings-heading{padding-top:17px}.sim-settings-footer{bottom:-18px}.sim-tools .sim-tool{padding:8px;min-width:96px;min-height:40px;border-radius:10px}.sim-tools .sim-tool span{font-size:8px;max-width:66px}.sim-settings-intro,.sim-setting-note{font-size:11px}.sim-gesture-guide strong{font-size:12px}.sim-gesture-guide p{font-size:11px}}
+@media(max-height:580px){.sim-tools{flex-direction:column;top:80px}.sim-tools .sim-tool{min-width:95px;min-height:34px;padding:6px 8px}.sim-tools .sim-tool span{font-size:8px}.sim-settings-panel{top:52px;bottom:6px}.sim-settings-heading{padding-block:12px}.sim-settings-heading h3{font-size:25px}}

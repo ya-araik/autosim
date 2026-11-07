@@ -1,0 +1,24 @@
+/* Allow native date controls and their grid items to shrink within the field.
+   iOS date editors otherwise contribute an intrinsic width larger than a column. */
+.field-pair,.record-fields{grid-template-columns:repeat(2,minmax(0,1fr))}
+:is(.field-pair,.record-fields)>*{min-width:0;max-width:100%}
+:is(.field-pair,.record-fields) :is(input:not([type="checkbox"]):not([type="radio"]),select,textarea){box-sizing:border-box;min-width:0;max-width:100%;width:100%}
+input:is([type="date"],[type="time"],[type="datetime-local"]){-webkit-appearance:none;appearance:none;box-sizing:border-box;display:block;min-width:0;min-inline-size:0;width:100%;inline-size:100%;max-width:100%;max-inline-size:100%;text-align:left}
+input::-webkit-date-and-time-value{min-width:0;min-height:1.4em;text-align:left}
+input::-webkit-datetime-edit{min-width:0;padding:0}
+.period-bar{flex-wrap:wrap}
+.period-bar>label{min-width:0;max-width:100%;flex:1 1 160px}
+.period-bar :is(input,select){min-width:0;max-width:100%;width:100%}
+@media(max-width:680px){
+  .period-bar{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+  .period-bar>label,.period-bar>label:first-child{min-width:0;width:100%;font-size:11px}
+  .period-bar :is(input,select){font-size:16px;height:48px;min-height:48px}
+  .period-bar button{height:44px;min-height:44px}
+  .record-fields{grid-template-columns:minmax(0,1fr)}
+}
+@media(max-width:600px){
+  .field-pair.date-time-fields{grid-template-columns:minmax(0,1fr);gap:18px}
+  .date-time-fields input[type="date"],.date-time-fields select{font-size:16px;min-height:52px}
+  .booking-form .date-time-fields>label{margin-bottom:0}
+  .booking-form .date-time-fields{margin-bottom:22px}
+}

@@ -1,0 +1,34 @@
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - data:/data
+      - ./releases:/releases:ro
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+  worker:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    command: [python, scripts/worker.py]
+    volumes: [data:/data]
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+  web:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    environment:
+      DOMAIN: ${DOMAIN}
+    ports: ["80:80", "443:443", "443:443/udp"]
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./public:/srv:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on: [app]
+volumes:
+  data:
+  caddy_data:
+  caddy_config:

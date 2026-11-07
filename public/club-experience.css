@@ -1,0 +1,41 @@
+/* One scene, one thought. The imagery leads; the controls stay quiet. */
+.club-showcase{padding:40px 0 66px;scroll-margin-top:110px}
+.club-heading{margin-bottom:30px}
+.club-heading .eyebrow{font-size:10px;letter-spacing:.13em;margin-bottom:15px}
+.club-heading h2{font-size:clamp(38px,4.6vw,64px);line-height:1.08;letter-spacing:-.06em}
+.club-showcase .club-heading h2 span{color:#999d97}
+.club-stage{display:flex;flex-direction:column;min-width:0;overflow-anchor:none}
+.club-panels{display:grid;min-width:0;order:1}
+.club-panel{min-width:0;grid-area:1/1}
+/* Keep the tallest caption in the shared grid so tabs stay in place. */
+.club-panel[hidden]{display:block!important;visibility:hidden;pointer-events:none}
+.club-panel[hidden] .club-scene>img,.club-panel[hidden] .club-caption{animation:none}
+.club-panel:focus-visible{outline:2px solid var(--orange);outline-offset:7px;border-radius:28px}
+.club-scene{position:relative;overflow:hidden;isolation:isolate;margin:0;aspect-ratio:1672/941;background:#1a1d20;border-radius:28px}
+.club-scene>img{display:block;width:100%;height:100%;object-fit:cover;animation:club-scene-in .65s cubic-bezier(.2,.7,.2,1) both}
+.club-caption{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:48px;align-items:baseline;padding:28px 3px 0;min-height:112px;animation:club-copy-in .4s ease both}
+.club-caption h3{font-size:clamp(25px,2.8vw,38px);font-weight:700;letter-spacing:-.045em;line-height:1.15;color:#eeeee5}
+.club-caption p{font-size:15px;line-height:1.65;color:#9fa49f;margin:0;max-width:450px}
+.club-caption p strong{font-weight:700;color:#e6e7dd}
+.club-controls{order:2;display:flex;justify-content:center;margin-top:22px}
+.club-tabs{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:390px;max-width:100%;padding:5px;isolation:isolate;background:#25292a;border-radius:40px}
+.club-tab-indicator{position:absolute;z-index:-1;top:5px;bottom:5px;left:5px;width:calc((100% - 10px)/3);border-radius:30px;background:#e8e7df;box-shadow:0 2px 10px #0002;transform:translateX(calc(var(--club-tab-index,0)*100%));transition:transform .38s cubic-bezier(.22,1,.36,1)}
+.club-tabs button{position:relative;z-index:1;display:grid;place-items:center;min-width:0;min-height:46px;padding:11px 13px;border:0;border-radius:30px;background:transparent;font-size:13px;font-weight:700;line-height:1.2;color:#a8ada7;white-space:nowrap;transition:color .2s;touch-action:manipulation}
+.club-tabs button[aria-selected=true]{color:#262c28}
+.club-tabs button:not([aria-selected=true]):hover{color:#f2f0e8}
+.club-tabs button:focus-visible{outline:2px solid #fa7953;outline-offset:2px}
+@keyframes club-scene-in{from{opacity:.65;transform:scale(1.015)}to{opacity:1;transform:scale(1)}}
+@keyframes club-copy-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:1000px){.club-caption{gap:28px}.club-caption p{font-size:14px}}
+@media(max-width:760px){
+ .club-showcase{padding:24px 0 44px}
+ .club-heading{margin-bottom:24px}.club-heading .eyebrow{font-size:8px;margin-bottom:13px}
+ .club-heading h2{font-size:clamp(32px,7.8vw,48px);letter-spacing:-.055em;line-height:1.12}
+ .club-scene{border-radius:22px;margin-inline:-4px}
+ .club-caption{display:block;padding:23px 0 0;min-height:134px}
+ .club-caption h3{font-size:28px;line-height:1.15;letter-spacing:-.05em}
+ .club-caption p{font-size:13px;line-height:1.7;margin-top:12px;max-width:440px}
+ .club-controls{margin-top:19px}.club-tabs{width:340px}.club-tabs button{font-size:12px;min-height:44px;padding-inline:10px}
+}
+@media(max-width:360px){.club-heading h2{font-size:30px}.club-caption h3{font-size:25px}.club-caption{min-height:147px}.club-caption p{font-size:12px}.club-tabs button{font-size:11px;padding-inline:7px}.club-scene{border-radius:18px}}
+@media(prefers-reduced-motion:reduce){.club-scene>img,.club-caption{animation:none}.club-tab-indicator,.club-tabs button{transition:none}}

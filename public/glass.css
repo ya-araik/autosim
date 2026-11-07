@@ -1,0 +1,149 @@
+/* AUTOSIM shared materials: navigation, controls and dense forms. */
+.glass-edition {
+  --glass-fill:rgba(30,34,37,.76);
+  --glass-rim:rgba(255,255,255,.20);
+  --glass-highlight:rgba(255,255,255,.38);
+  --glass-shadow:0 10px 32px #0003, inset 0 1px 0 var(--glass-highlight), inset 0 -1px 0 #ffffff09;
+  --glass-blur:blur(22px) saturate(1.55);
+  --glass-text:#f4f3ef;
+  --glass-muted:#bec4c2;
+  --glass-orange:#ce4829;
+}
+/* Navigation: a single translucent shell, not a stack of frosted cards. */
+.glass-edition .site-header {
+  background:linear-gradient(135deg,#ffffff10,transparent 48%),var(--glass-fill);
+  border:1px solid var(--glass-rim); box-shadow:var(--glass-shadow);
+  backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);
+  overflow:visible;
+}
+.glass-edition .header-content {min-height:70px;height:auto;padding-block:10px}
+.glass-edition .site-header nav a {color:#e1e4e2;min-height:44px;display:flex;align-items:center}
+.glass-edition .header-account {color:#ffd0b8;min-height:44px}
+.glass-edition .site-header .header-call {min-height:44px;color:#f4f3ef}
+.glass-edition .site-header .menu-button {width:44px;min-width:44px;height:44px;min-height:44px;padding:0;place-items:center;color:#f4f3ef}
+.glass-edition :is(a,button,summary):focus-visible {outline:3px solid #ffb38e;outline-offset:4px}
+/* Each moving skin is separate from the label and from the hit target. */
+.glass-edition .glass-press {position:relative;isolation:isolate;background:transparent!important;border-color:transparent;box-shadow:none!important;transform:none!important;overflow:visible}
+.glass-edition .glass-skin {position:absolute;inset:0;z-index:-1;pointer-events:none;border-radius:inherit;border:1px solid #ffffff24;background:linear-gradient(145deg,#ffffff20,#ffffff04 52%),#ffffff08;box-shadow:inset 0 1px #ffffff38,inset 0 -1px #0002,0 3px 8px #0001}
+.glass-edition .header-account>.glass-skin {background:linear-gradient(140deg,#ffae7d24,#d3643320);border-color:#ffb58c4a;box-shadow:inset 0 1px #ffd2b630,0 2px 8px #0001}
+.glass-edition :is(.hero-v40-book,.button-orange,.booking-choice-online)>.glass-skin {background:linear-gradient(160deg,#ffffff20,transparent 55%),var(--glass-orange);border-color:#ffb48a66;box-shadow:inset 0 1px #ffd1a86b,inset 0 -2px #6a160c2b,0 6px 20px #bb3b2426}
+.glass-edition .button-dark>.glass-skin,.glass-edition .button-light>.glass-skin {background:linear-gradient(150deg,#fff,#e2e6df);border-color:#fff8}
+.glass-edition .button-dark,.glass-edition .button-light {color:#242a27}
+.glass-edition .hero-v40-book {min-height:54px;font-size:14px}
+.glass-edition .hero-v40 h1 span {white-space:normal}
+.glass-edition .hero-v40-location {font-size:11px}
+.glass-edition .hero-v40-lead {font-size:16px}
+.glass-edition .hero-v40-price {font-size:12px}
+/* Media controls float over the image. Copy and imagery remain solid content. */
+.glass-edition .club-stage {position:relative}
+.glass-edition .club-controls {position:absolute;top:20px;right:20px;z-index:3;margin:0;max-width:calc(100% - 40px)}
+.glass-edition .club-tabs {width:350px;padding:5px;background:linear-gradient(150deg,#ffffff14,transparent),#141a22b8;border:1px solid #ffffff35;box-shadow:var(--glass-shadow);backdrop-filter:blur(18px) saturate(1.5);-webkit-backdrop-filter:blur(18px) saturate(1.5)}
+.glass-edition .club-tabs button {min-height:44px;font-size:13px;color:#e5e8ea;transform:none}
+.glass-edition .club-tabs button[aria-selected=true] {color:#fff}
+.glass-edition .club-tabs .club-tab-indicator {background:#ffffff24;box-shadow:inset 0 1px #ffffff4d,0 2px 8px #0003}
+.glass-edition .club-caption {padding-top:28px}
+.glass-edition .club-caption h3 {letter-spacing:-.045em}
+.glass-edition .club-caption p {color:#b8bfba;font-size:15px;line-height:1.75}
+.glass-edition .club-showcase {padding-bottom:60px}
+/* Segmented controls: one measured travelling lens per group. */
+.glass-edition .glass-segments {position:relative;isolation:isolate}
+.glass-edition .glass-segments>button {z-index:1;position:relative;transform:none!important;background:transparent!important;box-shadow:none!important;border-color:transparent!important}
+.glass-edition .glass-segments>.club-tab-indicator {display:none}
+.glass-edition .glass-lens {position:absolute;left:0;top:0;pointer-events:none;z-index:0;border-radius:inherit;opacity:0;transition:opacity .12s}
+.glass-edition .glass-lens.is-ready {opacity:1}
+.glass-edition .glass-lens-skin {position:absolute;inset:0;border-radius:inherit;border:1px solid #ffffff38;background:linear-gradient(140deg,#ffffff30,#ffffff0a);box-shadow:inset 0 1px #ffffff50,inset 0 -1px #0002,0 3px 9px #0002}
+.glass-edition .tariff-tabs {padding:6px;gap:4px;border:1px solid #c1c7c166;background:#d7dcd780;border-radius:24px;box-shadow:inset 0 1px #fff9}
+.glass-edition .tariff-tabs button {border-radius:19px;padding:16px 8px;min-height:76px;color:#606860}
+.glass-edition .tariff-tabs button small {display:block;font-size:11px;color:#606860}
+.glass-edition .tariff-tabs button[aria-pressed=true] {color:#202622}
+.glass-edition .tariff-tabs button[aria-pressed=true] small {color:#4b544d}
+.glass-edition .tariff-tabs .glass-lens {border-radius:19px}
+.glass-edition .tariff-tabs .glass-lens-skin {background:linear-gradient(145deg,#ffffffdc,#f7faf18c);border-color:#fff9;box-shadow:inset 0 1px #fff,inset 0 -1px #ffffff80,0 4px 14px #283a2826}
+.glass-edition .equipment-section {background:#e4e6df;box-shadow:none}
+.glass-edition .equipment-specs>div {background:none;box-shadow:none;border:0;padding:6px 0}
+.glass-edition .equipment-specs span {font-size:12px;color:#616b61}
+.glass-edition .rig-photo {box-shadow:none}
+.glass-edition .equipment-booking {background:#202725;box-shadow:inset 0 1px #ffffff12;border-color:#ffffff10}
+.glass-edition .seat-length {position:relative;isolation:isolate;height:52px;padding:4px;gap:4px;background:#ffffff05;border:1px solid #ffffff20;border-radius:18px}
+.glass-edition .seat-length button {min-height:42px;color:#cbd1cc;border-radius:13px}
+.glass-edition .seat-length button[aria-pressed=true] {color:#fff}
+.glass-edition .seat-length .glass-lens {border-radius:13px}
+.glass-edition .calendar-trigger,.glass-edition .booking-vr .as-select-trigger {min-height:52px;border-radius:16px;background:linear-gradient(150deg,#ffffff0b,transparent),#ffffff04;border-color:#ffffff2b;color:#e8ece6;font-size:14px;box-shadow:inset 0 1px #ffffff0b}
+.glass-edition .calendar-trigger[aria-expanded=true],.glass-edition .as-select-trigger[aria-expanded=true] {border-color:#f5af8d;box-shadow:0 0 0 3px #e7956320}
+.glass-edition .seat-session {border-radius:16px;background:#ffffff04;box-shadow:inset 0 1px #ffffff08}
+.glass-edition .seat-session[aria-pressed=true] {background:#a6573525;border-color:#e8a07a;box-shadow:inset 0 1px #ffd9b638}
+.glass-edition .hall-seat {box-shadow:inset 0 1px #ffffff12;background:#303d35;border-color:#78908070}
+.glass-edition .hall-seat.pro {background:#2a3a43;border-color:#789baa70}
+.glass-edition .hall-seat.vip {background:#433a2e;border-color:#b6a08070}
+.glass-edition .hall-seat[aria-pressed=true] {background:linear-gradient(145deg,#ffffff18,transparent),#b94428;border-color:#ffb590;box-shadow:inset 0 1px #ffcca65c;color:white}
+/* Popovers use a denser material. Forms remain opaque and legible. */
+.glass-edition .calendar-popup,.glass-edition .as-select-menu {color:#f1f3ec;background:linear-gradient(140deg,#ffffff0d,transparent 60%),#252d2bef;border:1px solid #ffffff2b;box-shadow:0 20px 50px #0005,inset 0 1px #ffffff21;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:24px}
+.glass-edition .as-select-menu .as-select-option {color:#f1f3ec}
+.glass-edition .as-select-option[aria-selected=true] {background:#b968322a;color:#ffc7a1}
+.glass-edition .calendar-head button {width:44px;height:44px;padding:0;display:grid;place-items:center}
+.glass-edition .calendar-grid button.is-selected {background:#b94328;box-shadow:inset 0 1px #ffbb8159}
+.glass-edition .booking-choice {background:#252b29;border:1px solid #ffffff25;border-radius:30px;box-shadow:0 30px 100px #0008}
+.glass-edition .booking-choice-close {width:44px;height:44px;padding:0;display:grid;place-items:center}
+.glass-edition .booking-choice::backdrop {background:#080c12a3;backdrop-filter:none}
+.glass-edition .booking-choice[open] {animation:glass-sheet-in .26s cubic-bezier(.2,.8,.2,1)}
+.glass-edition .calendar-popup:not([hidden]),.glass-edition .as-select-menu:popover-open {animation:glass-menu-in .2s cubic-bezier(.2,.8,.2,1)}
+@keyframes glass-menu-in {from {opacity:0;translate:0 6px}to {opacity:1;translate:0 0}}
+@keyframes glass-sheet-in {from {opacity:0;translate:0 18px}to {opacity:1;translate:0 0}}
+@media(hover:hover) {
+ .glass-edition .glass-press:hover>.glass-skin {filter:brightness(1.08)}
+ .glass-edition .club-tabs button:not([aria-selected=true]):hover {color:white}
+}
+@media(max-width:860px) {
+ .glass-edition .site-header {width:calc(100% - 24px);top:12px;margin-top:12px}
+ .glass-edition .header-content {padding:8px 7px 8px 12px;min-height:60px;height:auto;gap:5px;flex-wrap:nowrap}
+ .glass-edition .site-header .brand {gap:6px;min-width:0}
+ .glass-edition .site-header .brand img {width:28px;height:28px}
+ .glass-edition .site-header .brand>span {font-size:20px}
+ .glass-edition .header-account {font-size:11px;padding:10px;gap:5px}
+ .glass-edition .site-header .header-call {width:44px;min-width:44px;height:44px;padding:0;align-items:center;justify-content:center}
+ .glass-edition .site-header nav {background:#252d2bf5;border:1px solid #ffffff26;border-radius:24px;box-shadow:var(--glass-shadow);padding:14px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);transform-origin:top right}
+ .glass-edition .site-header nav.open {animation:glass-menu-in .22s cubic-bezier(.2,.8,.2,1)}
+ .glass-edition .site-header nav a {font-size:15px;min-height:52px;padding-inline:14px}
+}
+@media(max-width:760px) {
+ .glass-edition .hero-v40-copy {padding-inline:24px}
+ .glass-edition .hero-v40-lead {font-size:14px}
+ .glass-edition .hero-v40-location {font-size:9px}
+ .glass-edition .hero-v40-price {font-size:11px}
+ .glass-edition .club-controls {top:12px;right:12px;left:12px;max-width:none;justify-content:center}
+ .glass-edition .club-tabs {width:100%;max-width:350px;padding:4px}
+ .glass-edition .club-tabs button {font-size:12px;min-height:44px;padding-inline:6px}
+ .glass-edition .club-scene {aspect-ratio:1.16;border-radius:26px}
+ .glass-edition .club-scene img {object-position:50% 60%}
+ .glass-edition .club-caption {padding:24px 0 0}
+ .glass-edition .club-caption h3 {font-size:29px}
+ .glass-edition .club-caption p {font-size:14px}
+ .glass-edition .equipment-section .equipment-visual {display:flex;flex-wrap:wrap;gap:0}
+ .glass-edition .equipment-visual .tariff-tabs {order:0;width:100%;margin:0 0 18px}
+ .glass-edition .equipment-visual .rig-photo {order:1;width:100%;border-radius:23px}
+ .glass-edition .equipment-visual .equipment-specs {order:2;width:100%}
+ .glass-edition .equipment-visual .equipment-rate {order:3;width:100%}
+ .glass-edition .tariff-tabs button {padding:12px 5px;min-height:72px}
+ .glass-edition .tariff-tabs button strong {font-size:16px}
+ .glass-edition .equipment-booking {border-radius:25px}
+ .glass-edition .seat-map-caption {font-size:11px}
+}
+@media(max-width:380px) {
+ .glass-edition .site-header .header-call {display:none}
+ .glass-edition .site-header .brand>span {font-size:19px}
+ .glass-edition .hero-v40 h1 {font-size:32px}
+ .glass-edition .club-tabs button {font-size:11px}
+}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
+ .glass-edition .site-header,.glass-edition .club-tabs,.glass-edition .site-header nav,.glass-edition .calendar-popup,.glass-edition .as-select-menu {background:#252c2b}
+}
+@media(prefers-reduced-transparency:reduce),(prefers-contrast:more) {
+ .glass-edition .site-header,.glass-edition .club-tabs,.glass-edition .site-header nav,.glass-edition .calendar-popup,.glass-edition .as-select-menu {background:#252c2b;backdrop-filter:none;-webkit-backdrop-filter:none;border-color:#8e9994}
+ .glass-edition .glass-lens-skin {background:#4c5853;border-color:#b3c0b8}
+ .glass-edition .tariff-tabs .glass-lens-skin {background:#fff;border-color:#7a877c}
+}
+@media(prefers-reduced-motion:reduce) {
+ .glass-edition .glass-lens,.glass-edition .glass-skin {transition:none}
+ .glass-edition .booking-choice[open],.glass-edition .calendar-popup,.glass-edition .as-select-menu,.glass-edition .site-header nav.open {animation:none}
+}
+.glass-edition .site-header .header-call>.glass-skin { display:block; }

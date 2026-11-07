@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="surface" x1="4" y1="4" x2="61" y2="64" gradientUnits="userSpaceOnUse"><stop stop-color="#fa956b" stop-opacity=".13"/><stop offset="1" stop-color="#fa956b" stop-opacity=".025"/></linearGradient>
+    <linearGradient id="line" x1="15" y1="12" x2="48" y2="53" gradientUnits="userSpaceOnUse"><stop stop-color="#ffc4a2"/><stop offset="1" stop-color="#ec8055"/></linearGradient>
+  </defs>
+  <rect x=".75" y=".75" width="62.5" height="62.5" rx="19.25" fill="url(#surface)" stroke="#ee956a" stroke-opacity=".25" stroke-width="1.5"/>
+  <g stroke="url(#line)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M16 32v15a4 4 0 0 0 4 4h24a4 4 0 0 0 4-4V32"/>
+    <rect x="12.5" y="23" width="39" height="9" rx="2.5"/>
+    <path d="M32 23c-5-1-15-2-15-7 0-2.6 2.8-4.3 5.2-3.3C27 14.5 29.9 19.3 32 23Zm0 0c5-1 15-2 15-7 0-2.6-2.8-4.3-5.2-3.3C37 14.5 34.1 19.3 32 23Z"/>
+    <path d="M28 23v28m8-28v28" stroke-opacity=".8"/>
+  </g>
+  <path d="M28 32h4v4h-4zm4 4h4v4h-4zm-4 4h4v4h-4zm4 4h4v4h-4z" fill="#f4a27c" fill-opacity=".75"/>
+</svg>

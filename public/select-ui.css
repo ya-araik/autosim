@@ -1,0 +1,30 @@
+/* The native control is a fully working fallback; its arrow has safe spacing. */
+select{padding-right:44px!important}
+.as-select{position:relative;display:block;min-width:0;width:100%;margin-top:9px;text-align:left}
+.as-select select[hidden]{display:none!important}
+.as-select .as-select-trigger{font:inherit;font-size:16px;font-weight:500;line-height:1.4;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;min-width:0;min-height:54px;margin:0;padding:14px 18px;border:1px solid #34413720;border-radius:16px;background:#f3f2e966;color:#303a30;box-shadow:inset 0 1px 0 #fff3;cursor:pointer;transition:border-color .18s,background .18s,box-shadow .18s}
+.as-select .as-select-trigger:hover{background:#f3f2e9aa;border-color:#34413750}
+.as-select .as-select-trigger[aria-expanded=true],.as-select .as-select-trigger:focus-visible{outline:0;border-color:#d54c2a;box-shadow:0 0 0 3px #e65c2520}
+.as-select .as-select-trigger:disabled{opacity:.48;cursor:default}
+.as-select-value{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.as-select svg{display:block;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none;width:20px;height:20px}
+.as-select-arrow{transition:transform .2s}
+.as-select-trigger[aria-expanded=true] .as-select-arrow{transform:rotate(180deg)}
+.as-select-menu{display:none;position:fixed;inset:auto;margin:0;padding:6px;border:1px solid #fff8;border-radius:20px;background:#eaeae0f5;color:#26302b;box-shadow:0 18px 60px #0004,inset 0 1px 0 #fff9;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);overflow:auto;overscroll-behavior:contain;scroll-padding:6px;font-family:Manrope,system-ui,sans-serif;font-size:15px;z-index:10000}
+.as-select-menu:popover-open,.as-select-menu.is-open{display:block;animation:select-reveal .16s ease-out}
+.as-select-menu::backdrop{background:transparent}
+.as-select-option{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:13px 14px;min-height:48px;border-radius:13px;cursor:pointer;line-height:1.4;transition:background .12s}
+.as-select-option.is-active,.as-select-option:hover{background:#fff8}
+.as-select-option[aria-selected=true]{color:#bc3b1c;background:#dd5a2412;font-weight:700}
+.as-select-option[aria-disabled=true]{opacity:.4;cursor:default}
+.as-select-tick{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none;visibility:hidden}
+.as-select-option[aria-selected=true] .as-select-tick{visibility:visible}
+.member-wrap .as-select-trigger,.dark .as-select-trigger,.sim-shell .as-select-trigger{background:#151c1e;color:#ecece4;border-color:#ffffff29}
+.member-wrap .as-select-trigger:hover,.dark .as-select-trigger:hover,.sim-shell .as-select-trigger:hover{background:#222d2f}
+.as-select-menu[data-theme=dark]{background:#242e30f7;color:#ebece5;border-color:#ffffff2a;box-shadow:0 20px 60px #0008,inset 0 1px 0 #ffffff14}
+.as-select-menu[data-theme=dark] .as-select-option.is-active,.as-select-menu[data-theme=dark] .as-select-option:hover{background:#ffffff0d}
+.as-select-menu[data-theme=dark] .as-select-option[aria-selected=true]{background:#ef6d2920;color:#ff9b72}
+.as-select-error{display:block;color:#e26342;font-size:12px;margin-top:7px}
+.as-select-error[hidden]{display:none}
+@keyframes select-reveal{from{opacity:0;translate:0 -4px}to{opacity:1;translate:0 0}}
+@media(prefers-reduced-motion:reduce){.as-select-menu,.as-select-trigger,.as-select-arrow{animation:none!important;transition:none!important}}

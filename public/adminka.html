@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive"><meta name="referrer" content="same-origin">
+  <title>Автосим — управление клубом</title><link rel="stylesheet" href="/admin.css"><link rel="stylesheet" href="/admin-club.css?v=17">
+  <script type="module" src="/admin.js?v=23"></script>
+<link rel="stylesheet" href="/form-layout.css?v=11.2"><link rel="stylesheet" href="/select-ui.css?v=15"><script type="module" src="/select-ui.js?v=15"></script><link rel="stylesheet" href="/admin-integrations.css?v=17"><style id="touch-gestures">html{touch-action:manipulation}</style><link rel="stylesheet" href="/glass.css?v=20261025"><link rel="stylesheet" href="/glass-app.css?v=20261025"><script type="module" src="/glass.js?v=20261025"></script></head>
+<body class="glass-edition glass-app admin-glass">
+  <a class="admin-skip" href="#admin-main">К содержимому</a>
+  <main id="admin-login" class="login-shell">
+    <section class="login-card" aria-labelledby="login-title">
+      <div class="admin-brand">автосим<span>.</span></div>
+      <p class="admin-eyebrow">Управление клубом</p><h1 id="login-title">Рабочее пространство.</h1>
+      <p class="muted">Доступ для сотрудников. Данные клуба открываются после входа.</p>
+      <form id="login-form">
+        <label>Логин<input name="username" autocomplete="username" required maxlength="80" autocapitalize="none" spellcheck="false"></label>
+        <label>Пароль<input name="password" type="password" autocomplete="current-password" required maxlength="200"></label>
+        <button class="primary" type="submit" id="login-submit">Войти</button>
+      </form>
+      <p id="login-status" class="form-message" role="status" aria-live="polite">Проверяем сессию…</p>
+    </section>
+  </main>
+
+  <div id="admin-app" class="admin-app" hidden>
+    <aside class="admin-sidebar">
+      <div class="admin-brand">автосим<span>.</span><small>CLUB OPERATIONS</small></div>
+      <nav aria-label="Разделы управления" id="admin-nav">
+        <button data-view="bookings"><span class="nav-index">01</span>Записи</button>
+        <button data-view="guests"><span class="nav-index">02</span>Клиенты</button>
+        <button data-view="game"><span class="nav-index">03</span>Игра и награды</button>
+        <button data-view="smartshell"><span class="nav-index">04</span>SmartShell</button>
+        <details id="nav-reports"><summary>Отчётность</summary>
+          <button data-view="overview">Сайт и заявки</button><button data-view="events">Посещения сайта</button><button data-view="audit">Журнал действий</button>
+        </details>
+        <details id="nav-owner"><summary>Управление</summary><button data-view="access">Команда и роли</button><button data-view="settings">Система</button></details>
+      </nav>
+      <div class="sidebar-bottom"><span id="admin-identity"></span><button id="logout-button" class="quiet">Выйти</button></div>
+    </aside>
+    <main id="admin-main" class="admin-main" tabindex="-1">
+      <header class="admin-topbar"><div><p class="admin-eyebrow">Автосим / Оренбург · UTC+5</p><h1 id="view-title">Обзор</h1></div><button id="refresh-button" class="secondary">Обновить данные</button></header>
+      <p id="admin-status" class="admin-status" role="status" aria-live="polite"></p>
+      <section class="period-bar" aria-label="Период данных" id="period-bar">
+        <label>Период<select id="period-preset"><option value="today">Сегодня</option><option value="7d" selected>7 дней</option><option value="30d">30 дней</option><option value="custom">Выбрать даты</option></select></label>
+        <label>С<input id="period-from" type="date" required></label><label>По<input id="period-to" type="date" required></label><button id="period-apply" class="secondary">Применить</button><span class="period-note">Время клуба, UTC+5</span>
+      </section>
+
+      <section data-panel="overview" aria-label="Обзор клуба">
+        <div class="metrics" id="overview-metrics"></div>
+        <p class="section-note">Только события посетителей, разрешивших аналитику. Нажатие «Позвонить» — намерение, а не состоявшийся звонок или бронь.</p>
+        <section class="admin-card"><div class="card-heading"><h2>Посещения по дням</h2><span class="muted">Просмотры страниц</span></div><div id="daily-chart" class="daily-chart"></div></section>
+        <div class="report-grid"><section class="admin-card"><h2>Источники переходов</h2><div id="referrer-report"></div></section><section class="admin-card"><h2>Устройства</h2><div id="device-report"></div></section><section class="admin-card"><h2>UTM-кампании</h2><div id="utm-report"></div></section></div>
+      </section>
+      <section data-panel="bookings" hidden aria-label="Бронирования">
+        <div class="section-toolbar"><div><p class="section-note">Заявки сайта и записи сотрудников — в одном расписании.</p><label class="inline-label">Статус<select id="booking-status-filter"><option value="">Все</option><option value="draft">Черновик</option><option value="confirmed">Подтверждена</option><option value="cancelled">Отменена</option><option value="completed">Завершена</option></select></label></div><div class="toolbar-actions"><button data-export="bookings" class="secondary">CSV</button><button id="new-booking" class="primary">Добавить бронь</button></div></div>
+        <div id="bookings-table" class="table-container"></div><p id="bookings-count" class="section-note"></p><button data-more="bookings" class="secondary" hidden>Загрузить ещё</button>
+      </section>
+      <section data-panel="guests" hidden aria-label="Гости">
+        <div class="section-toolbar"><label>Поиск по всей базе<input type="search" id="guest-search" placeholder="Ник, имя, телефон, email или ID" autocomplete="off"></label><div class="toolbar-actions"><button data-export="guests" class="secondary">CSV</button><button id="new-guest" class="primary">Добавить гостя</button></div></div>
+        <p class="section-note">Контакты, визиты, заезды и связь со SmartShell — в карточке клиента.</p><div id="guests-table" class="table-container"></div><p id="guests-count" class="section-note"></p><button data-more="guests" class="secondary" hidden>Загрузить ещё</button>
+      </section>
+      <section data-panel="events" hidden aria-label="Посещения и события">
+        <div class="section-toolbar"><div><h2>События с согласием</h2><p class="section-note">IP определяется сервером. Идентификаторы случайные; имя посетителя из них неизвестно. UTM указаны в порядке: источник / канал / кампания.</p><label class="inline-label">Данные<select id="events-dataset"><option value="events">Все события</option><option value="visitors">Посетители с согласием</option></select></label></div><button data-export="events" class="secondary">Выгрузить CSV</button></div>
+        <div id="events-table" class="table-container"></div><p id="events-count" class="section-note"></p><button data-more="events" class="secondary" hidden>Загрузить ещё</button>
+      </section>
+      <section data-panel="audit" hidden aria-label="Журнал действий">
+        <div class="section-toolbar"><div><h2>История изменений</h2><p class="section-note">Операции, записанные сервером. Журнал доступен для чтения.</p></div><button data-export="audit" class="secondary">CSV</button></div>
+        <div id="audit-table" class="table-container"></div><p id="audit-count" class="section-note"></p><button data-more="audit" class="secondary" hidden>Загрузить ещё</button>
+      </section>
+      <section data-panel="game" hidden aria-label="Мини-игра"><section class="admin-card"><h2>Управление игрой</h2><p class="section-note">Изменения применяются сразу к новым стартам. Уже начатые заезды можно завершить и сохранить. Лимиты работают в часовом окне от первой попытки.</p><form id="game-control-form" class="game-control-grid">
+<label class="checkbox-label"><input type="checkbox" name="enabled"><span>Принимать рейтинговые старты</span></label><label class="checkbox-label"><input type="checkbox" name="reviewsEnabled"><span>Принимать обращения по результатам</span></label>
+<label>Стартов на пилота в час<input name="startsPerHour" type="number" min="1" max="3600" required></label><label>Стартов на сеть (IP) в час<input name="startsPerIpHour" type="number" min="1" max="10000" required></label><label>Проверок финиша на сеть в час<input name="finishesPerHour" type="number" min="1" max="3600" required></label><label>Обращений от пилота в сутки<input name="reviewsPerDay" type="number" min="1" max="100" required></label>
+<label class="field-wide">Сообщение при технической паузе<textarea name="maintenanceMessage" maxlength="200" rows="2" required></textarea></label><p class="section-note field-wide">Вошедшие пилоты имеют отдельный личный лимит. Для гостей без входа он считается по IP; общий лимит сети учитывает всех.</p><button class="primary" type="submit">Сохранить управление игрой</button><p id="game-control-status" class="form-message" role="status"></p></form></section>
+<section class="admin-card"><div class="card-heading"><h2>Проверка незачтённых результатов</h2><span id="game-review-count"></span></div><label>Состояние<select id="game-review-filter"><option value="pending">Ожидают решения</option><option value="approved">Зачтены</option><option value="rejected">Отклонены</option><option value="resolved">Сохранены автоматически</option><option value="">Все обращения</option></select></label><div id="game-reviews" class="review-grid"></div></section><div id="game-metrics" class="metrics"></div><section class="admin-card"><h2>Регистрации после игры</h2><p class="section-note">Новые профили с завершённым заездом перед регистрацией, за выбранный период. Вход существующего клиента не считается регистрацией.</p><div id="game-registrations" class="table-container"></div></section><section class="admin-card"><h2>Общий рейтинг · Про</h2><p class="section-note">Лучшее время каждого пилота за сезон. Скрытие убирает пилота из публичного рейтинга, сохраняя личную историю. Последующие улучшения скрытого пилота остаются скрытыми.</p><div id="game-scores" class="table-container"></div></section><section class="admin-card"><h2>Списания бесплатных часов</h2><div id="game-redemptions" class="table-container"></div></section></section><section data-panel="settings" hidden aria-label="Система">
+        <div class="report-grid"><section class="admin-card"><h2>Состояние сервиса</h2><dl id="health-data" class="definition-list"></dl><p class="section-note">Проверка backend и базы в момент запроса. Доступность этой страницы не означает непрерывный мониторинг сайта.</p></section><section class="admin-card"><h2>Настройки клуба</h2><form id="settings-form">
+          <label class="checkbox-label"><input name="analyticsEnabled" type="checkbox"><span>Принимать аналитику посетителей после их согласия</span></label>
+          <label class="checkbox-label"><input name="collectFullIp" type="checkbox"><span>Сохранять полный IP-адрес при согласии посетителя</span></label>
+          <p class="section-note">Эти настройки применяются к новым событиям. Отключение не удаляет ранее сохранённые данные; срок хранения аналитики — 30 дней.</p>
+          <label>Рабочая заметка для сотрудников<textarea name="operationalNotes" rows="7" maxlength="2000" placeholder="Смена, обслуживание оборудования, организационные заметки"></textarea></label>
+          <p class="section-note">Заметка не изменяет публичные тарифы, адрес или расписание сайта.</p><button type="submit" class="primary">Сохранить настройки</button>
+        </form></section></div>
+      </section>
+      <section data-panel="access" hidden aria-label="Команда и роли"><div id="access-content"></div></section>
+      <section data-panel="smartshell" hidden aria-label="Подключение SmartShell"><div id="smartshell-content"></div></section>
+    </main>
+  </div>
+
+  <dialog id="record-dialog" class="record-dialog" aria-labelledby="record-title">
+    <div class="record-header"><div><p class="admin-eyebrow" id="record-kind"></p><h2 id="record-title"></h2></div><button class="close-button" type="button" id="record-close" aria-label="Закрыть редактор">×</button></div>
+    <form id="record-form"><div id="record-fields" class="record-fields"></div><p id="record-status" class="form-message" role="status" aria-live="polite"></p><div class="record-actions"><button type="button" id="record-delete" class="danger" hidden>Удалить</button><button type="button" id="record-cancel" class="secondary">Отмена</button><button type="submit" id="record-save" class="primary">Сохранить</button></div></form>
+    <div id="delete-confirm" class="delete-confirm" hidden><p>Удалить эту запись? Действие будет записано в журнал.</p><div class="toolbar-actions"><button id="delete-no" class="secondary">Оставить</button><button id="delete-yes" class="danger">Удалить запись</button></div></div>
+  </dialog>
+<dialog id="profile-dialog" class="record-dialog profile-dialog" aria-labelledby="profile-title"><div class="record-header"><div><p class="admin-eyebrow">Единая карточка клиента</p><h2 id="profile-title">Профиль</h2></div><button id="profile-close" class="close-button" aria-label="Закрыть профиль"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></button></div><div id="profile-content"></div></dialog>
+  <noscript><p class="no-script">Для работы закрытой системы нужен JavaScript.</p></noscript>
+</body>
+</html>

@@ -1,0 +1,64 @@
+/* Shared material roles. Content/forms are dense; floating controls are glass. */
+.glass-app {--control-radius:18px}
+.glass-app .primary>.glass-skin {background:linear-gradient(150deg,#ffffff24,transparent 60%),#cc4727;border-color:#ffb3846b;box-shadow:inset 0 1px #ffd5b288,0 5px 16px #b9361c20}
+.glass-app .primary {color:#fff;min-height:48px}
+.glass-app .secondary {min-height:44px}
+.glass-app :is(input,select,textarea) {font-size:16px}
+.glass-app :is(.record-dialog,.member-dialog) {max-height:calc(100dvh - 32px);overscroll-behavior:contain}
+.glass-app dialog[open] {animation:glass-sheet-in .24s cubic-bezier(.2,.8,.2,1)}
+.glass-app dialog::backdrop {background:#10151999;backdrop-filter:none}
+.glass-app :is(.close-button,.booking-choice-close) {display:grid;place-items:center;width:44px;height:44px;padding:0;border-radius:50%;flex:none}
+.glass-app .form-status:empty,.glass-app .admin-status:empty {display:none}
+.member-glass .member-header {background:linear-gradient(135deg,#ffffff10,transparent 48%),var(--glass-fill);border-color:var(--glass-rim);box-shadow:var(--glass-shadow);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur)}
+.member-glass .auth-panel,.member-glass .booking-form,.member-glass .member-dialog {background:#242b29;border:1px solid #ffffff20;box-shadow:inset 0 1px #ffffff0c,0 20px 60px #0002}
+.member-glass .booking-card,.member-glass .pilot-side {background:#202624;box-shadow:none}
+.member-glass .tabs {border-radius:22px;padding:5px;background:#ffffff05}
+.member-glass .tabs button {min-height:44px;color:#bdc5c0;border-radius:17px}
+.member-glass .tabs button[aria-pressed=true] {color:#fff}
+.member-glass .tabs .glass-lens {border-radius:17px}
+.member-glass .member-dialog {border-radius:28px}
+.member-glass .booking-section {gap:40px}
+.admin-glass {--glass-fill:rgba(248,249,247,.84);--glass-rim:#ffffffa8;--glass-highlight:#fff;--glass-shadow:0 8px 28px #25322d0c,inset 0 1px #fff;--line:#dce1dd;--muted:#626c66;background:#eef1ed;color:#27312b}
+.admin-glass .login-shell {background:radial-gradient(ellipse at 10% 5%,#df6c3520,transparent 55%),radial-gradient(ellipse at 95% 95%,#8aa69b25,transparent 50%)}
+.admin-glass .login-card {border-radius:32px;background:#fafbf8;border:1px solid #fff;box-shadow:0 24px 80px #24382b12;padding:40px}
+.admin-glass .admin-brand span {color:#d34b29}
+.admin-glass .admin-brand small {letter-spacing:.12em;color:#727b74}
+.admin-glass .admin-sidebar {margin:16px 0 16px 16px;top:16px;height:calc(100dvh - 32px);border:1px solid var(--glass-rim);border-radius:28px;background:linear-gradient(130deg,#ffffff70,transparent 65%),var(--glass-fill);box-shadow:var(--glass-shadow);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);padding:26px 14px;overflow:auto;scrollbar-width:thin}
+.admin-glass .admin-sidebar nav button {border-radius:15px;color:#59645d;min-height:44px;transition:background-color .16s,color .16s}
+.admin-glass .admin-sidebar nav button[aria-current=page] {background:linear-gradient(145deg,#fff,#f5f7f2);color:#b83d20;box-shadow:inset 0 1px #fff,0 3px 12px #24382914;border:1px solid #fff}
+.admin-glass .admin-topbar {gap:20px}
+.admin-glass .period-bar {background:#f8faf6;border:1px solid #e0e5df;border-radius:22px;box-shadow:inset 0 1px white}
+.admin-glass :is(.admin-card,.metric,.table-container) {background:#fafbf8;border-color:#e0e5df;border-radius:22px;box-shadow:none}
+.admin-glass th {background:#f0f3ed;color:#5e6b61}
+.admin-glass td {border-color:#e8ece5;color:#39473d}
+.admin-glass tbody tr:hover {background:#f3f6f0}
+.admin-glass .record-dialog {background:#f7f9f4;border-color:#e3e8df;border-radius:28px;color:#27332b;box-shadow:0 28px 100px #14241c33}
+.admin-glass .record-header {background:#f7f9f4}
+.admin-glass input,.admin-glass select,.admin-glass textarea {background:#fff;border-color:#d6ded5;border-radius:14px;color:#27332b}
+.admin-glass .secondary,.admin-glass .quiet {color:#39483d;border-radius:100px}
+.admin-glass .secondary>.glass-skin,.admin-glass .close-button>.glass-skin {background:linear-gradient(145deg,#ffffffd9,#f0f4ebb3);border-color:#ffffffd9;box-shadow:inset 0 1px #fff,0 3px 10px #203c2410}
+.admin-glass .as-select-menu {background:#f5f8f0;color:#27332b;border-color:#d4dfcf;box-shadow:0 18px 40px #18301c20}
+.admin-glass .as-select-menu .as-select-option {color:#27332b}
+.admin-glass .as-select-option[aria-selected=true] {color:#9c361e;background:#e6bda633}
+.admin-glass .row-action {min-height:40px;border-radius:12px}
+.admin-glass :is(.admin-card,.metric,.period-bar,.record-dialog) .muted {color:#626d64}
+.admin-glass :is(button,a,summary):focus-visible {outline-color:#b84422}
+@media(max-width:680px){
+ .admin-glass .admin-sidebar {margin:12px;top:auto;height:auto;padding:18px 14px 8px;border-radius:25px;overflow:visible}
+ .admin-glass .admin-sidebar nav {margin-top:0;overflow-x:auto;padding:4px 0 10px;gap:5px}
+ .admin-glass .admin-sidebar nav button {font-size:12px;padding:12px}
+ .admin-glass .admin-sidebar nav details {flex-shrink:0}
+ .admin-glass .admin-main {padding:18px 14px 45px}
+ .admin-glass .login-card {padding:26px}
+ .admin-glass .admin-topbar {align-items:center}
+ .admin-glass .admin-topbar>.secondary {max-width:120px;min-height:44px}
+ .admin-glass .record-header,#record-form {padding:22px}
+ .member-glass .booking-section {gap:25px}
+}
+@supports not (backdrop-filter:blur(1px)){.admin-glass .admin-sidebar{background:#f8faf5}.member-glass .member-header{background:#262e2a}}
+@media(prefers-reduced-transparency:reduce),(prefers-contrast:more){.admin-glass .admin-sidebar{background:#f8faf5;backdrop-filter:none;-webkit-backdrop-filter:none}.member-glass .member-header{background:#262e2a;backdrop-filter:none;-webkit-backdrop-filter:none}}
+@media(prefers-reduced-motion:reduce){.glass-app dialog[open]{animation:none}.admin-glass .admin-sidebar nav button{transition:none}}
+
+.admin-glass .admin-sidebar{color:#27312b}.admin-glass #admin-identity{color:#626c66}.admin-glass .admin-sidebar nav button:hover{color:#27312b;background:#ffffff80}.admin-glass .primary{border-radius:100px}
+
+.admin-glass .admin-main:focus{outline:none}.glass-document{background:#16191b;color:#eceee8}.glass-document main{background:#202624;border-color:#ffffff20}.glass-document a{color:#efac87}.glass-document h1,.glass-document h2{color:#f4f3ef}

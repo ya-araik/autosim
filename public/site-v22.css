@@ -1,0 +1,68 @@
+/* Booking is one continuous choice: equipment, session, seats, account. */
+.hero-v7 .hero-copy h1{font-size:clamp(54px,5.5vw,78px);letter-spacing:-.058em;line-height:1.06;max-width:660px}
+.hero-v7 .hero-copy h1 span{white-space:nowrap}
+.hero-book-button{font-weight:700;font-size:14px}
+.hero-lead{max-width:440px}
+.equipment-section .equipment-controls{align-self:stretch;display:flex;flex-direction:column;justify-content:center;padding:32px;border:0;box-shadow:none;background:none}
+.equipment-section .equipment-description{font-size:16px;line-height:1.7}
+.equipment-section .included{font-size:12px;line-height:1.6}
+.equipment-rate{display:flex;flex-direction:column;gap:5px;margin-top:30px;padding-top:25px;border-top:1px solid #6b736633}
+.equipment-rate strong{font-size:43px;line-height:1.2;letter-spacing:-.05em;color:#2e3831}
+.equipment-rate span{font-size:11px;color:#656e65}
+.equipment-booking{margin-top:32px;padding:30px;border-radius:28px;border:1px solid #ffffff26;background:linear-gradient(140deg,#2d3433,#1d2526);color:#e7e8df;box-shadow:inset 0 1px 0 #ffffff0c,0 20px 40px #1b251519;color-scheme:dark;scroll-margin-top:110px}
+.equipment-booking .seat-picker{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:16px 40px}
+.equipment-booking .seat-picker-calendar,.equipment-booking .seat-picker-hall{display:block;min-width:0}
+.equipment-booking .seat-picker .eyebrow{color:#e9ac8d}
+.equipment-booking .seat-sessions{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.equipment-booking .seat-session{min-height:65px}
+.equipment-booking .seat-selection,.equipment-booking .seat-feedback{grid-column:1/-1}
+.equipment-booking .seat-picker-top{min-height:40px;margin-bottom:15px}
+.equipment-booking .seat-picker-hall .hall-map{padding-top:0}
+.equipment-booking .seat-selection{margin-top:0}
+.equipment-booking .seat-selection b{display:none}
+.booking-finish{display:flex;gap:28px;justify-content:space-between;align-items:end;margin-top:22px}
+.booking-vr{display:block;font-size:11px;color:#bdc6bb;width:260px;max-width:100%}
+.booking-vr select{display:block;width:100%;margin-top:8px;border:1px solid #ffffff26;border-radius:14px;background:#252d2d;padding:13px;color:#eee;font:inherit}
+.booking-vr .as-select{margin-top:8px}
+.booking-vr .as-select-trigger{color:#e5e8df;background:#ffffff07;border-color:#ffffff26;min-height:50px}
+.booking-finish-action{min-width:280px;text-align:right}
+#public-booking-summary{font-size:17px;line-height:1.5;font-weight:700;margin-bottom:12px}
+.booking-finish-action .button{width:100%;min-width:300px;justify-content:space-between;font-weight:700}
+.booking-finish-action [aria-disabled=true]{opacity:.5;cursor:default}
+.booking-choice-online strong{font-weight:700}
+@media(max-width:1000px){
+ .equipment-booking{padding:24px}.equipment-booking .seat-picker{gap:18px 25px}
+ .equipment-section .equipment-controls{padding:24px 12px}
+ .equipment-booking .seat-date-controls{grid-template-columns:1fr}.equipment-booking .seat-length button{flex:1}
+}
+@media(max-width:760px){
+ .hero-v7 .hero-copy h1{font-size:clamp(40px,8.7vw,65px);letter-spacing:-.055em;max-width:100%;line-height:1.08}
+ .hero-v7 .hero-copy h1 span{display:inline-block}
+ .hero-book-button{width:100%;min-width:0}
+ .equipment-section .equipment-controls{padding:8px 0 4px}.equipment-section .equipment-controls h3{font-size:40px}
+ .equipment-section .equipment-description{font-size:14px;margin-top:16px}
+ .equipment-rate{margin-top:23px;padding-top:20px}.equipment-rate strong{font-size:36px}
+ .equipment-booking{padding:20px 14px;margin:28px -8px 0;border-radius:23px;scroll-margin-top:90px}
+ .equipment-booking .seat-picker{display:block}
+ .equipment-booking .seat-picker-hall{margin-top:28px}
+ .equipment-booking .seat-sessions{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+ .equipment-booking .seat-date-controls{grid-template-columns:minmax(0,1fr) auto;gap:8px}
+ .equipment-booking .seat-length button{padding-inline:10px}
+ .booking-finish{display:block;margin-top:20px}.booking-vr{width:100%}
+ .booking-finish-action{min-width:0;margin-top:22px;text-align:left}
+ .booking-finish-action .button{min-width:0;font-size:13px;padding-inline:20px}
+ #public-booking-summary{font-size:19px}
+ .booking-choice-online{padding:22px 18px}.booking-choice-online strong{font-size:17px}
+}
+@media(max-width:380px){
+ .hero-v7 .hero-copy h1{font-size:38px}
+ .equipment-booking .seat-date-controls{grid-template-columns:1fr}
+ .equipment-booking .seat-length button{flex:1}
+ .equipment-booking .seat-session strong{font-size:14px}
+}
+
+.equipment-booking .seat-length button{white-space:nowrap}
+
+/* Compact transition to the club section; avoid doubled spacing. */
+.hero-v7{margin-bottom:24px}
+@media(max-width:760px){.hero-v7{margin-bottom:18px}}

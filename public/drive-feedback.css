@@ -1,0 +1,8 @@
+/* Immediate race feedback stays above the scene and never captures controls. */
+.sim-central-alert{position:absolute;left:50%;top:43%;transform:translate(-50%,-50%);z-index:8;width:min(360px,calc(100% - 38px));padding:17px 20px;border:1px solid #f8b282a6;border-radius:18px;background:#241c18ed;color:#fff1e4;box-shadow:0 12px 45px #0007;backdrop-filter:blur(12px);text-align:center;pointer-events:none;animation:race-alert-in .22s ease-out}
+.sim-central-alert *{pointer-events:none}.sim-central-alert>svg{display:block;margin:0 auto 8px;width:25px;height:25px;stroke:#ffac7e;stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.sim-central-alert strong{display:block;font-size:16px;line-height:1.35;letter-spacing:-.025em}.sim-central-alert p{margin:7px 0 0;font-size:12px;line-height:1.55;color:#efcbbb}
+.sim-live-stats .sim-sector-validity{display:block;width:max-content;max-width:100%;margin-bottom:4px;padding:3px 6px;border-radius:5px;background:#672712e8;border:1px solid #ee9a7770;color:#ffe1d0;font-size:9px;line-height:1.35;letter-spacing:.06em;font-weight:700;pointer-events:none}
+@keyframes race-alert-in{from{opacity:0;transform:translate(-50%,calc(-50% + 8px))}to{opacity:1;transform:translate(-50%,-50%)}}
+@media(max-height:560px){.sim-central-alert{top:46%;padding:11px 16px;width:min(345px,calc(100% - 120px))}.sim-central-alert>svg{display:none}.sim-central-alert strong{font-size:14px}.sim-central-alert p{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.sim-central-alert{animation:none}}

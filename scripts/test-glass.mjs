@@ -1,0 +1,14 @@
+import {JSDOM} from 'jsdom';
+import assert from 'node:assert/strict';
+const dom=new JSDOM('<body class="glass-edition glass-app"><button class="primary">Войти <svg></svg></button></body>',{pretendToBeVisual:true});
+for(const key of ['window','document','MutationObserver','AbortController'])globalThis[key]=dom.window[key];
+globalThis.matchMedia=()=>({matches:false,addEventListener(){}});globalThis.ResizeObserver=class{observe(){}disconnect(){}};
+Object.defineProperty(document,'fonts',{value:{ready:Promise.resolve()}});
+globalThis.requestAnimationFrame=dom.window.requestAnimationFrame.bind(dom.window);globalThis.cancelAnimationFrame=dom.window.cancelAnimationFrame.bind(dom.window);
+const {springStep}=await import('../public/glass.js');
+const button=document.querySelector('button');assert.equal(button.firstChild.nodeType,3,'decorative skin must not replace first text node');
+button.firstChild.textContent='Создать профиль ';assert.equal(button.querySelector('.glass-skin').textContent,'');
+button.textContent='Готово';await new Promise(r=>setImmediate(r));assert.equal(button.querySelectorAll('.glass-skin').length,1,'text updates retain press skin');
+button.remove();await new Promise(r=>setImmediate(r));
+let x=0,v=0;for(let i=0;i<180;i++)[x,v]=springStep(x,v,1,1/60);assert(Math.abs(x-1)<.001);
+dom.window.close();console.log('PASS Glass: label isolation, dynamic updates, detached control cleanup and settling spring');

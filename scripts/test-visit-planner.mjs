@@ -1,0 +1,78 @@
+import assert from 'node:assert/strict';
+import { defaultState, localParts, localToUTC, isDate, addDays, validState, quote, recommendation, timeline, withinHours, validatePlan, availableTimes, shareHash, parseShare, buildICS } from '../public/visit-math.js';
+
+const now = new Date('2026-09-19T10:00:00Z'); // 15:00 in Orenburg.
+const base = defaultState(now);
+assert.equal(base.date, '2026-09-19');
+assert.equal(base.time, '19:00');
+assert.deepEqual(localParts(new Date('2026-09-19T20:00:00Z')), { date: '2026-09-20', time: '01:00' });
+assert.equal(localToUTC('2026-09-20', '00:30').toISOString(), '2026-09-19T19:30:00.000Z');
+assert.equal(isDate('2026-02-29'), false);
+assert.equal(isDate('2028-02-29'), true);
+assert.equal(addDays('2026-12-31', 1), '2027-01-01');
+assert.throws(() => localToUTC('2026-02-30', '12:00'), RangeError);
+assert.throws(() => localToUTC('2026-09-19', '24:30'), RangeError);
+
+assert.deepEqual(quote(base), { base: 650, vr: 0, each: 650, total: 1300 });
+assert.deepEqual(quote({ ...base, tariff: 'vip', duration: 120, people: 5, vr: true }), { base: 1500, vr: 800, each: 2300, total: 11500 });
+assert.equal(quote({ ...base, people: 7, duration: 30 }).total, 2450);
+assert.equal(quote({ ...base, tariff: 'pro', duration: 30, vr: true, people: 3 }).total, 2400);
+assert.equal(validState({ ...base, people: 0 }), false);
+assert.equal(validState({ ...base, people: 8 }), false);
+assert.equal(validState({ ...base, people: 2.5 }), false);
+assert.equal(validState({ ...base, tariff: '__proto__' }), false);
+assert.equal(validState({ ...base, duration: '60' }), false);
+assert.equal(validState({ ...base, vr: 'false' }), false);
+assert.equal(recommendation('discover', 'new').tariff, 'standard');
+assert.equal(recommendation('pace', 'new').tariff, 'pro');
+assert.equal(recommendation('drift', 'regular').tariff, 'vip');
+
+assert.equal(withinHours({ ...base, time: '14:00' }), false, 'Preparation cannot begin before club opens');
+assert.equal(withinHours({ ...base, time: '14:15' }), true);
+assert.equal(withinHours({ ...base, time: '13:45' }), false);
+assert.equal(withinHours({ ...base, time: '23:30', duration: 120 }), true);
+assert.equal(withinHours({ ...base, time: '01:00', duration: 60 }), true, 'Finish exactly at 02:00 remains valid');
+assert.equal(withinHours({ ...base, time: '01:15', duration: 60 }), false);
+assert.equal(withinHours({ ...base, time: '00:00', duration: 120, after: true }), true, 'Optional discussion does not shorten the drive');
+assert.equal(withinHours({ ...base, time: '02:00', duration: 30 }), false);
+assert.notEqual(validatePlan({ ...base, time: '15:00' }, now), '', 'Arrival in the past is rejected');
+assert.notEqual(validatePlan({ ...base, date: '2026-09-18' }, now), '');
+assert.notEqual(validatePlan({ ...base, date: '2028-09-19' }, now), '');
+assert.notEqual(validatePlan({ ...base, vr: true, people: 6 }, now), '');
+assert.equal(validatePlan({ ...base, vr: true, people: 5 }, now), '');
+assert.equal(availableTimes(base, now).includes('15:00'), false);
+assert.equal(availableTimes(base, now).includes('15:15'), true);
+assert.equal(availableTimes({ ...base, date: '2026-09-20', duration: 120 }, now).includes('00:00'), true);
+assert.equal(availableTimes({ ...base, date: '2026-09-20', duration: 120 }, now).includes('00:15'), false);
+assert.equal(defaultState(new Date('2026-09-19T20:55:00Z')).date, '2026-09-20');
+
+const night = { ...base, date: '2026-09-20', time: '00:00', duration: 120, after: true };
+const plan = timeline(night);
+assert.deepEqual(localParts(plan.arrival), { date: '2026-09-19', time: '23:50' });
+assert.deepEqual(localParts(plan.start), { date: '2026-09-20', time: '00:00' });
+assert.deepEqual(localParts(plan.finish), { date: '2026-09-20', time: '02:00' });
+assert.deepEqual(localParts(plan.end), { date: '2026-09-20', time: '02:10' });
+const yearNight = timeline({ ...base, date: '2027-01-01', time: '00:00' });
+assert.equal(localParts(yearNight.arrival).date, '2026-12-31');
+
+assert.deepEqual(parseShare(shareHash(night)), night);
+assert.equal(parseShare(shareHash(base).replace('p=2', 'p=100')), null);
+assert.equal(parseShare(shareHash(base).replace('vr=0', 'vr=yes')), null);
+assert.equal(parseShare(shareHash(base) + '&p=2'), null, 'Duplicate parameters rejected');
+assert.equal(parseShare(shareHash(base) + '&evil=1'), null, 'Unknown parameters rejected');
+assert.equal(parseShare(shareHash(base).replace('t=standard', 't=__proto__')), null);
+assert.equal(parseShare(shareHash(base).replace('d=2026-09-19', 'd=2026-02-30')), null);
+assert.equal(parseShare('#visit-planner?' + 'a'.repeat(701)), null);
+assert.equal(parseShare('#prices'), null);
+assert.throws(() => buildICS({ ...base, date: '2026-09-18' }, 'Past', now), RangeError);
+const calendar = buildICS(night, 'План, не бронь; подтвердить\nОренбург. ' + 'Очень длинная кириллическая строка '.repeat(10), now);
+const unfolded = calendar.replace(/\r\n /g, '');
+assert.ok(unfolded.includes('DTSTART:20260919T185000Z'));
+assert.ok(unfolded.includes('DTEND:20260919T211000Z'));
+assert.ok(unfolded.includes('DTSTAMP:20260919T100000Z'));
+assert.ok(unfolded.includes('STATUS:TENTATIVE'));
+assert.ok(unfolded.includes('TRANSP:TRANSPARENT'));
+assert.ok(unfolded.includes('План\\, не бронь\\; подтвердить\\nОренбург.'));
+assert.ok(calendar.endsWith('END:VCALENDAR\r\n'));
+for (const line of calendar.split('\r\n')) assert.ok(Buffer.byteLength(line, 'utf8') <= 75, 'ICS lines respect 75 octet limit');
+console.log('Visit planner: pricing, recommendations, civil dates, midnight/year rollover, opening hours, share validation, ICS UTC and folding passed.');

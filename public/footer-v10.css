@@ -1,0 +1,49 @@
+/* Main edition only. The archived design at /old keeps its own stylesheet. */
+.club-finale{position:relative;isolation:isolate;overflow:hidden;padding:42px 0 0;border:1px solid #ffffff16;border-bottom:0;border-radius:42px 42px 0 0;background:linear-gradient(145deg,#292c2e,#1b1e20 65%);color:#ecebe5;box-shadow:inset 0 1px 0 #ffffff06,0 -20px 70px #0002}
+.club-finale:before{content:'';position:absolute;z-index:-1;inset:0;background:radial-gradient(ellipse at 95% 20%,#f7763420,transparent 45%);pointer-events:none}
+.finale-overline{display:flex;align-items:center;justify-content:space-between;gap:24px;font-size:9px;letter-spacing:.1em;color:#a5a8aa}
+.finale-overline>span:first-child{display:flex;align-items:center;gap:12px}
+.finale-invitation{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:65px;padding:65px 0 55px}
+.finale-heading h2{font-size:clamp(65px,7.8vw,105px);line-height:1.02;letter-spacing:-.065em}
+.finale-heading h2 span{color:#a9aba7}
+.finale-heading p{font-size:13px;line-height:1.8;color:#aeb0ad;margin-top:24px}
+.finale-call{display:flex;flex-direction:column;gap:25px;padding:32px;border:1px solid #ffffff21;border-radius:30px;background:linear-gradient(135deg,#ffffff0e,#ffffff03);box-shadow:inset 0 1px 0 #ffffff0d,0 16px 42px #0002;transition:border-color .25s,background .25s}
+.finale-label{font-size:9px;letter-spacing:.1em;line-height:1.5;color:#a4a7a8}
+.finale-call>strong{font-size:clamp(24px,2.7vw,38px);letter-spacing:-.05em;white-space:nowrap;font-weight:400}
+.finale-call-action{display:flex;justify-content:space-between;align-items:center;gap:20px;border-top:1px solid #ffffff14;padding-top:25px;font-size:15px;font-weight:700}
+.finale-call-action small{display:block;max-width:180px;margin-top:8px;font-size:11px;font-weight:400;line-height:1.65;color:#aeb0ad}
+.finale-arrow{display:grid;place-items:center;flex:none;width:66px;height:66px;border-radius:50%;background:linear-gradient(135deg,#ff8c4c,#eb512b 58%,#ca3524);color:#fff4e8;box-shadow:inset 0 1px 1px #ffc49b,0 9px 28px #e94e2329;transition:transform .25s}
+.finale-arrow .icon{width:30px;height:30px;stroke-width:1.5}
+.finale-call:hover{border-color:#ffffff42;background:linear-gradient(135deg,#ffffff13,#ffffff04)}
+.finale-call:hover .finale-arrow{transform:translate(2px,-2px)}
+.finale-details{display:grid;grid-template-columns:1fr 1fr;gap:65px;padding:34px 0;border-top:1px solid #ffffff1b;border-bottom:1px solid #ffffff1b}
+.finale-address{display:flex;flex-direction:column;gap:15px}
+.finale-address>strong{font-size:28px;font-weight:400;letter-spacing:-.035em}
+.finale-address-bottom{display:flex;align-items:center;justify-content:space-between;gap:18px;color:#aeb0ad;font-size:12px;line-height:1.8}
+.finale-address-bottom b{color:#deded8;font-weight:400}
+.finale-route{display:flex;align-items:center;gap:15px;min-height:44px;padding:0 17px;border:1px solid #ffffff21;border-radius:100px;color:#e4e4de;transition:background .2s}
+.finale-route .icon,.finale-social .icon{width:17px;height:17px}
+.finale-address:hover .finale-route{background:#ffffff0b}
+.finale-social{display:grid;grid-template-columns:1fr auto;align-content:start;gap:15px 22px}
+.finale-social>.finale-label{grid-column:1/-1}
+.finale-social>p{font-size:23px;line-height:1.35;letter-spacing:-.025em;color:#c2c4bf}
+.finale-social>div{display:flex;flex-direction:column;gap:8px}
+.finale-social a{display:flex;align-items:center;justify-content:space-between;gap:26px;min-height:44px;font-size:12px;border-bottom:1px solid #ffffff19;transition:color .2s}
+.finale-social a:hover{color:#ff966a}
+.finale-signature{display:flex;align-items:center;justify-content:space-between;gap:32px;padding:26px 0 20px}
+.finale-signature>span:first-child{font-size:clamp(90px,15.3vw,205px);font-weight:700;line-height:1.08;letter-spacing:-.08em;color:#858b8c;background:linear-gradient(175deg,#b1b5b3,#5c6263);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.finale-signature>span:first-child>span{background:linear-gradient(135deg,#ff955c,#e74a2b);background-clip:text;-webkit-background-clip:text}
+.finale-signoff{font-size:10px;line-height:1.7;letter-spacing:.15em;color:#8f9494}
+.footer-v10{padding:25px 0 32px;color:#a1a5a5;border-top:0;gap:16px 28px;align-items:center}
+.footer-v10>.finale-copyright{margin-left:0;margin-right:auto;font-size:10px;color:#b7bbba}
+.footer-v10 a,.footer-v10 #analytics-settings{font-size:10px;min-height:44px;text-decoration:none}
+.footer-v10 .footer-up{order:2;color:#e0e1db}
+.footer-v10 .footer-up .icon{transform:rotate(-45deg)}
+.footer-v10 #analytics-settings{order:1}
+@media(max-width:1000px){.finale-invitation,.finale-details{gap:35px}.finale-call{padding:25px}.finale-call>strong{font-size:27px}.finale-social>p{font-size:20px}.finale-social{column-gap:18px}.finale-social a{gap:16px}.finale-address>strong{font-size:25px}}
+@media(max-width:700px){.club-finale{border-radius:30px 30px 0 0;padding-top:30px}.finale-overline{font-size:8px}.finale-overline>span:last-child{display:none}.finale-invitation{grid-template-columns:1fr;gap:28px;padding:36px 0 30px}.finale-heading h2{font-size:clamp(54px,13.7vw,78px)}.finale-heading p{font-size:12px;margin-top:20px}.finale-call{gap:20px;padding:25px;border-radius:26px}.finale-call>strong{font-size:clamp(24px,6.9vw,36px)}.finale-call-action{padding-top:20px}.finale-arrow{width:58px;height:58px}.finale-details{grid-template-columns:1fr;gap:28px;padding:28px 0}.finale-address{gap:13px}.finale-address>strong{font-size:26px}.finale-social{padding-top:26px;border-top:1px solid #ffffff1b;grid-template-columns:1fr 1fr;column-gap:24px}.finale-social>p{font-size:22px}.finale-social>div{flex-direction:row;grid-column:1/-1;gap:10px}.finale-social a{flex:1;justify-content:space-between;border:1px solid #ffffff20;border-radius:100px;padding:0 17px;font-size:11px}.finale-social>p{grid-column:1/-1}.finale-social>p br{display:none}.finale-signature{padding:25px 0 20px;gap:0}.finale-signature>span:first-child{font-size:21vw}.finale-signoff{display:none}.footer-v10{display:flex;gap:6px 22px;padding:19px 0 28px;flex-wrap:wrap}.finale-copyright{flex-basis:calc(100% - 90px);margin-right:0;order:0}.footer-v10 .footer-up{order:0;margin-left:auto}.footer-v10 a,.footer-v10 #analytics-settings{font-size:9px}.footer-v10 #analytics-settings{order:1}.finale-label{font-size:8px}}
+@media(max-width:360px){.finale-call{padding:20px}.finale-call-action{font-size:14px;gap:12px}.finale-call-action small{font-size:10px}.finale-arrow{width:50px;height:50px}.finale-address>strong{font-size:24px}.finale-route{padding:0 13px;font-size:11px;gap:8px}.finale-address-bottom{font-size:11px}.finale-social>p{font-size:20px}}
+@media(prefers-reduced-motion:reduce){.finale-call,.finale-arrow,.finale-route,.finale-social a{transition:none}.finale-call:hover .finale-arrow{transform:none}}
+@media print{.club-finale{display:none!important}}
+
+@media(max-width:700px){.footer-v10{display:grid;grid-template-columns:1fr auto;gap:4px 18px}.finale-copyright{grid-column:1;grid-row:1;justify-self:start;text-align:left}.footer-v10 .footer-up{grid-column:2;grid-row:1;justify-self:end;margin:0}.footer-v10>a:not(.footer-up){grid-row:2}.footer-v10 #analytics-settings{grid-column:1/-1;grid-row:3;justify-self:start}}

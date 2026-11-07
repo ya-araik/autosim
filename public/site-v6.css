@@ -1,0 +1,28 @@
+/* Connect the instruments and visit planner to the existing club journey. */
+.hero-art{top:142px;bottom:205px;right:-24px;width:59%;isolation:isolate}
+.hero-art .steering-control{bottom:-62px;left:50%}
+.hero-art .engineering-ring{width:80%;top:7%;opacity:.35;z-index:-1}
+.hero-art .ring-inner{width:67%;top:15%}
+.hero-wheel-viewer{min-height:0}
+@media(min-width:1500px){.hero-art{width:60%;right:-24px}}
+@media(max-width:1100px) and (min-width:801px){.hero-art{top:155px;bottom:205px;width:58%;right:-20px}}
+@media(max-width:800px){.hero-inner{min-height:1240px}.hero-art{top:510px;left:0;right:0;width:100%;height:555px;bottom:auto}.hero-art .steering-control{bottom:-56px;left:50%}.hero-wheel-viewer{min-height:0}.hero-art .ring-outer{width:78%}.hero-art .ring-inner{width:63%}}
+@media(max-width:540px){.hero-inner{min-height:1170px}.hero-art{top:505px;height:510px}.hero-art .steering-control{bottom:-56px}.hero-wheel-viewer{min-height:0}}
+@media(max-width:370px){.hero-inner{min-height:1140px}.hero-art{top:480px;height:505px}.hero-art .steering-control{bottom:-53px}}
+@media(max-width:800px){.hero-wheel-viewer{--hw-deck:132px}.hero-wheel-viewer .hw-tools button,.hero-wheel-viewer .hw-shifts button{min-height:44px}.hero-wheel-viewer .hw-tools button:last-child{width:44px}.hero-wheel-viewer .hw-upper-tools button{width:40px;height:40px}.hero-wheel-viewer .hw-hint{font-size:8px}.signature-accents button{min-height:44px}.tour-spot{min-width:44px;min-height:44px}}
+.config-plan-link,.booking-plan-link{display:flex;align-items:center;justify-content:center;gap:12px;background:transparent;color:#56565c;font-size:11px;min-height:44px;padding:12px 0;width:100%;margin-top:10px}
+.config-plan-link .icon,.booking-plan-link .icon{width:18px;height:18px;transition:transform .2s}
+.config-plan-link:hover,.booking-plan-link:hover{color:#b33c17}
+.config-plan-link:hover .icon,.booking-plan-link:hover .icon{transform:translateX(4px)}
+.config-controls .config-note{margin-top:4px}
+.config-product #config-image,.config-product #model-watermark{display:none}
+.config-product .product-stage{min-height:455px;max-height:none;display:block;margin-top:14px}
+.config-product .cockpit-viewer{height:455px;min-height:455px}
+.config-product .product-specs{margin-top:18px}
+@media(max-width:1050px) and (min-width:541px){.configurator{grid-template-columns:1fr}.config-product .cockpit-viewer{height:490px}.config-product .product-stage{min-height:490px}.config-product .product-stage-top{flex-direction:row}.config-controls{padding:35px}.tariff-description{min-height:0}.product-specs{max-width:600px;width:100%;margin-inline:auto}}
+@media(max-width:540px){.config-product{padding:20px 14px 16px}.config-product .product-stage{min-height:415px}.config-product .cockpit-viewer{height:415px;min-height:415px}.cv-presets button{min-height:44px}.cv-zoom button{width:40px;height:40px}.cv-drag-hint{bottom:112px}.config-product .product-specs{padding-inline:7px}.config-product .product-render-note{padding-left:7px}}
+@media(max-width:370px){.cv-bottom{left:8px;right:8px;gap:3px}.cv-presets button{padding:8px 7px}.cv-zoom{gap:2px}.cv-zoom button{width:36px;height:42px}.cv-heading{left:12px;right:12px;gap:6px}.cv-heading>span{font-size:6px}.cv-heading b{font-size:5.5px}}
+.booking-plan-link{margin:22px 0 4px;border-top:1px solid #dddde0;padding-top:20px}
+@media(min-width:701px) and (max-width:1050px){.club-tour .tour-photo{height:auto;min-height:0;aspect-ratio:1.5;align-self:center}.club-tour .tour-photo>img{object-fit:cover}}
+.discovery-route>a.is-done>span:after{content:'';width:5px;height:8px;border:solid #ff946d;border-width:0 1.5px 1.5px 0;background:none;padding:0;transform:translate(17px,-12px) rotate(45deg)}
+@media(max-width:540px){.config-plan-link{font-size:10px}.header .nav a{min-height:44px;display:flex;align-items:center}}

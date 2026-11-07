@@ -1,0 +1,8 @@
+/* A custom gift with a chequered ribbon ties the reward to racing. */
+.challenge-heading{display:flex;align-items:flex-start;gap:20px;min-width:0;flex:1}
+.challenge-gift{display:block;flex:0 0 64px;width:64px;height:64px;margin:3px 0 0;pointer-events:none;user-select:none}
+.challenge-heading h2{min-width:0}
+@media(max-width:760px){
+ .challenge-heading{display:block}
+ .challenge-gift{width:52px;height:52px;margin:0 0 18px}
+}
