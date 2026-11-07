@@ -1,4 +1,5 @@
-FROM python:3.12-slim
+ARG PYTHON_IMAGE=mirror.gcr.io/library/python:3.12-slim
+FROM ${PYTHON_IMAGE}
 WORKDIR /app
 COPY server/requirements.txt /tmp/runtime-requirements.txt
 RUN pip install --no-cache-dir -r /tmp/runtime-requirements.txt gunicorn==26.2.0
