@@ -6,7 +6,7 @@ ROOT=Path(__file__).resolve().parents[1]
 PUBLIC_EXCLUDE={'apple-glass.css','apple-glass.js','apple-v1.css','old.html','osn.html','visit.html','club-intro.gif','servers-1680.webp','servers-840.webp'}
 def files():
     exact=['.gitignore','LOCAL.md','scripts/local-server.py','scripts/local-worker.py','package-lock.json','README.md','AGENTS.md','Dockerfile','compose.yaml','Caddyfile','.dockerignore','.env.example','package.json',
-        'docs/release-checks.md','scripts/setup.py','scripts/worker.py','scripts/package-release.py','scripts/test-all.py','scripts/check.mjs',
+        'docs/release-checks.md','scripts/setup.py','scripts/prepare-migration.py','scripts/worker.py','scripts/package-release.py','scripts/test-all.py','scripts/check.mjs',
         'scripts/serve.mjs','.agents/skills/autosim-glass/SKILL.md']
     paths=[ROOT/n for n in exact]
     paths += list((ROOT/'server').glob('*.py'))+[ROOT/'server/requirements.txt']
