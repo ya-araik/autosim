@@ -147,3 +147,24 @@
  .glass-edition .booking-choice[open],.glass-edition .calendar-popup,.glass-edition .as-select-menu,.glass-edition .site-header nav.open {animation:none}
 }
 .glass-edition .site-header .header-call>.glass-skin { display:block; }
+
+/* Phone booking call to action. */
+.glass-edition .callback-banner{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:40px;margin-top:32px;padding:38px 42px;overflow:hidden;border:1px solid #ffffff20;border-radius:30px;background:radial-gradient(ellipse at 100% 100%,#b64b2720,transparent 65%),#202826;box-shadow:inset 0 1px 0 #ffffff0c}
+.callback-banner-copy,.callback-banner-action{position:relative;min-width:0}
+.glass-edition .callback-banner-label{display:flex;align-items:center;gap:10px;margin:0 0 17px;color:#eda98d;font-size:10px;font-weight:600;line-height:1.4;letter-spacing:.13em}
+.callback-banner-label .icon{width:17px;height:17px;flex:none}
+.glass-edition .callback-banner h3{max-width:540px;margin:0;color:#f3f0e8;font-size:clamp(25px,2.6vw,35px);font-weight:600;line-height:1.14;letter-spacing:-.04em;text-wrap:balance}
+.glass-edition .callback-banner-description{margin:15px 0 0;color:#b5bdb7;font-size:14px;line-height:1.7}
+.callback-banner-action{display:flex;flex-direction:column;align-items:center;gap:13px}
+.glass-edition .callback-banner-action .button{white-space:nowrap;min-height:58px;padding:18px 25px;font-size:14px}
+.callback-banner-action>span{color:#9fa9a2;font-size:11px;line-height:1.5}
+@media(max-width:760px){
+ .glass-edition .callback-banner{grid-template-columns:1fr;gap:25px;margin:28px 0 0;padding:27px 24px;border-radius:25px}
+ .glass-edition .callback-banner h3{font-size:29px;max-width:350px}
+ .glass-edition .callback-banner-description{font-size:13px;margin-top:12px}
+ .callback-banner-break{display:none}
+ .callback-banner-action{align-items:stretch;gap:11px}
+ .callback-banner-action>span{text-align:center}
+ .glass-edition .callback-banner-action .button{justify-content:space-between;min-height:54px;padding:16px 22px;font-size:13px}
+}
+@media(max-width:360px){.glass-edition .callback-banner{padding:25px 19px}.glass-edition .callback-banner h3{font-size:26px}.glass-edition .callback-banner-label{font-size:9px;letter-spacing:.09em}}

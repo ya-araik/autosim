@@ -4,7 +4,7 @@ const loading = document.getElementById('member-loading');
 document.getElementById('member-retry').addEventListener('click', () => location.reload());
 // The import and session request run concurrently. Show authentication only
 // after the server explicitly identifies a signed-out guest.
-import('./member.js?v=20261109').catch(error => {
+import('./member.js?v=20261109-copy2').catch(error => {
   document.getElementById('auth-view').hidden = true;
   document.getElementById('member-view').hidden = true;
   loading.hidden = false;

@@ -30,7 +30,7 @@ function showAuth(mode){
   $('recovery-field').hidden=mode!=='recover';$('auth-form').elements.recoveryCode.required=mode==='recover';
   $('password-hint').hidden=mode==='login';$('auth-form').elements.password.minLength=mode==='login'?1:8;
   $('auth-form').elements.password.autocomplete=mode==='login'?'current-password':'new-password';
-  $('auth-title').textContent={login:'С возвращением.',register:'Твой первый круг.',recover:'Вернёмся за руль.'}[mode];
+  $('auth-title').textContent={login:'С возвращением.',register:'Добро пожаловать.',recover:'Вернёмся за руль.'}[mode];
   $('auth-description').textContent={login:'Твои заезды и карточка пилота — здесь.',register:'Один профиль — для твоих заездов и клубной истории.',recover:'Введи код, который сохранил при регистрации, и новый пароль.'}[mode];
   const pending=pendingAttempt();if(pending&&mode!=='recover')$('auth-description').textContent='Твоё время '+gameTime(pending.timeMs)+' ждёт сохранения. '+(mode==='register'?'Создай профиль, чтобы сохранить попытку.':'Войди, чтобы сохранить попытку в свой профиль.');
   $('password-label').textContent=mode==='recover'?'Новый пароль':'Пароль';

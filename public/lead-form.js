@@ -34,7 +34,7 @@ if (form) {
       }
       submitted = true;
       trackApplication(result.id);
-      status.textContent = 'Заявка принята. Администратор свяжется с тобой для согласования заезда.';
+      status.textContent = 'Заявка принята. Администратор позвонит, чтобы согласовать время.';
       form.querySelectorAll('input,textarea,button').forEach(control => { control.disabled = true; });
       button.textContent = 'Заявка отправлена';
     } catch (error) {
