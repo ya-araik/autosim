@@ -1,17 +1,15 @@
-import {trackApplication} from './yandex-metrika.js';
-import {TARIFFS,VR_PRICES,defaultDraft,quoteDraft,timeChoices,localDate,parseDraftHash,money} from './club-data.js?v=20261107';
+import {TARIFFS,money} from './club-data.js?v=20261107';
 import {pendingResult,pendingAttempt,gameTime} from './game-results.js';
 import {initialMemberSession} from './member-session.js?v=21';
 const $=id=>document.getElementById(id),$$=s=>[...document.querySelectorAll(s)];
-const form=$('booking-form');
-let seatPicker,bookingLoading=false,gameHistory,selection={items:[],people:0,total:0,duration:60},pendingSelection=null,pendingVrCount=null;
-let clubProfileRequired=false,selectionKey='';
-let session=null,dashboard=null,authMode='login',cancelTarget=null,requestId=crypto.randomUUID(),refreshing=false,submitting=false;
+let gameHistory;
+let clubProfileRequired=false;
+let session=null,dashboard=null,authMode='login',cancelTarget=null,refreshing=false;
 const el=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n;};
 const date=value=>new Intl.DateTimeFormat('ru-RU',{timeZone:'Asia/Yekaterinburg',day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'}).format(new Date(value));
 function checkPassword(value){if([...value].length<8||[...value].length>128||!/[\p{P}\p{S}]/u.test(value))throw Error('От 8 до 128 символов и хотя бы один спецсимвол: например, @, ! или #.');}
 function status(id,text='',error=false){$(id).textContent=text;$(id).classList.toggle('is-error',error);}
-function signedOut(){gameHistory?.stopGameHistory();document.getElementById('member-game')?.replaceChildren();session=null;dashboard=null;$('member-loading').hidden=true;$('club-profile-status').hidden=true;$('club-verification').reset();$('member-view').hidden=true;$('auth-view').hidden=false;$('auth-submit').disabled=false;$('logout').hidden=true;$('bookings-list').replaceChildren();$('pilot-name').textContent='';$('pilot-number').textContent='';$('profile-form').reset();$('password-form').reset();$('booking-form').elements.phone.value='';$('booking-form').elements.comment.value='';$('cancel-dialog').close();}
+function signedOut(){gameHistory?.stopGameHistory();document.getElementById('member-game')?.replaceChildren();session=null;dashboard=null;$('member-loading').hidden=true;$('club-profile-status').hidden=true;$('club-verification').reset();$('member-view').hidden=true;$('auth-view').hidden=false;$('auth-submit').disabled=false;$('logout').hidden=true;$('bookings-list').replaceChildren();$('pilot-name').textContent='';$('pilot-number').textContent='';$('profile-form').reset();$('password-form').reset();$('cancel-dialog').close();}
 async function api(path,{method='GET',body}={}){
   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),25000);
   try{
@@ -45,13 +43,12 @@ function applyUser(user){
   $('pilot-initial').textContent=Array.from(user.name)[0]?.toUpperCase()||'А';$('pilot-number').textContent=user.pilotNumber;
   $('pilot-since').textContent=new Intl.DateTimeFormat('ru-RU',{timeZone:'Asia/Yekaterinburg',month:'2-digit',year:'numeric'}).format(new Date(user.createdAt));
   if(!document.activeElement?.closest('#profile-form')){const f=$('profile-form');f.elements.name.value=user.name;f.elements.phone.value=user.phone;f.elements.birthDate.value=user.birthDate||'';}
-  if(!form.elements.phone.value)form.elements.phone.value=user.phone;
 }
 async function signIn(value){
   if(!value.authenticated||!value.csrf||!value.user)throw Error('Сервер не подтвердил вход.');
   session={authenticated:true,user:value.user,csrf:value.csrf};$('auth-form').reset();$('auth-view').hidden=true;$('member-loading').hidden=true;$('member-view').hidden=false;$('logout').hidden=false;
   applyUser(value.user);status('app-status');status('bookings-status','Загружаем твои записи…');
-  void refresh();void initBooking();void loadGameHistory(session);
+  void refresh();void loadGameHistory(session);
   if(location.hash.startsWith('#book'))$('booking').scrollIntoView({behavior:'instant',block:'start'});
   if(value.recoveryCode)recovery(value.recoveryCode);
 }
@@ -76,7 +73,7 @@ function calendar(row){
 }
 function renderBookings(rows){
   const list=$('bookings-list');list.replaceChildren();
-  if(!rows.length){const empty=el('div',undefined,'empty-bookings');const copy=el('div');copy.append(el('strong','Первый заезд впереди.'),el('p','Выбери место и время.'));empty.append(copy);list.append(empty);return;}
+  if(!rows.length){const empty=el('div',undefined,'empty-bookings');const copy=el('div');copy.append(el('strong','Первый заезд впереди.'),el('p','Оставь заявку — согласуем время по телефону.'));empty.append(copy);list.append(empty);return;}
   const now=Date.now();const ordered=[...rows].sort((a,b)=>{const active=r=>['draft','confirmed'].includes(r.status)&&new Date(r.endsAt).getTime()>now;return Number(active(b))-Number(active(a))||(active(a)?new Date(a.startsAt)-new Date(b.startsAt):new Date(b.startsAt)-new Date(a.startsAt));});
   for(const row of ordered){
     const article=el('article',undefined,'booking-card'),top=el('div',undefined,'booking-card-top');
@@ -98,36 +95,6 @@ async function refresh(){
   catch(error){if(session===expected)status('bookings-status','Не удалось обновить записи: '+error.message,true);}
   finally{refreshing=false;$('refresh-bookings').disabled=false;}
 }
-function draft(){const f=form.elements;return{...defaultDraft(),tariff:f.tariff.value,duration:Number(f.duration.value),people:Number(f.people.value),vrCount:Number(f.vrCount.value),date:f.date.value,time:f.time.value};}
-function updateQuote(){
-  const f=form.elements,current=Number(f.vrCount.value)||0,people=selection.people;
-  if(f.vrCount.options.length!==people+1){f.vrCount.replaceChildren();for(let n=0;n<=people;n++){const option=el('option',n===0?'Без VR':n+' '+(n===1?'гость':n<5?'гостя':'гостей'));option.value=String(n);f.vrCount.append(option);}}
-  f.vrCount.value=String(Math.min(current,people));const vr=Number(f.vrCount.value),each=VR_PRICES[selection.duration]||0;
-  $('booking-price').textContent=people?money(selection.total+vr*each):'—';
-  $('booking-breakdown').textContent=selection.items.map(i=>i.label).join(' · ')+(vr?' + VR × '+vr:'');
-  $('vr-caveat').hidden=!(vr&&selection.duration===120);
-}
-function loadSelection(){
-  if(!location.hash.startsWith('#book?'))return;
-  const params=new URLSearchParams(location.hash.slice(6)),seatIds=(params.get('seats')||'').split(',').filter(id=>/^(S0[1-7]|P0[12]|V01)$/.test(id));
-  let value;
-  if(params.get('v')==='2')value={date:params.get('d'),time:params.get('at'),duration:Number(params.get('m')),seatIds};
-  else{params.delete('seats');const d=parseDraftHash('#plan?'+params);if(d)value={...d,seatIds};}
-  if(!value)return;pendingVrCount=Math.max(0,Number(params.get('vr'))||0);pendingSelection=value;seatPicker?.set(value);
-}
-async function initBooking(){
-  if(seatPicker||bookingLoading)return;bookingLoading=true;
-  try{
-    const {SeatPicker}=await import('./seat-picker.js?v=20261107');
-    seatPicker=new SeatPicker($('member-seat-picker'),{onChange:v=>{
-      selection=v;const f=form.elements;f.date.value=v.date;f.time.value=v.time;f.duration.value=v.duration;f.tariff.value=v.tariff;f.people.value=v.people;
-      if(v.ready&&pendingVrCount!==null){updateQuote();f.vrCount.value=String(Math.min(pendingVrCount,v.people));pendingVrCount=null;}
-      updateQuote();$('booking-submit').disabled=!v.ready||submitting;const key=JSON.stringify([v.date,v.time,v.duration,v.seatIds]);
-      if(key!==selectionKey&&!submitting)requestId=crypto.randomUUID();selectionKey=key;
-    }});
-    if(pendingSelection)seatPicker.set(pendingSelection);
-  }catch(error){$('member-seat-picker').textContent='Не удалось загрузить выбор мест. Обнови страницу или позвони в клуб.';console.error('Booking module:',error);}finally{bookingLoading=false;}
-}
 $$('[data-auth]').forEach(b=>b.addEventListener('click',()=>showAuth(b.dataset.auth)));
 $('forgot').addEventListener('click',()=>showAuth(authMode==='recover'?'login':'recover'));
 $('show-password').addEventListener('click',()=>{const p=$('auth-form').elements.password;p.type=p.type==='password'?'text':'password';$('show-password').textContent=p.type==='password'?'Показать':'Скрыть';$('show-password').setAttribute('aria-label',p.type==='password'?'Показать пароль':'Скрыть пароль');});
@@ -140,22 +107,14 @@ $('logout').addEventListener('click',async()=>{try{await api('logout',{method:'P
 $('copy-recovery').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('recovery-code').textContent);status('recovery-copy-status','Код скопирован. Сохрани его в безопасном месте.');}catch{status('recovery-copy-status','Скопируй код вручную: браузер не разрешил доступ к буферу.',true);}});
 $('close-recovery').addEventListener('click',()=>{$('recovery-dialog').close();$('recovery-code').textContent='';});
 $('recovery-dialog').addEventListener('cancel',()=>{$('recovery-code').textContent='';});
-for(const name of ['tariff','duration','people','vrCount','date'])form.elements[name].addEventListener('change',()=>{updateQuote();requestId=crypto.randomUUID();});
-for(const name of ['time','phone','comment'])form.elements[name].addEventListener('input',()=>{if(!submitting)requestId=crypto.randomUUID();});
-form.addEventListener('submit',async event=>{
-  event.preventDefault();if(!form.reportValidity()||submitting)return;if(!seatPicker?.value().ready){status('booking-status','Выбери свободное место.',true);return;}submitting=true;const f=form.elements;const controls=[...form.querySelectorAll('input,select,textarea,button')];
-  const body={requestId,seatIds:seatPicker.value().seatIds,phone:f.phone.value,startsAt:f.date.value+'T'+f.time.value+':00+05:00',duration:Number(f.duration.value),tariff:f.tariff.value,participants:Number(f.people.value),vrCount:Number(f.vrCount.value),comment:f.comment.value.trim(),consent:f.consent.checked};controls.forEach(x=>x.disabled=true);status('booking-status','Сохраняем заявку…');
-  try{const saved=await api('bookings',{method:'POST',body});trackApplication(saved.id);requestId=crypto.randomUUID();f.consent.checked=false;f.comment.value='';seatPicker.selected=[];await refresh();status('booking-status','Заявка '+saved.reference+' сохранена. Дождись подтверждения владельца в кабинете.');status('bookings-status','Заявка отправлена на согласование. Это ещё не подтверждённая бронь.');$('visits').scrollIntoView({behavior:'smooth',block:'start'});}
-  catch(error){status('booking-status',error.message,true);}finally{controls.forEach(x=>x.disabled=false);submitting=false;void seatPicker?.load();}
-});
 $('refresh-bookings').addEventListener('click',()=>void refresh());
 $('keep-booking').addEventListener('click',()=>$('cancel-dialog').close());
 $('confirm-cancel').addEventListener('click',async()=>{if(!cancelTarget)return;$('confirm-cancel').disabled=true;try{await api('bookings/'+cancelTarget.id+'/cancel',{method:'POST',body:{version:cancelTarget.version}});$('cancel-dialog').close();cancelTarget=null;await refresh();status('bookings-status','Запись отменена. Владелец получит обновление.');}catch(error){status('cancel-status',error.message,true);}finally{$('confirm-cancel').disabled=false;}});
 $('profile-form').addEventListener('submit',async event=>{event.preventDefault();if(!session)return;const f=$('profile-form'),button=event.submitter;button.disabled=true;try{const data=await api('me',{method:'PATCH',body:{name:f.elements.name.value.trim(),phone:f.elements.phone.value.trim(),birthDate:f.elements.birthDate.value,version:session.user.version}});applyUser(data.user);status('profile-status','Профиль обновлён.');}catch(error){status('profile-status',error.message,true);if(error.status===409)await refresh();}finally{button.disabled=false;}});
 $('password-form').addEventListener('submit',async event=>{event.preventDefault();const f=$('password-form'),button=event.submitter;button.disabled=true;try{checkPassword(f.elements.password.value);const data=await api('password',{method:'POST',body:{currentPassword:f.elements.currentPassword.value,password:f.elements.password.value}});session={authenticated:true,user:data.user,csrf:data.csrf};f.reset();applyUser(data.user);recovery(data.recoveryCode);status('password-status','Пароль обновлён. Остальные сеансы завершены.');}catch(error){status('password-status',error.message,true);}finally{button.disabled=false;}});
-showAuth(location.hash==='#register'?'register':'login');loadSelection();
-window.addEventListener('hashchange',loadSelection);window.addEventListener('focus',()=>void refresh());document.addEventListener('visibilitychange',()=>{if(!document.hidden)void refresh();});
-setInterval(()=>{if(session&&!document.hidden&&!submitting)void refresh();},60000);
+showAuth(location.hash==='#register'?'register':'login');
+window.addEventListener('focus',()=>void refresh());document.addEventListener('visibilitychange',()=>{if(!document.hidden)void refresh();});
+setInterval(()=>{if(session&&!document.hidden)void refresh();},60000);
 try{
   const result=await initialMemberSession;
   if(result.error)throw result.error;
