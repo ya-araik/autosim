@@ -5,7 +5,7 @@ import hashlib,json,re,zipfile
 ROOT=Path(__file__).resolve().parents[1]
 PUBLIC_EXCLUDE={'apple-glass.css','apple-glass.js','apple-v1.css','old.html','osn.html','visit.html','club-intro.gif','servers-1680.webp','servers-840.webp'}
 def files():
-    exact=['.gitignore','LOCAL.md','scripts/local-server.py','scripts/local-worker.py','package-lock.json','README.md','AGENTS.md','Dockerfile','compose.yaml','compose.preview.yaml','infra/preview/default.conf.template','Caddyfile','.dockerignore','.env.example','package.json',
+    exact=['.gitignore','LOCAL.md','scripts/local-server.py','scripts/local-worker.py','package-lock.json','README.md','AGENTS.md','Dockerfile','compose.yaml','compose.preview.yaml','compose.live.yaml','infra/live/default.conf.template','scripts/switch-live.py','infra/preview/default.conf.template','Caddyfile','.dockerignore','.env.example','package.json',
         'docs/release-checks.md','scripts/setup.py','scripts/prepare-migration.py','scripts/worker.py','scripts/package-release.py','scripts/test-all.py','scripts/check.mjs',
         'scripts/serve.mjs','.agents/skills/autosim-glass/SKILL.md']
     paths=[ROOT/n for n in exact]

@@ -1,0 +1,31 @@
+# Behind the existing TLS Nginx. No public ports and no second Telegram poller.
+services:
+  app:
+    environment:
+      ALLOWED_ORIGINS: "https://${DOMAIN},https://${DOMAIN}:8443"
+  gateway:
+    image: mirror.gcr.io/library/nginx:1.30-alpine
+    restart: unless-stopped
+    environment:
+      DOMAIN: ${DOMAIN}
+    volumes:
+      - ./infra/live/default.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - ./public:/srv:ro
+    networks:
+      default: {}
+      legacy:
+        aliases: [autosim-new-web]
+    depends_on: [app]
+    security_opt: [no-new-privileges:true]
+  worker:
+    env_file: [.env, .env.cutover]
+    environment:
+      TELEGRAM_UPDATE_MODE: polling
+      BOOKING_OWNER_ID: ""
+      TELEGRAM_OWNER_IDS: ""
+      LEGACY_TELEGRAM_WEBHOOK_URL: http://autosim:3000/api/telegram/webhook
+    networks: [default, legacy]
+networks:
+  legacy:
+    external: true
+    name: autosim-prod_default

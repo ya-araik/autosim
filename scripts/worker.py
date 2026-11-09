@@ -5,6 +5,7 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'server'))
 from wsgi import app
 
 from telegram_client import telegram
+from legacy_telegram import forward_legacy_update
 
 
 def bridge(route,body):
@@ -84,12 +85,15 @@ def run():
         telegram('getMe',{})
         if mode=='polling' and telegram('getWebhookInfo',{}).get('url'):
             raise SystemExit('This bot has an active webhook. Keep the existing service running; plan its cutover before enabling polling here.')
+    print('Telegram worker ready: '+mode,flush=True)
     offset=(app.atomic(lambda tx:tx.get('worker','telegram'),int(time.time())) or {}).get('offset',0)
     def handle_update(item):
         from app import ApiError
         try:
             handled=app.leads.update(item,telegram,int(time.time()))
-            if not handled and bookings_enabled:update(item,ids)
+            if not handled and bookings_enabled and str((item.get('callback_query') or {}).get('data', '')).startswith('asb:'):
+                update(item,ids);handled=True
+            forward_legacy_update(item,handled)
         except ApiError:pass
     next_sync=0
     while True:
