@@ -1,7 +1,9 @@
 import {trackApplication} from './yandex-metrika.js';
+import {maskPhone} from './phone-mask.js?v=20261109';
 
 const form = document.getElementById('callback-form');
 if (form) {
+  maskPhone(form.elements.phone);
   let requestId = crypto.randomUUID();
   let pending = false;
   let submitted = false;
